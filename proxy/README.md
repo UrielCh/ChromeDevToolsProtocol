@@ -1,8 +1,8 @@
 # cdp-reverter
 
-Generate Chrome DevTools Protocol Session code form a listen session.
+Generate Chrome DevTools Protocol Session code from a listen-to session.
 
-If you are using a hi-absrtraction Chrome automation framworks, and want to understand who it works, this is the project you need.
+If you use a hi-abstraction Chrome automation framework and want to understand how it works, this is the project you need.
 
 ## Usage
 
@@ -20,7 +20,7 @@ Usage: cdp-reverter [options]
 
 Options:
   -h, --dest-host <ip>      host to to connect to (default: "127.0.0.1")
-  -s, --source <port>       address to listen for incomming connextion (default: "9223")
+  -s, --source <port>       address to listen for incoming connections (default: "9223")
   -d, --destination <port>  Address of the Chrome developer port (default: "9222")
   -i, --ignore <event>      Ignore some events names (default: [])
   -p, --prefix <name>       output fule prefix (default: "code")
@@ -32,17 +32,21 @@ Start it:
 ```bash
 cdp-reverter --prefix code
 You can now connect your automation script to http://127.0.0.1:9223
-Any incomming connextion will be foward to http://127.0.0.1:9222
+Any incoming connection will be forward to http://127.0.0.1:9222
 Press any Enter to terminate the session
 ```
 
-launch you automation script on cdp-reverter socket.
+Launch your automation script on the cdp-reverter socket.
 
-press enter to generate simple low level Chrome DevTools Protocol script.
+Press enter to generate a simple low-level Chrome DevTools Protocol script.
 
 
 ## Usage Alternatif
 
-- Write you Chrome DevTools project, using exta long pause between each step.
-- Then use this proxy to find out event you should wait for instead of static delay.
+- Write your Chrome DevTools project, using extra long pauses between each step.
+- Then, use this proxy to find out the event you should wait for instead of static delay.
 
+## know issues
+
+Once generated, you may need to re-order and wait for event lines.
+This generator cannot predict event timing by listening only to the Chrome DevTools Protocol Session.

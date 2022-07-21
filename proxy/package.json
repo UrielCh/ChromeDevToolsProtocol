@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "typings": "src/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf {test,lib,src,scripts}/*.{d.ts,js,js.map} ./index.{js,d.ts,js.map}",
+    "rebuild": "npm run clean && tsc",
+    "prepare": "npm run clean && tsc"
   },
   "keywords": [
     "chrome",
@@ -18,7 +20,8 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.0.6",
-    "@types/ws": "^8.5.3"
+    "@types/ws": "^8.5.3",
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "commander": "^9.4.0",
@@ -27,5 +30,10 @@
   },
   "bin": {
     "cdp-reverter": "client.js"
-  }
+  },
+  "files": [
+    "src/*.js",
+    "src/*.d.ts",
+    "client.js"
+  ]
 }
