@@ -48,7 +48,7 @@ export class Chrome extends EventEmitter {
     name: K,
     callback: (...params: ProtocolEventsApi[K]) => void,
   ): this {
-    super.on(name, callback as any);
+    super.on(name, callback as (...args: unknown[]) => void);
     return this;
   }
 
@@ -111,7 +111,7 @@ export class Chrome extends EventEmitter {
           }
         }
       };
-      this.on("event", onEvent as any); // TODO fix me
+      this.on("event", onEvent); // TODO fix me
     });
   }
 
@@ -173,16 +173,7 @@ export class Chrome extends EventEmitter {
   /**
    * handle, parse and dispatch messages read from the WebSocket
    */
-  #handleMessage(
-    message: {
-      id?: number;
-      error?: Error;
-      result?: unknown;
-      method?: string;
-      params?: unknown;
-      sessionId?: string;
-    },
-  ) {
+  #handleMessage(message: ProtocolEventParam) {
     // if id is present this is a response command
     const id = Number(message.id);
     if (id) {
@@ -226,7 +217,7 @@ export class Chrome extends EventEmitter {
       this.emit("event", message);
       this.emit(method, params, sessionId);
       if (sessionId) {
-        this.emit(`${method}.${sessionId}`, params, sessionId);
+        this.emit(`${method}.${sessionId}` as keyof ProtocolEventsApi, params, sessionId);
       }
     }
   }

@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-namespace
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace Protocol {
