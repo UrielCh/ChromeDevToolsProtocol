@@ -1,0 +1,75 @@
+{
+  "name": "@u4/chrome-remote-interface",
+  "author": "Uriel chemouni <uchemouni@gmail.com>",
+  "license": "MIT",
+  "contributors": [
+    "Andrey Sidorov <sidoares@yandex.ru>",
+    "Andrea Cardaci <cyrus.and@gmail.com>",
+    "Greg Cochard <greg@gregcochard.com>"
+  ],
+  "description": "Chrome Debugging Protocol interface",
+  "keywords": [
+    "chrome",
+    "debug",
+    "protocol",
+    "remote",
+    "interface"
+  ],
+  "homepage": "https://github.com/UrielCh/chrome-remote-interface",
+  "version": "0.3.2",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/UrielCh/chrome-remote-interface.git"
+  },
+  "bugs": {
+    "url": "http://github.com/UrielCh/chrome-remote-interface/issues"
+  },
+  "engine-strict": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "commander": "9.3.x",
+    "undici": "^5.7.0",
+    "ws": "^8.8.0"
+  },
+  "typings": "index.d.ts",
+  "files": [
+    "lib",
+    "types",
+    "bin",
+    "index.*",
+    "chrome-remote-interface.js"
+  ],
+  "bin": {
+    "chrome-remote-interface": "bin/client.js"
+  },
+  "main": "index.js",
+  "browser": "chrome-remote-interface.js",
+  "devDependencies": {
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^18.0.4",
+    "@types/ws": "^8.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "eslint": "^8.19.0",
+    "json-loader": "^0.5.7",
+    "mocha": "^10.0.0",
+    "process": "^0.11.10",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^9.3.1",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4",
+    "url": "^0.11.0",
+    "util": "^0.12.4"
+  },
+  "scripts": {
+    "lint": "eslint --fix .",
+    "lint_types": "eslint --fix --no-ignore ./types/",
+    "clean": "rimraf {test,lib,scripts}/*.{d.ts,js,js.map} ./index.{js,d.ts,js.map}",
+    "test": "ts-mocha -b -t 10000 test/*.ts",
+    "gen": "ts-node scripts/protocol-dts-generator.ts",
+    "rebuild": "npm run clean && tsc",
+    "prepare": "npm run clean && tsc"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [{
+      "type": "node",
+      "request": "launch",
+      "name": "Mocha Tests",
+      "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "args": [
+        "--trace-warnings",
+        "--no-timeouts",
+        "--colors",
+        "test/*.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Mocha Tests full",
+      "program": "${workspaceFolder}/node_modules/ts-mocha/bin/ts-mocha",
+      "args": [
+        "--trace-warnings",
+        "--no-timeouts",
+        "--colors",
+        "test/full.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ]
+    },
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "protocol-dts-generator",
+      "env": {
+        "NODE_OPTIONS": "-r ts-node/register --no-warnings",
+      },
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/scripts/protocol-dts-generator.ts",
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ]
+
+    }
+  ]
+}
