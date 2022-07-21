@@ -1,8 +1,9 @@
 import EventEmitter from "events";
-import WebSocket from "ws";
+import WebSocket, {MessageEvent} from "ws";
 import * as api from "./api";
 import { Protocol } from "./Protocol";
 import ProtocolEventsApi, {
+  ProtocolEventParam,
   ProtocolEventsName,
 } from "../types/protocol-events";
 import { ProtocolError } from "./ProtocolError";
@@ -90,10 +91,8 @@ export class Chrome extends EventEmitter {
     }
     const text = JSON.stringify(message);
     return new Promise<unknown>((success, reject) => {
-      ws.send(text, (err) => {
-        if (err) return reject(err);
-        this.#callbacks.set(id, { success, reject, method, params, sessionId });
-      });
+      ws.send(text);
+      this.#callbacks.set(id, { success, reject, method, params, sessionId });
     });
   }
 
@@ -103,7 +102,7 @@ export class Chrome extends EventEmitter {
   public waitForAllEvents(...events: ProtocolEventsName[]) {
     return new Promise<void>((resolve) => {
       const eventSet = new Set<ProtocolEventsName>(events);
-      const onEvent = (param: { method: ProtocolEventsName; params: any }) => {
+      const onEvent = (param: ProtocolEventParam) => {
         const { method } = param;
         if (eventSet.delete(method)) {
           if (!eventSet.size) {
@@ -124,17 +123,18 @@ export class Chrome extends EventEmitter {
       const ws = this.#ws;
       if (!ws) {
         reject("Websocket is not initilized");
-      } else if (ws.readyState === 3) {
+      } else if (ws.readyState === WebSocket.CLOSING || ws.readyState === WebSocket.CLOSED) {
         // don't close if it's already closed
         resolve();
       } else {
         // don't notify on user-initiated shutdown ('disconnect' event)
-        ws.removeAllListeners("close");
-        ws.once("close", () => {
-          ws.removeAllListeners();
+        ws.onerror = null;
+        ws.onclose = () => {
+          ws.onmessage = null;
+          // ws.removeAllListeners();
           resolve();
-        });
-        ws.close();
+        };
+        ws.close(1000);
       }
     });
   }
@@ -144,9 +144,9 @@ export class Chrome extends EventEmitter {
    *
    * return a promise that get resoved once connection is open
    */
-  async #connectToWebSocket(): Promise<WebSocket> {
+  #connectToWebSocket(): Promise<WebSocket> {
     const ws = new WebSocket(this.webSocketDebuggerUrl);
-    ws.onmessage = (message: WebSocket.MessageEvent) => {
+    ws.onmessage = (message: MessageEvent) => {
       if (typeof message.data === "string") {
         const msg = JSON.parse(message.data);
         this.#handleMessage(msg);
@@ -163,7 +163,7 @@ export class Chrome extends EventEmitter {
         accept(ws);
         resolved = true;
       };
-      ws.onerror = (err: WebSocket.ErrorEvent) => {
+      ws.onerror = (err) => {
         if (!resolved) reject(err);
         resolved = true;
       };

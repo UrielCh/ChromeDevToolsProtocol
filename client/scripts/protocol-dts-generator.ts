@@ -503,17 +503,33 @@ const emitEvents = (moduleName: string, protocolModuleName: string, domains: Pro
         //   ? `${prefix}${toEventPayloadName(event.name)}`
         //   : "void";
         const addSession = "";// "", sessionId?: string";
-        emitLine(`"${domainName}.${event.name}" (${params}${addSession}): void;`);
+        emitLine(`"${domainName}.${event.name}"(${params}${addSession}): void;`);
       });
     }
   });
   emitDescription("Catch all events");
-  emitLine('"event" (param: {method: ProtocolEventsName, params: any}): void;');
+  emitLine("event(event: ProtocolEventParam),");
   emitDescription("Message queue is empty");
-  emitLine('"ready" (): void;');
+  emitLine("ready(): void,");
+  emitDescription("websocket connection closed");
+  emitLine("disconnect(): void,");
   emitCloseBlock();
-  // numIndents--;
-  emitLine('export type ProtocolEventsName = Exclude<keyof ProtocolEventsApi, "event" | "ready" >;');
+  emitLine();
+  emitLine(
+    'export type ProtocolEventsName = Exclude<keyof ProtocolEventsApi, "event" | "ready" >;',
+  );
+  emitLine();
+  emitOpenBlock("export interface ProtocolEventParam");
+  emitDescription("id of the message, empty if it's an event");
+  emitLine("id?: number;");
+  emitDescription("error messge");
+  emitLine("error?: Error;");
+  emitLine("result?: unknown;");
+  emitDescription("error messge");
+  emitLine("method: ProtocolEventsName;");
+  emitLine("params?: unknown;");
+  emitLine("sessionId?: string;");
+  emitCloseBlock();
   emitLine();
   emitLine(`export default ${moduleName};`);
 };
