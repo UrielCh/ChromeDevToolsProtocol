@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import * as path from "path";
+import { join, basename } from "path";
 import { Protocol as Proto } from "../lib/Protocol";
 import { localDescriptor } from "../lib/protocol1_3";
 
@@ -76,6 +76,7 @@ const emitPublicDocDeclaration = () => {
 
 const emitModule = (moduleName: string, domains: Proto.ProtocolDomain[]) => {
   moduleName = toTitleCase(moduleName);
+  emitLine("// deno-lint-ignore-file no-explicit-any");
   emitHeaderComments();
   emitPublicDocDeclaration();
   emitOpenBlock(`export namespace ${moduleName}`);
@@ -376,7 +377,7 @@ const emitApiCommand = (
     }
     // params += ", sessionId?: string"; // not shure
   } else {
-    params = "params?: {}";
+    params = "params?: Record<never, never>";
   }
   const response = command.returns
     ? `${prefix}${toCmdResponseName(command.name)}`
@@ -404,7 +405,7 @@ const emitApiEvent = (
   const callParams = event.parameters
     ? `${prefix}${toEventPayloadName(event.name)}`
     : "void";
-  const addSession = "";// "", sessionId?: string";
+  const addSession = ""; // "", sessionId?: string";
   const eventName = fullName ? `${domainName}.${event.name}` : event.name;
   emitLine(`on(event: "${eventName}", listener: (${params}${addSession}) => void): void;`);
   emitLine(`on(event: \`${eventName}.\${SessionId}\`, listener: (${params}${addSession}) => void): void;`);
@@ -433,6 +434,7 @@ const emitDomainApi = (domain: Proto.ProtocolDomain, modulePrefix: string) => {
 
 const emitApi = (moduleName: string, protocolModuleName: string, domains: Proto.ProtocolDomain[]) => {
   moduleName = toTitleCase(moduleName);
+  emitLine("// deno-lint-ignore-file adjacent-overload-signatures");
   emitHeaderComments();
   emitLine(`import Protocol from "./${protocolModuleName}";`);
   emitLine();
@@ -456,11 +458,11 @@ const emitApi = (moduleName: string, protocolModuleName: string, domains: Proto.
   emitLine(`export default ${moduleName};`);
 };
 
-
 const emitEvents = (moduleName: string, protocolModuleName: string, domains: Proto.ProtocolDomain[]) => {
   moduleName = toTitleCase(moduleName);
   emitHeaderComments();
   emitLine(`import Protocol from "./${protocolModuleName}";`);
+  emitLine();
   emitDescription("all protocol events.");
   // emitLine("export type SessionId = string;");
 
@@ -472,7 +474,8 @@ const emitEvents = (moduleName: string, protocolModuleName: string, domains: Pro
   //   }
   // });
   //emitLine(`export type ProtocolEventsName = ${allEvents.map(e=>`"${e}"`).join(" | ")};`);
-  emitOpenBlock(`export interface ${moduleName}`);
+  // emitOpenBlock(`export interface ${moduleName}`);
+  emitOpenBlock(`export type ${moduleName} =`);
 
   // list all interfaces;
   // domains.forEach((domain) => {
@@ -487,7 +490,6 @@ const emitEvents = (moduleName: string, protocolModuleName: string, domains: Pro
   // emitLine("once(event: \"event\", listener: (type: ProtocolEventsName, params: any) => void): void;");
   // emitLine("off(event: \"event\", listener: (type: ProtocolEventsName, params: any) => void): void;");
 
-
   domains.forEach((domain) => {
     if (domain.events) {
       const domainName = toTitleCase(domain.domain); // "Accessibility" | "Animation" | "Audits" | "BackgroundService"...
@@ -497,22 +499,26 @@ const emitEvents = (moduleName: string, protocolModuleName: string, domains: Pro
         const prefix = `${modulePrefix}.${domainName}.`;
         emitDescription(event.description);
         const params = event.parameters
-          ? `params: ${prefix}${toEventPayloadName(event.name)}`
-          : "";
+          ? `${prefix}${toEventPayloadName(event.name)}`
+          : "Record<never, never>";
         // const callParams = event.parameters
         //   ? `${prefix}${toEventPayloadName(event.name)}`
         //   : "void";
-        const addSession = "";// "", sessionId?: string";
-        emitLine(`"${domainName}.${event.name}"(${params}${addSession}): void;`);
+        const addSession = ""; // "", sessionId?: string";
+        emitLine(
+          `"${domainName}.${event.name}": [params: ${params}${addSession}, sessionId?: string],`,
+        );
+        // do not work with deno 1.23.3
+        // emitLine(`// \`${domainName}.${event.name}.\${SessionId}\`: [params: ${params}${addSession}, sessionId?: string],`);
       });
     }
   });
   emitDescription("Catch all events");
-  emitLine("event(event: ProtocolEventParam),");
+  emitLine("event: [ProtocolEventParam],");
   emitDescription("Message queue is empty");
-  emitLine("ready(): void,");
+  emitLine("ready: [],");
   emitDescription("websocket connection closed");
-  emitLine("disconnect(): void,");
+  emitLine("disconnect: [],");
   emitCloseBlock();
   emitLine();
   emitLine(
@@ -542,25 +548,37 @@ const flushEmitToFile = (path: string) => {
   emitStr = "";
 };
 
+const fixBaseName = (fn: string) => {
+  return fn.replace(/\\/g, "/").replace(/^.+\//, "");
+};
+
 // Main
-fs.mkdirSync(`${__dirname}/../types`, { recursive: true });
-const destProtocolFilePath = `${__dirname}/../types/protocol.d.ts`;
-const protocolModuleName = path.basename(destProtocolFilePath, ".d.ts");
+// substring windows only
+// const __dirname = new URL(".", import.meta.url).pathname.substring(1);
+
+console.log(__dirname);
+const typeDir = join(__dirname, "..", "types");
+fs.mkdirSync(typeDir, { recursive: true });
+const destProtocolFilePath = join(typeDir, "protocol.d.ts");
+const protocolModuleName = fixBaseName(basename(destProtocolFilePath, ".d.ts"));
+// console.log(`basename("${destProtocolFilePath}", ".d.ts"); = ${protocolModuleName}`)
 emitModule(protocolModuleName, localDescriptor.domains);
 flushEmitToFile(destProtocolFilePath);
 
-const destMappingFilePath = `${__dirname}/../types/protocol-mapping.d.ts`;
+const destMappingFilePath = join(typeDir, "protocol-mapping.d.ts");
 const mappingModuleName = "ProtocolMapping";
 emitMapping(mappingModuleName, protocolModuleName, localDescriptor.domains);
 flushEmitToFile(destMappingFilePath);
 
-const destApiFilePath = `${__dirname}/../types/protocol-proxy-api.d.ts`;
+const destApiFilePath = join(typeDir, "protocol-proxy-api.d.ts");
 const apiModuleName = "ProtocolProxyApi";
 emitApi(apiModuleName, protocolModuleName, localDescriptor.domains);
 flushEmitToFile(destApiFilePath);
 
-const eventsApiFilePath = `${__dirname}/../types/protocol-events.d.ts`;
+const eventsApiFilePath = join(typeDir, "protocol-events.d.ts");
 const protocolEventsName = "ProtocolEventsApi";
 emitEvents(protocolEventsName, protocolModuleName, localDescriptor.domains);
 flushEmitToFile(eventsApiFilePath);
 
+// deno run --allow-read --allow-write .\scripts\protocol-dts-generator.ts
+// deno fmt

@@ -144,7 +144,7 @@ export function prepare(object: Chrome, protocol: Protocol.ProtocolShape) {
     ) => {
       object.on(
         `${domainName}.${eventName}` as keyof ProtocolEventsApi,
-        handler,
+        handler as any,
       );
       return domainStore;
     };

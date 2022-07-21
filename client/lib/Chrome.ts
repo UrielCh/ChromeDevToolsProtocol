@@ -46,9 +46,9 @@ export class Chrome extends EventEmitter {
 
   on<K extends keyof ProtocolEventsApi>(
     name: K,
-    callback: ProtocolEventsApi[K],
+    callback: (...params: ProtocolEventsApi[K]) => void,
   ): this {
-    super.on(name, callback);
+    super.on(name, callback as any);
     return this;
   }
 
@@ -111,7 +111,7 @@ export class Chrome extends EventEmitter {
           }
         }
       };
-      this.on("event", onEvent);
+      this.on("event", onEvent as any); // TODO fix me
     });
   }
 

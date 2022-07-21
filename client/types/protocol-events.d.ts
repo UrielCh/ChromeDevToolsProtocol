@@ -4,517 +4,518 @@
  **********************************************************************/
 
 import Protocol from "./protocol";
+
 /**
  * all protocol events.
  */
-export interface ProtocolEventsApi {
+export type ProtocolEventsApi = {
     /**
      * The loadComplete event mirrors the load complete event sent by the browser to assistive
      * technology when the web page has finished loading.
      */
-    "Accessibility.loadComplete"(params: Protocol.Accessibility.LoadCompleteEvent): void;
+    "Accessibility.loadComplete": [params: Protocol.Accessibility.LoadCompleteEvent, sessionId?: string],
     /**
      * The nodesUpdated event is sent every time a previously requested node has changed the in tree.
      */
-    "Accessibility.nodesUpdated"(params: Protocol.Accessibility.NodesUpdatedEvent): void;
+    "Accessibility.nodesUpdated": [params: Protocol.Accessibility.NodesUpdatedEvent, sessionId?: string],
     /**
      * Event for when an animation has been cancelled.
      */
-    "Animation.animationCanceled"(params: Protocol.Animation.AnimationCanceledEvent): void;
+    "Animation.animationCanceled": [params: Protocol.Animation.AnimationCanceledEvent, sessionId?: string],
     /**
      * Event for each animation that has been created.
      */
-    "Animation.animationCreated"(params: Protocol.Animation.AnimationCreatedEvent): void;
+    "Animation.animationCreated": [params: Protocol.Animation.AnimationCreatedEvent, sessionId?: string],
     /**
      * Event for animation that has been started.
      */
-    "Animation.animationStarted"(params: Protocol.Animation.AnimationStartedEvent): void;
-    "Audits.issueAdded"(params: Protocol.Audits.IssueAddedEvent): void;
+    "Animation.animationStarted": [params: Protocol.Animation.AnimationStartedEvent, sessionId?: string],
+    "Audits.issueAdded": [params: Protocol.Audits.IssueAddedEvent, sessionId?: string],
     /**
      * Called when the recording state for the service has been updated.
      */
-    "BackgroundService.recordingStateChanged"(params: Protocol.BackgroundService.RecordingStateChangedEvent): void;
+    "BackgroundService.recordingStateChanged": [params: Protocol.BackgroundService.RecordingStateChangedEvent, sessionId?: string],
     /**
      * Called with all existing backgroundServiceEvents when enabled, and all new
      * events afterwards if enabled and recording.
      */
-    "BackgroundService.backgroundServiceEventReceived"(params: Protocol.BackgroundService.BackgroundServiceEventReceivedEvent): void;
+    "BackgroundService.backgroundServiceEventReceived": [params: Protocol.BackgroundService.BackgroundServiceEventReceivedEvent, sessionId?: string],
     /**
      * Fired when page is about to start a download.
      */
-    "Browser.downloadWillBegin"(params: Protocol.Browser.DownloadWillBeginEvent): void;
+    "Browser.downloadWillBegin": [params: Protocol.Browser.DownloadWillBeginEvent, sessionId?: string],
     /**
      * Fired when download makes progress. Last call has |done| == true.
      */
-    "Browser.downloadProgress"(params: Protocol.Browser.DownloadProgressEvent): void;
+    "Browser.downloadProgress": [params: Protocol.Browser.DownloadProgressEvent, sessionId?: string],
     /**
      * Fires whenever a web font is updated.  A non-empty font parameter indicates a successfully loaded
      * web font
      */
-    "CSS.fontsUpdated"(params: Protocol.CSS.FontsUpdatedEvent): void;
+    "CSS.fontsUpdated": [params: Protocol.CSS.FontsUpdatedEvent, sessionId?: string],
     /**
      * Fires whenever a MediaQuery result changes (for example, after a browser window has been
      * resized.) The current implementation considers only viewport-dependent media features.
      */
-    "CSS.mediaQueryResultChanged"(): void;
+    "CSS.mediaQueryResultChanged": [params: Record<never, never>, sessionId?: string],
     /**
      * Fired whenever an active document stylesheet is added.
      */
-    "CSS.styleSheetAdded"(params: Protocol.CSS.StyleSheetAddedEvent): void;
+    "CSS.styleSheetAdded": [params: Protocol.CSS.StyleSheetAddedEvent, sessionId?: string],
     /**
      * Fired whenever a stylesheet is changed as a result of the client operation.
      */
-    "CSS.styleSheetChanged"(params: Protocol.CSS.StyleSheetChangedEvent): void;
+    "CSS.styleSheetChanged": [params: Protocol.CSS.StyleSheetChangedEvent, sessionId?: string],
     /**
      * Fired whenever an active document stylesheet is removed.
      */
-    "CSS.styleSheetRemoved"(params: Protocol.CSS.StyleSheetRemovedEvent): void;
+    "CSS.styleSheetRemoved": [params: Protocol.CSS.StyleSheetRemovedEvent, sessionId?: string],
     /**
      * This is fired whenever the list of available sinks changes. A sink is a
      * device or a software surface that you can cast to.
      */
-    "Cast.sinksUpdated"(params: Protocol.Cast.SinksUpdatedEvent): void;
+    "Cast.sinksUpdated": [params: Protocol.Cast.SinksUpdatedEvent, sessionId?: string],
     /**
      * This is fired whenever the outstanding issue/error message changes.
      * |issueMessage| is empty if there is no issue.
      */
-    "Cast.issueUpdated"(params: Protocol.Cast.IssueUpdatedEvent): void;
+    "Cast.issueUpdated": [params: Protocol.Cast.IssueUpdatedEvent, sessionId?: string],
     /**
      * Fired when `Element`'s attribute is modified.
      */
-    "DOM.attributeModified"(params: Protocol.DOM.AttributeModifiedEvent): void;
+    "DOM.attributeModified": [params: Protocol.DOM.AttributeModifiedEvent, sessionId?: string],
     /**
      * Fired when `Element`'s attribute is removed.
      */
-    "DOM.attributeRemoved"(params: Protocol.DOM.AttributeRemovedEvent): void;
+    "DOM.attributeRemoved": [params: Protocol.DOM.AttributeRemovedEvent, sessionId?: string],
     /**
      * Mirrors `DOMCharacterDataModified` event.
      */
-    "DOM.characterDataModified"(params: Protocol.DOM.CharacterDataModifiedEvent): void;
+    "DOM.characterDataModified": [params: Protocol.DOM.CharacterDataModifiedEvent, sessionId?: string],
     /**
      * Fired when `Container`'s child node count has changed.
      */
-    "DOM.childNodeCountUpdated"(params: Protocol.DOM.ChildNodeCountUpdatedEvent): void;
+    "DOM.childNodeCountUpdated": [params: Protocol.DOM.ChildNodeCountUpdatedEvent, sessionId?: string],
     /**
      * Mirrors `DOMNodeInserted` event.
      */
-    "DOM.childNodeInserted"(params: Protocol.DOM.ChildNodeInsertedEvent): void;
+    "DOM.childNodeInserted": [params: Protocol.DOM.ChildNodeInsertedEvent, sessionId?: string],
     /**
      * Mirrors `DOMNodeRemoved` event.
      */
-    "DOM.childNodeRemoved"(params: Protocol.DOM.ChildNodeRemovedEvent): void;
+    "DOM.childNodeRemoved": [params: Protocol.DOM.ChildNodeRemovedEvent, sessionId?: string],
     /**
      * Called when distribution is changed.
      */
-    "DOM.distributedNodesUpdated"(params: Protocol.DOM.DistributedNodesUpdatedEvent): void;
+    "DOM.distributedNodesUpdated": [params: Protocol.DOM.DistributedNodesUpdatedEvent, sessionId?: string],
     /**
      * Fired when `Document` has been totally updated. Node ids are no longer valid.
      */
-    "DOM.documentUpdated"(): void;
+    "DOM.documentUpdated": [params: Record<never, never>, sessionId?: string],
     /**
      * Fired when `Element`'s inline style is modified via a CSS property modification.
      */
-    "DOM.inlineStyleInvalidated"(params: Protocol.DOM.InlineStyleInvalidatedEvent): void;
+    "DOM.inlineStyleInvalidated": [params: Protocol.DOM.InlineStyleInvalidatedEvent, sessionId?: string],
     /**
      * Called when a pseudo element is added to an element.
      */
-    "DOM.pseudoElementAdded"(params: Protocol.DOM.PseudoElementAddedEvent): void;
+    "DOM.pseudoElementAdded": [params: Protocol.DOM.PseudoElementAddedEvent, sessionId?: string],
     /**
      * Called when a pseudo element is removed from an element.
      */
-    "DOM.pseudoElementRemoved"(params: Protocol.DOM.PseudoElementRemovedEvent): void;
+    "DOM.pseudoElementRemoved": [params: Protocol.DOM.PseudoElementRemovedEvent, sessionId?: string],
     /**
      * Fired when backend wants to provide client with the missing DOM structure. This happens upon
      * most of the calls requesting node ids.
      */
-    "DOM.setChildNodes"(params: Protocol.DOM.SetChildNodesEvent): void;
+    "DOM.setChildNodes": [params: Protocol.DOM.SetChildNodesEvent, sessionId?: string],
     /**
      * Called when shadow root is popped from the element.
      */
-    "DOM.shadowRootPopped"(params: Protocol.DOM.ShadowRootPoppedEvent): void;
+    "DOM.shadowRootPopped": [params: Protocol.DOM.ShadowRootPoppedEvent, sessionId?: string],
     /**
      * Called when shadow root is pushed into the element.
      */
-    "DOM.shadowRootPushed"(params: Protocol.DOM.ShadowRootPushedEvent): void;
-    "DOMStorage.domStorageItemAdded"(params: Protocol.DOMStorage.DomStorageItemAddedEvent): void;
-    "DOMStorage.domStorageItemRemoved"(params: Protocol.DOMStorage.DomStorageItemRemovedEvent): void;
-    "DOMStorage.domStorageItemUpdated"(params: Protocol.DOMStorage.DomStorageItemUpdatedEvent): void;
-    "DOMStorage.domStorageItemsCleared"(params: Protocol.DOMStorage.DomStorageItemsClearedEvent): void;
-    "Database.addDatabase"(params: Protocol.Database.AddDatabaseEvent): void;
+    "DOM.shadowRootPushed": [params: Protocol.DOM.ShadowRootPushedEvent, sessionId?: string],
+    "DOMStorage.domStorageItemAdded": [params: Protocol.DOMStorage.DomStorageItemAddedEvent, sessionId?: string],
+    "DOMStorage.domStorageItemRemoved": [params: Protocol.DOMStorage.DomStorageItemRemovedEvent, sessionId?: string],
+    "DOMStorage.domStorageItemUpdated": [params: Protocol.DOMStorage.DomStorageItemUpdatedEvent, sessionId?: string],
+    "DOMStorage.domStorageItemsCleared": [params: Protocol.DOMStorage.DomStorageItemsClearedEvent, sessionId?: string],
+    "Database.addDatabase": [params: Protocol.Database.AddDatabaseEvent, sessionId?: string],
     /**
      * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out.
      */
-    "Emulation.virtualTimeBudgetExpired"(): void;
+    "Emulation.virtualTimeBudgetExpired": [params: Record<never, never>, sessionId?: string],
     /**
      * Issued when the target starts or stops needing BeginFrames.
      * Deprecated. Issue beginFrame unconditionally instead and use result from
      * beginFrame to detect whether the frames were suppressed.
      */
-    "HeadlessExperimental.needsBeginFramesChanged"(params: Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent): void;
+    "HeadlessExperimental.needsBeginFramesChanged": [params: Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent, sessionId?: string],
     /**
      * Emitted only when `Input.setInterceptDrags` is enabled. Use this data with `Input.dispatchDragEvent` to
      * restore normal drag and drop behavior.
      */
-    "Input.dragIntercepted"(params: Protocol.Input.DragInterceptedEvent): void;
+    "Input.dragIntercepted": [params: Protocol.Input.DragInterceptedEvent, sessionId?: string],
     /**
      * Fired when remote debugging connection is about to be terminated. Contains detach reason.
      */
-    "Inspector.detached"(params: Protocol.Inspector.DetachedEvent): void;
+    "Inspector.detached": [params: Protocol.Inspector.DetachedEvent, sessionId?: string],
     /**
      * Fired when debugging target has crashed
      */
-    "Inspector.targetCrashed"(): void;
+    "Inspector.targetCrashed": [params: Record<never, never>, sessionId?: string],
     /**
      * Fired when debugging target has reloaded after crash
      */
-    "Inspector.targetReloadedAfterCrash"(): void;
-    "LayerTree.layerPainted"(params: Protocol.LayerTree.LayerPaintedEvent): void;
-    "LayerTree.layerTreeDidChange"(params: Protocol.LayerTree.LayerTreeDidChangeEvent): void;
+    "Inspector.targetReloadedAfterCrash": [params: Record<never, never>, sessionId?: string],
+    "LayerTree.layerPainted": [params: Protocol.LayerTree.LayerPaintedEvent, sessionId?: string],
+    "LayerTree.layerTreeDidChange": [params: Protocol.LayerTree.LayerTreeDidChangeEvent, sessionId?: string],
     /**
      * Issued when new message was logged.
      */
-    "Log.entryAdded"(params: Protocol.Log.EntryAddedEvent): void;
+    "Log.entryAdded": [params: Protocol.Log.EntryAddedEvent, sessionId?: string],
     /**
      * Fired when data chunk was received over the network.
      */
-    "Network.dataReceived"(params: Protocol.Network.DataReceivedEvent): void;
+    "Network.dataReceived": [params: Protocol.Network.DataReceivedEvent, sessionId?: string],
     /**
      * Fired when EventSource message is received.
      */
-    "Network.eventSourceMessageReceived"(params: Protocol.Network.EventSourceMessageReceivedEvent): void;
+    "Network.eventSourceMessageReceived": [params: Protocol.Network.EventSourceMessageReceivedEvent, sessionId?: string],
     /**
      * Fired when HTTP request has failed to load.
      */
-    "Network.loadingFailed"(params: Protocol.Network.LoadingFailedEvent): void;
+    "Network.loadingFailed": [params: Protocol.Network.LoadingFailedEvent, sessionId?: string],
     /**
      * Fired when HTTP request has finished loading.
      */
-    "Network.loadingFinished"(params: Protocol.Network.LoadingFinishedEvent): void;
+    "Network.loadingFinished": [params: Protocol.Network.LoadingFinishedEvent, sessionId?: string],
     /**
      * Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
      * mocked.
      * Deprecated, use Fetch.requestPaused instead.
      */
-    "Network.requestIntercepted"(params: Protocol.Network.RequestInterceptedEvent): void;
+    "Network.requestIntercepted": [params: Protocol.Network.RequestInterceptedEvent, sessionId?: string],
     /**
      * Fired if request ended up loading from cache.
      */
-    "Network.requestServedFromCache"(params: Protocol.Network.RequestServedFromCacheEvent): void;
+    "Network.requestServedFromCache": [params: Protocol.Network.RequestServedFromCacheEvent, sessionId?: string],
     /**
      * Fired when page is about to send HTTP request.
      */
-    "Network.requestWillBeSent"(params: Protocol.Network.RequestWillBeSentEvent): void;
+    "Network.requestWillBeSent": [params: Protocol.Network.RequestWillBeSentEvent, sessionId?: string],
     /**
      * Fired when resource loading priority is changed
      */
-    "Network.resourceChangedPriority"(params: Protocol.Network.ResourceChangedPriorityEvent): void;
+    "Network.resourceChangedPriority": [params: Protocol.Network.ResourceChangedPriorityEvent, sessionId?: string],
     /**
      * Fired when a signed exchange was received over the network
      */
-    "Network.signedExchangeReceived"(params: Protocol.Network.SignedExchangeReceivedEvent): void;
+    "Network.signedExchangeReceived": [params: Protocol.Network.SignedExchangeReceivedEvent, sessionId?: string],
     /**
      * Fired when HTTP response is available.
      */
-    "Network.responseReceived"(params: Protocol.Network.ResponseReceivedEvent): void;
+    "Network.responseReceived": [params: Protocol.Network.ResponseReceivedEvent, sessionId?: string],
     /**
      * Fired when WebSocket is closed.
      */
-    "Network.webSocketClosed"(params: Protocol.Network.WebSocketClosedEvent): void;
+    "Network.webSocketClosed": [params: Protocol.Network.WebSocketClosedEvent, sessionId?: string],
     /**
      * Fired upon WebSocket creation.
      */
-    "Network.webSocketCreated"(params: Protocol.Network.WebSocketCreatedEvent): void;
+    "Network.webSocketCreated": [params: Protocol.Network.WebSocketCreatedEvent, sessionId?: string],
     /**
      * Fired when WebSocket message error occurs.
      */
-    "Network.webSocketFrameError"(params: Protocol.Network.WebSocketFrameErrorEvent): void;
+    "Network.webSocketFrameError": [params: Protocol.Network.WebSocketFrameErrorEvent, sessionId?: string],
     /**
      * Fired when WebSocket message is received.
      */
-    "Network.webSocketFrameReceived"(params: Protocol.Network.WebSocketFrameReceivedEvent): void;
+    "Network.webSocketFrameReceived": [params: Protocol.Network.WebSocketFrameReceivedEvent, sessionId?: string],
     /**
      * Fired when WebSocket message is sent.
      */
-    "Network.webSocketFrameSent"(params: Protocol.Network.WebSocketFrameSentEvent): void;
+    "Network.webSocketFrameSent": [params: Protocol.Network.WebSocketFrameSentEvent, sessionId?: string],
     /**
      * Fired when WebSocket handshake response becomes available.
      */
-    "Network.webSocketHandshakeResponseReceived"(params: Protocol.Network.WebSocketHandshakeResponseReceivedEvent): void;
+    "Network.webSocketHandshakeResponseReceived": [params: Protocol.Network.WebSocketHandshakeResponseReceivedEvent, sessionId?: string],
     /**
      * Fired when WebSocket is about to initiate handshake.
      */
-    "Network.webSocketWillSendHandshakeRequest"(params: Protocol.Network.WebSocketWillSendHandshakeRequestEvent): void;
+    "Network.webSocketWillSendHandshakeRequest": [params: Protocol.Network.WebSocketWillSendHandshakeRequestEvent, sessionId?: string],
     /**
      * Fired upon WebTransport creation.
      */
-    "Network.webTransportCreated"(params: Protocol.Network.WebTransportCreatedEvent): void;
+    "Network.webTransportCreated": [params: Protocol.Network.WebTransportCreatedEvent, sessionId?: string],
     /**
      * Fired when WebTransport handshake is finished.
      */
-    "Network.webTransportConnectionEstablished"(params: Protocol.Network.WebTransportConnectionEstablishedEvent): void;
+    "Network.webTransportConnectionEstablished": [params: Protocol.Network.WebTransportConnectionEstablishedEvent, sessionId?: string],
     /**
      * Fired when WebTransport is disposed.
      */
-    "Network.webTransportClosed"(params: Protocol.Network.WebTransportClosedEvent): void;
+    "Network.webTransportClosed": [params: Protocol.Network.WebTransportClosedEvent, sessionId?: string],
     /**
      * Fired when additional information about a requestWillBeSent event is available from the
      * network stack. Not every requestWillBeSent event will have an additional
      * requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
      * or requestWillBeSentExtraInfo will be fired first for the same request.
      */
-    "Network.requestWillBeSentExtraInfo"(params: Protocol.Network.RequestWillBeSentExtraInfoEvent): void;
+    "Network.requestWillBeSentExtraInfo": [params: Protocol.Network.RequestWillBeSentExtraInfoEvent, sessionId?: string],
     /**
      * Fired when additional information about a responseReceived event is available from the network
      * stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
      * it, and responseReceivedExtraInfo may be fired before or after responseReceived.
      */
-    "Network.responseReceivedExtraInfo"(params: Protocol.Network.ResponseReceivedExtraInfoEvent): void;
+    "Network.responseReceivedExtraInfo": [params: Protocol.Network.ResponseReceivedExtraInfoEvent, sessionId?: string],
     /**
      * Fired exactly once for each Trust Token operation. Depending on
      * the type of the operation and whether the operation succeeded or
      * failed, the event is fired before the corresponding request was sent
      * or after the response was received.
      */
-    "Network.trustTokenOperationDone"(params: Protocol.Network.TrustTokenOperationDoneEvent): void;
+    "Network.trustTokenOperationDone": [params: Protocol.Network.TrustTokenOperationDoneEvent, sessionId?: string],
     /**
      * Fired once when parsing the .wbn file has succeeded.
      * The event contains the information about the web bundle contents.
      */
-    "Network.subresourceWebBundleMetadataReceived"(params: Protocol.Network.SubresourceWebBundleMetadataReceivedEvent): void;
+    "Network.subresourceWebBundleMetadataReceived": [params: Protocol.Network.SubresourceWebBundleMetadataReceivedEvent, sessionId?: string],
     /**
      * Fired once when parsing the .wbn file has failed.
      */
-    "Network.subresourceWebBundleMetadataError"(params: Protocol.Network.SubresourceWebBundleMetadataErrorEvent): void;
+    "Network.subresourceWebBundleMetadataError": [params: Protocol.Network.SubresourceWebBundleMetadataErrorEvent, sessionId?: string],
     /**
      * Fired when handling requests for resources within a .wbn file.
      * Note: this will only be fired for resources that are requested by the webpage.
      */
-    "Network.subresourceWebBundleInnerResponseParsed"(params: Protocol.Network.SubresourceWebBundleInnerResponseParsedEvent): void;
+    "Network.subresourceWebBundleInnerResponseParsed": [params: Protocol.Network.SubresourceWebBundleInnerResponseParsedEvent, sessionId?: string],
     /**
      * Fired when request for resources within a .wbn file failed.
      */
-    "Network.subresourceWebBundleInnerResponseError"(params: Protocol.Network.SubresourceWebBundleInnerResponseErrorEvent): void;
+    "Network.subresourceWebBundleInnerResponseError": [params: Protocol.Network.SubresourceWebBundleInnerResponseErrorEvent, sessionId?: string],
     /**
      * Is sent whenever a new report is added.
      * And after 'enableReportingApi' for all existing reports.
      */
-    "Network.reportingApiReportAdded"(params: Protocol.Network.ReportingApiReportAddedEvent): void;
-    "Network.reportingApiReportUpdated"(params: Protocol.Network.ReportingApiReportUpdatedEvent): void;
-    "Network.reportingApiEndpointsChangedForOrigin"(params: Protocol.Network.ReportingApiEndpointsChangedForOriginEvent): void;
+    "Network.reportingApiReportAdded": [params: Protocol.Network.ReportingApiReportAddedEvent, sessionId?: string],
+    "Network.reportingApiReportUpdated": [params: Protocol.Network.ReportingApiReportUpdatedEvent, sessionId?: string],
+    "Network.reportingApiEndpointsChangedForOrigin": [params: Protocol.Network.ReportingApiEndpointsChangedForOriginEvent, sessionId?: string],
     /**
      * Fired when the node should be inspected. This happens after call to `setInspectMode` or when
      * user manually inspects an element.
      */
-    "Overlay.inspectNodeRequested"(params: Protocol.Overlay.InspectNodeRequestedEvent): void;
+    "Overlay.inspectNodeRequested": [params: Protocol.Overlay.InspectNodeRequestedEvent, sessionId?: string],
     /**
      * Fired when the node should be highlighted. This happens after call to `setInspectMode`.
      */
-    "Overlay.nodeHighlightRequested"(params: Protocol.Overlay.NodeHighlightRequestedEvent): void;
+    "Overlay.nodeHighlightRequested": [params: Protocol.Overlay.NodeHighlightRequestedEvent, sessionId?: string],
     /**
      * Fired when user asks to capture screenshot of some area on the page.
      */
-    "Overlay.screenshotRequested"(params: Protocol.Overlay.ScreenshotRequestedEvent): void;
+    "Overlay.screenshotRequested": [params: Protocol.Overlay.ScreenshotRequestedEvent, sessionId?: string],
     /**
      * Fired when user cancels the inspect mode.
      */
-    "Overlay.inspectModeCanceled"(): void;
-    "Page.domContentEventFired"(params: Protocol.Page.DomContentEventFiredEvent): void;
+    "Overlay.inspectModeCanceled": [params: Record<never, never>, sessionId?: string],
+    "Page.domContentEventFired": [params: Protocol.Page.DomContentEventFiredEvent, sessionId?: string],
     /**
      * Emitted only when `page.interceptFileChooser` is enabled.
      */
-    "Page.fileChooserOpened"(params: Protocol.Page.FileChooserOpenedEvent): void;
+    "Page.fileChooserOpened": [params: Protocol.Page.FileChooserOpenedEvent, sessionId?: string],
     /**
      * Fired when frame has been attached to its parent.
      */
-    "Page.frameAttached"(params: Protocol.Page.FrameAttachedEvent): void;
+    "Page.frameAttached": [params: Protocol.Page.FrameAttachedEvent, sessionId?: string],
     /**
      * Fired when frame no longer has a scheduled navigation.
      */
-    "Page.frameClearedScheduledNavigation"(params: Protocol.Page.FrameClearedScheduledNavigationEvent): void;
+    "Page.frameClearedScheduledNavigation": [params: Protocol.Page.FrameClearedScheduledNavigationEvent, sessionId?: string],
     /**
      * Fired when frame has been detached from its parent.
      */
-    "Page.frameDetached"(params: Protocol.Page.FrameDetachedEvent): void;
+    "Page.frameDetached": [params: Protocol.Page.FrameDetachedEvent, sessionId?: string],
     /**
      * Fired once navigation of the frame has completed. Frame is now associated with the new loader.
      */
-    "Page.frameNavigated"(params: Protocol.Page.FrameNavigatedEvent): void;
+    "Page.frameNavigated": [params: Protocol.Page.FrameNavigatedEvent, sessionId?: string],
     /**
      * Fired when opening document to write to.
      */
-    "Page.documentOpened"(params: Protocol.Page.DocumentOpenedEvent): void;
-    "Page.frameResized"(): void;
+    "Page.documentOpened": [params: Protocol.Page.DocumentOpenedEvent, sessionId?: string],
+    "Page.frameResized": [params: Record<never, never>, sessionId?: string],
     /**
      * Fired when a renderer-initiated navigation is requested.
      * Navigation may still be cancelled after the event is issued.
      */
-    "Page.frameRequestedNavigation"(params: Protocol.Page.FrameRequestedNavigationEvent): void;
+    "Page.frameRequestedNavigation": [params: Protocol.Page.FrameRequestedNavigationEvent, sessionId?: string],
     /**
      * Fired when frame schedules a potential navigation.
      */
-    "Page.frameScheduledNavigation"(params: Protocol.Page.FrameScheduledNavigationEvent): void;
+    "Page.frameScheduledNavigation": [params: Protocol.Page.FrameScheduledNavigationEvent, sessionId?: string],
     /**
      * Fired when frame has started loading.
      */
-    "Page.frameStartedLoading"(params: Protocol.Page.FrameStartedLoadingEvent): void;
+    "Page.frameStartedLoading": [params: Protocol.Page.FrameStartedLoadingEvent, sessionId?: string],
     /**
      * Fired when frame has stopped loading.
      */
-    "Page.frameStoppedLoading"(params: Protocol.Page.FrameStoppedLoadingEvent): void;
+    "Page.frameStoppedLoading": [params: Protocol.Page.FrameStoppedLoadingEvent, sessionId?: string],
     /**
      * Fired when page is about to start a download.
      * Deprecated. Use Browser.downloadWillBegin instead.
      */
-    "Page.downloadWillBegin"(params: Protocol.Page.DownloadWillBeginEvent): void;
+    "Page.downloadWillBegin": [params: Protocol.Page.DownloadWillBeginEvent, sessionId?: string],
     /**
      * Fired when download makes progress. Last call has |done| == true.
      * Deprecated. Use Browser.downloadProgress instead.
      */
-    "Page.downloadProgress"(params: Protocol.Page.DownloadProgressEvent): void;
+    "Page.downloadProgress": [params: Protocol.Page.DownloadProgressEvent, sessionId?: string],
     /**
      * Fired when interstitial page was hidden
      */
-    "Page.interstitialHidden"(): void;
+    "Page.interstitialHidden": [params: Record<never, never>, sessionId?: string],
     /**
      * Fired when interstitial page was shown
      */
-    "Page.interstitialShown"(): void;
+    "Page.interstitialShown": [params: Record<never, never>, sessionId?: string],
     /**
      * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
      * closed.
      */
-    "Page.javascriptDialogClosed"(params: Protocol.Page.JavascriptDialogClosedEvent): void;
+    "Page.javascriptDialogClosed": [params: Protocol.Page.JavascriptDialogClosedEvent, sessionId?: string],
     /**
      * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
      * open.
      */
-    "Page.javascriptDialogOpening"(params: Protocol.Page.JavascriptDialogOpeningEvent): void;
+    "Page.javascriptDialogOpening": [params: Protocol.Page.JavascriptDialogOpeningEvent, sessionId?: string],
     /**
      * Fired for top level page lifecycle events such as navigation, load, paint, etc.
      */
-    "Page.lifecycleEvent"(params: Protocol.Page.LifecycleEventEvent): void;
+    "Page.lifecycleEvent": [params: Protocol.Page.LifecycleEventEvent, sessionId?: string],
     /**
      * Fired for failed bfcache history navigations if BackForwardCache feature is enabled. Do
      * not assume any ordering with the Page.frameNavigated event. This event is fired only for
      * main-frame history navigation where the document changes (non-same-document navigations),
      * when bfcache navigation fails.
      */
-    "Page.backForwardCacheNotUsed"(params: Protocol.Page.BackForwardCacheNotUsedEvent): void;
-    "Page.loadEventFired"(params: Protocol.Page.LoadEventFiredEvent): void;
+    "Page.backForwardCacheNotUsed": [params: Protocol.Page.BackForwardCacheNotUsedEvent, sessionId?: string],
+    "Page.loadEventFired": [params: Protocol.Page.LoadEventFiredEvent, sessionId?: string],
     /**
      * Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation.
      */
-    "Page.navigatedWithinDocument"(params: Protocol.Page.NavigatedWithinDocumentEvent): void;
+    "Page.navigatedWithinDocument": [params: Protocol.Page.NavigatedWithinDocumentEvent, sessionId?: string],
     /**
      * Compressed image data requested by the `startScreencast`.
      */
-    "Page.screencastFrame"(params: Protocol.Page.ScreencastFrameEvent): void;
+    "Page.screencastFrame": [params: Protocol.Page.ScreencastFrameEvent, sessionId?: string],
     /**
      * Fired when the page with currently enabled screencast was shown or hidden `.
      */
-    "Page.screencastVisibilityChanged"(params: Protocol.Page.ScreencastVisibilityChangedEvent): void;
+    "Page.screencastVisibilityChanged": [params: Protocol.Page.ScreencastVisibilityChangedEvent, sessionId?: string],
     /**
      * Fired when a new window is going to be opened, via window.open(), link click, form submission,
      * etc.
      */
-    "Page.windowOpen"(params: Protocol.Page.WindowOpenEvent): void;
+    "Page.windowOpen": [params: Protocol.Page.WindowOpenEvent, sessionId?: string],
     /**
      * Issued for every compilation cache generated. Is only available
      * if Page.setGenerateCompilationCache is enabled.
      */
-    "Page.compilationCacheProduced"(params: Protocol.Page.CompilationCacheProducedEvent): void;
+    "Page.compilationCacheProduced": [params: Protocol.Page.CompilationCacheProducedEvent, sessionId?: string],
     /**
      * Current values of the metrics.
      */
-    "Performance.metrics"(params: Protocol.Performance.MetricsEvent): void;
+    "Performance.metrics": [params: Protocol.Performance.MetricsEvent, sessionId?: string],
     /**
      * Sent when a performance timeline event is added. See reportPerformanceTimeline method.
      */
-    "PerformanceTimeline.timelineEventAdded"(params: Protocol.PerformanceTimeline.TimelineEventAddedEvent): void;
+    "PerformanceTimeline.timelineEventAdded": [params: Protocol.PerformanceTimeline.TimelineEventAddedEvent, sessionId?: string],
     /**
      * There is a certificate error. If overriding certificate errors is enabled, then it should be
      * handled with the `handleCertificateError` command. Note: this event does not fire if the
      * certificate error has been allowed internally. Only one client per target should override
      * certificate errors at the same time.
      */
-    "Security.certificateError"(params: Protocol.Security.CertificateErrorEvent): void;
+    "Security.certificateError": [params: Protocol.Security.CertificateErrorEvent, sessionId?: string],
     /**
      * The security state of the page changed.
      */
-    "Security.visibleSecurityStateChanged"(params: Protocol.Security.VisibleSecurityStateChangedEvent): void;
+    "Security.visibleSecurityStateChanged": [params: Protocol.Security.VisibleSecurityStateChangedEvent, sessionId?: string],
     /**
      * The security state of the page changed. No longer being sent.
      */
-    "Security.securityStateChanged"(params: Protocol.Security.SecurityStateChangedEvent): void;
-    "ServiceWorker.workerErrorReported"(params: Protocol.ServiceWorker.WorkerErrorReportedEvent): void;
-    "ServiceWorker.workerRegistrationUpdated"(params: Protocol.ServiceWorker.WorkerRegistrationUpdatedEvent): void;
-    "ServiceWorker.workerVersionUpdated"(params: Protocol.ServiceWorker.WorkerVersionUpdatedEvent): void;
+    "Security.securityStateChanged": [params: Protocol.Security.SecurityStateChangedEvent, sessionId?: string],
+    "ServiceWorker.workerErrorReported": [params: Protocol.ServiceWorker.WorkerErrorReportedEvent, sessionId?: string],
+    "ServiceWorker.workerRegistrationUpdated": [params: Protocol.ServiceWorker.WorkerRegistrationUpdatedEvent, sessionId?: string],
+    "ServiceWorker.workerVersionUpdated": [params: Protocol.ServiceWorker.WorkerVersionUpdatedEvent, sessionId?: string],
     /**
      * A cache's contents have been modified.
      */
-    "Storage.cacheStorageContentUpdated"(params: Protocol.Storage.CacheStorageContentUpdatedEvent): void;
+    "Storage.cacheStorageContentUpdated": [params: Protocol.Storage.CacheStorageContentUpdatedEvent, sessionId?: string],
     /**
      * A cache has been added/deleted.
      */
-    "Storage.cacheStorageListUpdated"(params: Protocol.Storage.CacheStorageListUpdatedEvent): void;
+    "Storage.cacheStorageListUpdated": [params: Protocol.Storage.CacheStorageListUpdatedEvent, sessionId?: string],
     /**
      * The origin's IndexedDB object store has been modified.
      */
-    "Storage.indexedDBContentUpdated"(params: Protocol.Storage.IndexedDBContentUpdatedEvent): void;
+    "Storage.indexedDBContentUpdated": [params: Protocol.Storage.IndexedDBContentUpdatedEvent, sessionId?: string],
     /**
      * The origin's IndexedDB database list has been modified.
      */
-    "Storage.indexedDBListUpdated"(params: Protocol.Storage.IndexedDBListUpdatedEvent): void;
+    "Storage.indexedDBListUpdated": [params: Protocol.Storage.IndexedDBListUpdatedEvent, sessionId?: string],
     /**
      * One of the interest groups was accessed by the associated page.
      */
-    "Storage.interestGroupAccessed"(params: Protocol.Storage.InterestGroupAccessedEvent): void;
+    "Storage.interestGroupAccessed": [params: Protocol.Storage.InterestGroupAccessedEvent, sessionId?: string],
     /**
      * Issued when attached to target because of auto-attach or `attachToTarget` command.
      */
-    "Target.attachedToTarget"(params: Protocol.Target.AttachedToTargetEvent): void;
+    "Target.attachedToTarget": [params: Protocol.Target.AttachedToTargetEvent, sessionId?: string],
     /**
      * Issued when detached from target for any reason (including `detachFromTarget` command). Can be
      * issued multiple times per target if multiple sessions have been attached to it.
      */
-    "Target.detachedFromTarget"(params: Protocol.Target.DetachedFromTargetEvent): void;
+    "Target.detachedFromTarget": [params: Protocol.Target.DetachedFromTargetEvent, sessionId?: string],
     /**
      * Notifies about a new protocol message received from the session (as reported in
      * `attachedToTarget` event).
      */
-    "Target.receivedMessageFromTarget"(params: Protocol.Target.ReceivedMessageFromTargetEvent): void;
+    "Target.receivedMessageFromTarget": [params: Protocol.Target.ReceivedMessageFromTargetEvent, sessionId?: string],
     /**
      * Issued when a possible inspection target is created.
      */
-    "Target.targetCreated"(params: Protocol.Target.TargetCreatedEvent): void;
+    "Target.targetCreated": [params: Protocol.Target.TargetCreatedEvent, sessionId?: string],
     /**
      * Issued when a target is destroyed.
      */
-    "Target.targetDestroyed"(params: Protocol.Target.TargetDestroyedEvent): void;
+    "Target.targetDestroyed": [params: Protocol.Target.TargetDestroyedEvent, sessionId?: string],
     /**
      * Issued when a target has crashed.
      */
-    "Target.targetCrashed"(params: Protocol.Target.TargetCrashedEvent): void;
+    "Target.targetCrashed": [params: Protocol.Target.TargetCrashedEvent, sessionId?: string],
     /**
      * Issued when some information about a target has changed. This only happens between
      * `targetCreated` and `targetDestroyed`.
      */
-    "Target.targetInfoChanged"(params: Protocol.Target.TargetInfoChangedEvent): void;
+    "Target.targetInfoChanged": [params: Protocol.Target.TargetInfoChangedEvent, sessionId?: string],
     /**
      * Informs that port was successfully bound and got a specified connection id.
      */
-    "Tethering.accepted"(params: Protocol.Tethering.AcceptedEvent): void;
-    "Tracing.bufferUsage"(params: Protocol.Tracing.BufferUsageEvent): void;
+    "Tethering.accepted": [params: Protocol.Tethering.AcceptedEvent, sessionId?: string],
+    "Tracing.bufferUsage": [params: Protocol.Tracing.BufferUsageEvent, sessionId?: string],
     /**
      * Contains an bucket of collected trace events. When tracing is stopped collected events will be
      * send as a sequence of dataCollected events followed by tracingComplete event.
      */
-    "Tracing.dataCollected"(params: Protocol.Tracing.DataCollectedEvent): void;
+    "Tracing.dataCollected": [params: Protocol.Tracing.DataCollectedEvent, sessionId?: string],
     /**
      * Signals that tracing is stopped and there is no trace buffers pending flush, all data were
      * delivered via dataCollected events.
      */
-    "Tracing.tracingComplete"(params: Protocol.Tracing.TracingCompleteEvent): void;
+    "Tracing.tracingComplete": [params: Protocol.Tracing.TracingCompleteEvent, sessionId?: string],
     /**
      * Issued when the domain is enabled and the request URL matches the
      * specified filter. The request is paused until the client responds
@@ -523,183 +524,183 @@ export interface ProtocolEventsApi {
      * and responseStatusCode -- the request is at the response stage if either
      * of these fields is present and in the request stage otherwise.
      */
-    "Fetch.requestPaused"(params: Protocol.Fetch.RequestPausedEvent): void;
+    "Fetch.requestPaused": [params: Protocol.Fetch.RequestPausedEvent, sessionId?: string],
     /**
      * Issued when the domain is enabled with handleAuthRequests set to true.
      * The request is paused until client responds with continueWithAuth.
      */
-    "Fetch.authRequired"(params: Protocol.Fetch.AuthRequiredEvent): void;
+    "Fetch.authRequired": [params: Protocol.Fetch.AuthRequiredEvent, sessionId?: string],
     /**
      * Notifies that a new BaseAudioContext has been created.
      */
-    "WebAudio.contextCreated"(params: Protocol.WebAudio.ContextCreatedEvent): void;
+    "WebAudio.contextCreated": [params: Protocol.WebAudio.ContextCreatedEvent, sessionId?: string],
     /**
      * Notifies that an existing BaseAudioContext will be destroyed.
      */
-    "WebAudio.contextWillBeDestroyed"(params: Protocol.WebAudio.ContextWillBeDestroyedEvent): void;
+    "WebAudio.contextWillBeDestroyed": [params: Protocol.WebAudio.ContextWillBeDestroyedEvent, sessionId?: string],
     /**
      * Notifies that existing BaseAudioContext has changed some properties (id stays the same)..
      */
-    "WebAudio.contextChanged"(params: Protocol.WebAudio.ContextChangedEvent): void;
+    "WebAudio.contextChanged": [params: Protocol.WebAudio.ContextChangedEvent, sessionId?: string],
     /**
      * Notifies that the construction of an AudioListener has finished.
      */
-    "WebAudio.audioListenerCreated"(params: Protocol.WebAudio.AudioListenerCreatedEvent): void;
+    "WebAudio.audioListenerCreated": [params: Protocol.WebAudio.AudioListenerCreatedEvent, sessionId?: string],
     /**
      * Notifies that a new AudioListener has been created.
      */
-    "WebAudio.audioListenerWillBeDestroyed"(params: Protocol.WebAudio.AudioListenerWillBeDestroyedEvent): void;
+    "WebAudio.audioListenerWillBeDestroyed": [params: Protocol.WebAudio.AudioListenerWillBeDestroyedEvent, sessionId?: string],
     /**
      * Notifies that a new AudioNode has been created.
      */
-    "WebAudio.audioNodeCreated"(params: Protocol.WebAudio.AudioNodeCreatedEvent): void;
+    "WebAudio.audioNodeCreated": [params: Protocol.WebAudio.AudioNodeCreatedEvent, sessionId?: string],
     /**
      * Notifies that an existing AudioNode has been destroyed.
      */
-    "WebAudio.audioNodeWillBeDestroyed"(params: Protocol.WebAudio.AudioNodeWillBeDestroyedEvent): void;
+    "WebAudio.audioNodeWillBeDestroyed": [params: Protocol.WebAudio.AudioNodeWillBeDestroyedEvent, sessionId?: string],
     /**
      * Notifies that a new AudioParam has been created.
      */
-    "WebAudio.audioParamCreated"(params: Protocol.WebAudio.AudioParamCreatedEvent): void;
+    "WebAudio.audioParamCreated": [params: Protocol.WebAudio.AudioParamCreatedEvent, sessionId?: string],
     /**
      * Notifies that an existing AudioParam has been destroyed.
      */
-    "WebAudio.audioParamWillBeDestroyed"(params: Protocol.WebAudio.AudioParamWillBeDestroyedEvent): void;
+    "WebAudio.audioParamWillBeDestroyed": [params: Protocol.WebAudio.AudioParamWillBeDestroyedEvent, sessionId?: string],
     /**
      * Notifies that two AudioNodes are connected.
      */
-    "WebAudio.nodesConnected"(params: Protocol.WebAudio.NodesConnectedEvent): void;
+    "WebAudio.nodesConnected": [params: Protocol.WebAudio.NodesConnectedEvent, sessionId?: string],
     /**
      * Notifies that AudioNodes are disconnected. The destination can be null, and it means all the outgoing connections from the source are disconnected.
      */
-    "WebAudio.nodesDisconnected"(params: Protocol.WebAudio.NodesDisconnectedEvent): void;
+    "WebAudio.nodesDisconnected": [params: Protocol.WebAudio.NodesDisconnectedEvent, sessionId?: string],
     /**
      * Notifies that an AudioNode is connected to an AudioParam.
      */
-    "WebAudio.nodeParamConnected"(params: Protocol.WebAudio.NodeParamConnectedEvent): void;
+    "WebAudio.nodeParamConnected": [params: Protocol.WebAudio.NodeParamConnectedEvent, sessionId?: string],
     /**
      * Notifies that an AudioNode is disconnected to an AudioParam.
      */
-    "WebAudio.nodeParamDisconnected"(params: Protocol.WebAudio.NodeParamDisconnectedEvent): void;
+    "WebAudio.nodeParamDisconnected": [params: Protocol.WebAudio.NodeParamDisconnectedEvent, sessionId?: string],
     /**
      * This can be called multiple times, and can be used to set / override /
      * remove player properties. A null propValue indicates removal.
      */
-    "Media.playerPropertiesChanged"(params: Protocol.Media.PlayerPropertiesChangedEvent): void;
+    "Media.playerPropertiesChanged": [params: Protocol.Media.PlayerPropertiesChangedEvent, sessionId?: string],
     /**
      * Send events as a list, allowing them to be batched on the browser for less
      * congestion. If batched, events must ALWAYS be in chronological order.
      */
-    "Media.playerEventsAdded"(params: Protocol.Media.PlayerEventsAddedEvent): void;
+    "Media.playerEventsAdded": [params: Protocol.Media.PlayerEventsAddedEvent, sessionId?: string],
     /**
      * Send a list of any messages that need to be delivered.
      */
-    "Media.playerMessagesLogged"(params: Protocol.Media.PlayerMessagesLoggedEvent): void;
+    "Media.playerMessagesLogged": [params: Protocol.Media.PlayerMessagesLoggedEvent, sessionId?: string],
     /**
      * Send a list of any errors that need to be delivered.
      */
-    "Media.playerErrorsRaised"(params: Protocol.Media.PlayerErrorsRaisedEvent): void;
+    "Media.playerErrorsRaised": [params: Protocol.Media.PlayerErrorsRaisedEvent, sessionId?: string],
     /**
      * Called whenever a player is created, or when a new agent joins and receives
      * a list of active players. If an agent is restored, it will receive the full
      * list of player ids and all events again.
      */
-    "Media.playersCreated"(params: Protocol.Media.PlayersCreatedEvent): void;
+    "Media.playersCreated": [params: Protocol.Media.PlayersCreatedEvent, sessionId?: string],
     /**
      * Issued when new console message is added.
      */
-    "Console.messageAdded"(params: Protocol.Console.MessageAddedEvent): void;
+    "Console.messageAdded": [params: Protocol.Console.MessageAddedEvent, sessionId?: string],
     /**
      * Fired when breakpoint is resolved to an actual script and location.
      */
-    "Debugger.breakpointResolved"(params: Protocol.Debugger.BreakpointResolvedEvent): void;
+    "Debugger.breakpointResolved": [params: Protocol.Debugger.BreakpointResolvedEvent, sessionId?: string],
     /**
      * Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria.
      */
-    "Debugger.paused"(params: Protocol.Debugger.PausedEvent): void;
+    "Debugger.paused": [params: Protocol.Debugger.PausedEvent, sessionId?: string],
     /**
      * Fired when the virtual machine resumed execution.
      */
-    "Debugger.resumed"(): void;
+    "Debugger.resumed": [params: Record<never, never>, sessionId?: string],
     /**
      * Fired when virtual machine fails to parse the script.
      */
-    "Debugger.scriptFailedToParse"(params: Protocol.Debugger.ScriptFailedToParseEvent): void;
+    "Debugger.scriptFailedToParse": [params: Protocol.Debugger.ScriptFailedToParseEvent, sessionId?: string],
     /**
      * Fired when virtual machine parses script. This event is also fired for all known and uncollected
      * scripts upon enabling debugger.
      */
-    "Debugger.scriptParsed"(params: Protocol.Debugger.ScriptParsedEvent): void;
-    "HeapProfiler.addHeapSnapshotChunk"(params: Protocol.HeapProfiler.AddHeapSnapshotChunkEvent): void;
+    "Debugger.scriptParsed": [params: Protocol.Debugger.ScriptParsedEvent, sessionId?: string],
+    "HeapProfiler.addHeapSnapshotChunk": [params: Protocol.HeapProfiler.AddHeapSnapshotChunkEvent, sessionId?: string],
     /**
      * If heap objects tracking has been started then backend may send update for one or more fragments
      */
-    "HeapProfiler.heapStatsUpdate"(params: Protocol.HeapProfiler.HeapStatsUpdateEvent): void;
+    "HeapProfiler.heapStatsUpdate": [params: Protocol.HeapProfiler.HeapStatsUpdateEvent, sessionId?: string],
     /**
      * If heap objects tracking has been started then backend regularly sends a current value for last
      * seen object id and corresponding timestamp. If the were changes in the heap since last event
      * then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event.
      */
-    "HeapProfiler.lastSeenObjectId"(params: Protocol.HeapProfiler.LastSeenObjectIdEvent): void;
-    "HeapProfiler.reportHeapSnapshotProgress"(params: Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent): void;
-    "HeapProfiler.resetProfiles"(): void;
-    "Profiler.consoleProfileFinished"(params: Protocol.Profiler.ConsoleProfileFinishedEvent): void;
+    "HeapProfiler.lastSeenObjectId": [params: Protocol.HeapProfiler.LastSeenObjectIdEvent, sessionId?: string],
+    "HeapProfiler.reportHeapSnapshotProgress": [params: Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent, sessionId?: string],
+    "HeapProfiler.resetProfiles": [params: Record<never, never>, sessionId?: string],
+    "Profiler.consoleProfileFinished": [params: Protocol.Profiler.ConsoleProfileFinishedEvent, sessionId?: string],
     /**
      * Sent when new profile recording is started using console.profile() call.
      */
-    "Profiler.consoleProfileStarted"(params: Protocol.Profiler.ConsoleProfileStartedEvent): void;
+    "Profiler.consoleProfileStarted": [params: Protocol.Profiler.ConsoleProfileStartedEvent, sessionId?: string],
     /**
      * Reports coverage delta since the last poll (either from an event like this, or from
      * `takePreciseCoverage` for the current isolate. May only be sent if precise code
      * coverage has been started. This event can be trigged by the embedder to, for example,
      * trigger collection of coverage data immediately at a certain point in time.
      */
-    "Profiler.preciseCoverageDeltaUpdate"(params: Protocol.Profiler.PreciseCoverageDeltaUpdateEvent): void;
+    "Profiler.preciseCoverageDeltaUpdate": [params: Protocol.Profiler.PreciseCoverageDeltaUpdateEvent, sessionId?: string],
     /**
      * Notification is issued every time when binding is called.
      */
-    "Runtime.bindingCalled"(params: Protocol.Runtime.BindingCalledEvent): void;
+    "Runtime.bindingCalled": [params: Protocol.Runtime.BindingCalledEvent, sessionId?: string],
     /**
      * Issued when console API was called.
      */
-    "Runtime.consoleAPICalled"(params: Protocol.Runtime.ConsoleAPICalledEvent): void;
+    "Runtime.consoleAPICalled": [params: Protocol.Runtime.ConsoleAPICalledEvent, sessionId?: string],
     /**
      * Issued when unhandled exception was revoked.
      */
-    "Runtime.exceptionRevoked"(params: Protocol.Runtime.ExceptionRevokedEvent): void;
+    "Runtime.exceptionRevoked": [params: Protocol.Runtime.ExceptionRevokedEvent, sessionId?: string],
     /**
      * Issued when exception was thrown and unhandled.
      */
-    "Runtime.exceptionThrown"(params: Protocol.Runtime.ExceptionThrownEvent): void;
+    "Runtime.exceptionThrown": [params: Protocol.Runtime.ExceptionThrownEvent, sessionId?: string],
     /**
      * Issued when new execution context is created.
      */
-    "Runtime.executionContextCreated"(params: Protocol.Runtime.ExecutionContextCreatedEvent): void;
+    "Runtime.executionContextCreated": [params: Protocol.Runtime.ExecutionContextCreatedEvent, sessionId?: string],
     /**
      * Issued when execution context is destroyed.
      */
-    "Runtime.executionContextDestroyed"(params: Protocol.Runtime.ExecutionContextDestroyedEvent): void;
+    "Runtime.executionContextDestroyed": [params: Protocol.Runtime.ExecutionContextDestroyedEvent, sessionId?: string],
     /**
      * Issued when all executionContexts were cleared in browser
      */
-    "Runtime.executionContextsCleared"(): void;
+    "Runtime.executionContextsCleared": [params: Record<never, never>, sessionId?: string],
     /**
      * Issued when object should be inspected (for example, as a result of inspect() command line API
      * call).
      */
-    "Runtime.inspectRequested"(params: Protocol.Runtime.InspectRequestedEvent): void;
+    "Runtime.inspectRequested": [params: Protocol.Runtime.InspectRequestedEvent, sessionId?: string],
     /**
      * Catch all events
      */
-    event(event: ProtocolEventParam),
+    event: [params: ProtocolEventParam],
     /**
      * Message queue is empty
      */
-    ready(): void,
+    ready: [void],
     /**
      * websocket connection closed
      */
-    disconnect(): void,
+    disconnect: [void],
 }
 
 export type ProtocolEventsName = Exclude<keyof ProtocolEventsApi, "event" | "ready" >;
