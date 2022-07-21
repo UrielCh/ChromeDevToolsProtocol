@@ -1,14 +1,8 @@
-# chrome-CDP
-
-[Chrome DevTools Protocol] is a generic protocol to debug / control web browser.
-
-
-```ts
-import { Devtools } from "@u4/chrome-remote-interface";
+import { Devtools } from "..";
 /**
  * Sample API usage
  * 
- * The following snippet loads https://github.com and dumps every request made for 3 sec:
+ * The following snippet loads https://github.com and dumps every request made:
  */
 async function test() {
   const devtools = new Devtools();
@@ -33,11 +27,4 @@ async function test() {
   }
 }
 
-void test()
-```
-
-## references
-
-- originaly forcked form [cyrus-and chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface)
-- devtools-protocol [reference](https://chromedevtools.github.io/devtools-protocol/)
-- nice getting start doc [getting-started-with-cdp](https://github.com/aslushnikov/getting-started-with-cdp)
+void test();

@@ -5,6 +5,7 @@
 // this file will be removed, so do not fix it
 // Copyright (c) 2021 Andrea Cardaci <cyrus.and@gmail.com>
 
+import ProtocolEventsApi from "../types/protocol-events";
 import { Chrome } from "./Chrome";
 import { Protocol } from "./Protocol";
 
@@ -75,7 +76,7 @@ function addCommand(
   decorate(handler, "command", command);
   (chrome as any)[commandName] =
     (chrome as any)[domainName][command.name] =
-      handler;
+    handler;
 }
 
 /**
@@ -120,30 +121,41 @@ function addType(
 
 export function prepare(object: Chrome, protocol: Protocol.ProtocolShape) {
   // assign the protocol and generate the shorthands
-  // object.protocol = protocol;
-  protocol.domains.forEach((domain) => {
+  for (const domain of protocol.domains) {
     const domainName = domain.domain;
-    (object as any)[domainName] = {};
+    const domainStore = {} as any;
+    (object as any)[domainName] = domainStore;
     // add commands
-    if (domain.commands) {
-      domain.commands.forEach((command) =>
-        addCommand(object, domainName, command)
-      );
-    }
+    for (const command of domain.commands || [])
+      addCommand(object, domainName, command);
     // add events
-    if (domain.events) {
-      domain.events.forEach((event) => addEvent(object, domainName, event));
-    }
+    for (const event of domain.events || [])
+      addEvent(object, domainName, event);
     // add types
-    if (domain.types) {
-      domain.types.forEach((type) => addType(object, domainName, type));
-    }
+    for (const type of domain.types || [])
+      addType(object, domainName, type);
     // add utility listener for each domain
-    (object as any)[domainName].on = (
+    domainStore.on = (
       eventName: string,
       handler: (arg: any) => void,
     ) => {
-      return (object as any)[domainName][eventName](handler);
+      object.on(`${domainName}.${eventName}` as keyof ProtocolEventsApi, handler);
+      return domainStore;
     };
-  });
+    domainStore.once = (
+      eventName: string,
+      handler: (arg: any) => void,
+    ) => {
+      object.once(`${domainName}.${eventName}` as keyof ProtocolEventsApi, handler);
+      return domainStore;
+    };
+    domainStore.off = (
+      eventName: string,
+      handler: (arg: any) => void,
+    ) => {
+      object.off(`${domainName}.${eventName}` as keyof ProtocolEventsApi, handler);
+      return domainStore;
+    };
+
+  }
 }
