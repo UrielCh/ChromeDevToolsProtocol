@@ -1,4 +1,4 @@
-import { Chrome as ChromeBase } from "./chrome";
+import { Chrome as ChromeBase } from "./Chrome";
 import ProtocolProxyApi from "../types/protocol-proxy-api";
 export type Chrome = ChromeBase & ProtocolProxyApi.ProtocolApi;
 

@@ -1,6 +1,6 @@
 import assert from "assert";
 import Devtools from "..";
-import { ProtocolError } from "../lib/chrome";
+import { ProtocolError } from "../lib/Chrome";
 import { devTools, sampleUrl } from "./common";
 
 describe("sending a command", () => {

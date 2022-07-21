@@ -5,7 +5,7 @@
 // this file will be removed, so do not fix it
 // Copyright (c) 2021 Andrea Cardaci <cyrus.and@gmail.com>
 
-import { Chrome } from "./chrome";
+import { Chrome } from "./Chrome";
 import { Protocol } from "./Protocol";
 
 function arrayToObject(parameters: { name: string }[]): any {
