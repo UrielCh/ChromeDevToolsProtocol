@@ -1,6 +1,6 @@
 {
   "name": "cdp-reverter",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Generate a working CDP script from ws connexion",
   "main": "index.js",
   "scripts": {
@@ -25,6 +25,6 @@
     "ws": "^8.8.1"
   },
   "bin": {
-    "chrome-devtools-proxy": "client.js"
+    "cdp-reverter": "client.js"
   }
 }

@@ -5,3 +5,4 @@ client/lib/*.d.ts
 client/lib/*.js
 client/lib/*.map
 */node_modules
+proxy/src/*.js

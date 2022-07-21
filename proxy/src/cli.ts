@@ -24,6 +24,8 @@ const protoRevert = new ProtoRevert({
 
 async function main() {
     await protoRevert.start();
+    console.log(`You can now connect your automation script to http://127.0.0.1:${source}`)
+    console.log(`Any incomming connextion will be foward to http://${destHost}:${destination}`)
     const rl = readline.createInterface({ input, output });
     rl.question("Press any Enter to terminate the session", () => {
         console.log(`Generating script... with ${prefix} prefix`);
@@ -33,3 +35,5 @@ async function main() {
         process.exit(0);
     });
 }
+
+void main();
