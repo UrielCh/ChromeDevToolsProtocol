@@ -2,7 +2,9 @@ import EventEmitter from "events";
 import WebSocket from "ws";
 import * as api from "./api";
 import { Protocol } from "./Protocol";
-import ProtocolEventsApi, { ProtocolEventsName } from "../types/protocol-events";
+import ProtocolEventsApi, {
+  ProtocolEventsName,
+} from "../types/protocol-events";
 import { ProtocolError } from "./ProtocolError";
 
 /**
@@ -25,16 +27,26 @@ export class Chrome extends EventEmitter {
   #nextCommandId = 1;
   #ws?: WebSocket;
 
-  constructor(private webSocketDebuggerUrl: string, private protocol: Protocol.ProtocolShape) {
+  constructor(
+    private webSocketDebuggerUrl: string,
+    private protocol: Protocol.ProtocolShape,
+  ) {
     super();
     // update the connection parameters using the debugging URL
     // fetch the protocol and prepare the API
-    if (!webSocketDebuggerUrl.startsWith("ws://") && !webSocketDebuggerUrl.startsWith("wss://"))
+    if (
+      !webSocketDebuggerUrl.startsWith("ws://") &&
+      !webSocketDebuggerUrl.startsWith("wss://")
+    ) {
       throw Error(`invalid Websoket url: "${webSocketDebuggerUrl}"`);
+    }
     api.prepare(this, this.protocol);
   }
 
-  on<K extends keyof ProtocolEventsApi>(name: K, callback: ProtocolEventsApi[K]): this {
+  on<K extends keyof ProtocolEventsApi>(
+    name: K,
+    callback: ProtocolEventsApi[K],
+  ): this {
     super.on(name, callback);
     return this;
   }
@@ -91,13 +103,14 @@ export class Chrome extends EventEmitter {
   public waitForAllEvents(...events: ProtocolEventsName[]) {
     return new Promise<void>((resolve) => {
       const eventSet = new Set<ProtocolEventsName>(events);
-      const onEvent = (param: { method: ProtocolEventsName, params: any }) => {
+      const onEvent = (param: { method: ProtocolEventsName; params: any }) => {
         const { method } = param;
-        if (eventSet.delete(method))
+        if (eventSet.delete(method)) {
           if (!eventSet.size) {
             this.off("event", onEvent);
             resolve();
           }
+        }
       };
       this.on("event", onEvent);
     });

@@ -1,7 +1,7 @@
 import { Devtools } from "..";
 /**
  * Sample API usage
- * 
+ *
  * The following snippet loads https://github.com and dumps every request made:
  */
 async function test() {
@@ -19,7 +19,7 @@ async function test() {
     await tab.Page.navigate({ url: "https://github.com" });
     await loadEventFired;
     console.log("loadEventFired");
-    await new Promise(r => setTimeout(r, 3000));
+    await new Promise((r) => setTimeout(r, 3000));
   } catch (e) {
     console.error(e);
   } finally {

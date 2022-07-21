@@ -76,7 +76,7 @@ function addCommand(
   decorate(handler, "command", command);
   (chrome as any)[commandName] =
     (chrome as any)[domainName][command.name] =
-    handler;
+      handler;
 }
 
 /**
@@ -126,36 +126,47 @@ export function prepare(object: Chrome, protocol: Protocol.ProtocolShape) {
     const domainStore = {} as any;
     (object as any)[domainName] = domainStore;
     // add commands
-    for (const command of domain.commands || [])
+    for (const command of domain.commands || []) {
       addCommand(object, domainName, command);
+    }
     // add events
-    for (const event of domain.events || [])
+    for (const event of domain.events || []) {
       addEvent(object, domainName, event);
+    }
     // add types
-    for (const type of domain.types || [])
+    for (const type of domain.types || []) {
       addType(object, domainName, type);
+    }
     // add utility listener for each domain
     domainStore.on = (
       eventName: string,
       handler: (arg: any) => void,
     ) => {
-      object.on(`${domainName}.${eventName}` as keyof ProtocolEventsApi, handler);
+      object.on(
+        `${domainName}.${eventName}` as keyof ProtocolEventsApi,
+        handler,
+      );
       return domainStore;
     };
     domainStore.once = (
       eventName: string,
       handler: (arg: any) => void,
     ) => {
-      object.once(`${domainName}.${eventName}` as keyof ProtocolEventsApi, handler);
+      object.once(
+        `${domainName}.${eventName}` as keyof ProtocolEventsApi,
+        handler,
+      );
       return domainStore;
     };
     domainStore.off = (
       eventName: string,
       handler: (arg: any) => void,
     ) => {
-      object.off(`${domainName}.${eventName}` as keyof ProtocolEventsApi, handler);
+      object.off(
+        `${domainName}.${eventName}` as keyof ProtocolEventsApi,
+        handler,
+      );
       return domainStore;
     };
-
   }
 }

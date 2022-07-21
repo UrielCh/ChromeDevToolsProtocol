@@ -5,7 +5,12 @@ import { Protocol } from "./Protocol";
 import { localDescriptor } from "./protocol1_3";
 import { Chrome as ChromeBase } from "./Chrome";
 import ProtocolProxyApi from "../types/protocol-proxy-api";
-import { DevToolVersion, DevToolTarget, DevtoolsCreateOptions, TargetType } from "./models";
+import {
+  DevtoolsCreateOptions,
+  DevToolTarget,
+  DevToolVersion,
+  TargetType,
+} from "./models";
 
 export type Chrome = ChromeBase & ProtocolProxyApi.ProtocolApi;
 
@@ -69,7 +74,7 @@ export class Devtools {
     if (!this.#opts.useHostName) {
       const u = new URL(url);
       if (!u.hostname.match(/^[0-9.]+$/)) {
-        const { address } = await lookup(u.hostname, {family: 4});
+        const { address } = await lookup(u.hostname, { family: 4 });
         u.hostname = address;
         url = u.toString();
       }
@@ -82,10 +87,11 @@ export class Devtools {
       return text;
     } catch (err) {
       if (err instanceof Error) {
-        if ("cause" in (err as Error && {cause: Error})) {
-          const cause = (err as Error && {cause: Error}).cause;
-          if (cause && (cause instanceof Error))
+        if ("cause" in (err as Error && { cause: Error })) {
+          const cause = (err as Error && { cause: Error }).cause;
+          if (cause && (cause instanceof Error)) {
             throw Error(`Getting ${url} failed: ${cause.message}`);
+          }
         }
         throw Error(`Getting ${url} failed: ${err.message}`);
       }
@@ -134,7 +140,8 @@ export class Devtools {
     try {
       text = await this.fetch(url);
       const version: DevToolVersion = JSON.parse(text);
-      version.connect = () => this.connectWebSoketUrl(version.webSocketDebuggerUrl);
+      version.connect = () =>
+        this.connectWebSoketUrl(version.webSocketDebuggerUrl);
       return version;
     } catch (e) {
       console.log(text);
@@ -180,7 +187,9 @@ export class Devtools {
     const text = await this.fetch(url);
     const tabs = JSON.parse(text) as DevToolTarget[];
     // add connect method
-    tabs.forEach((tab) => tab.connect = () => this.connectWebSoketUrl(tab.webSocketDebuggerUrl));
+    tabs.forEach((tab) =>
+      tab.connect = () => this.connectWebSoketUrl(tab.webSocketDebuggerUrl)
+    );
     return tabs;
   }
 

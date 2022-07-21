@@ -1,7 +1,7 @@
 import { Devtools } from "..";
 /**
  * Sample API usage
- * 
+ *
  * The following snippet loads https://github.com and dumps every request made:
  */
 async function test() {
