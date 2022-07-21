@@ -1,0 +1,7 @@
+client/index.d.ts
+client/index.js.map
+client/index.js
+client/lib/*.d.ts
+client/lib/*.js
+client/lib/*.map
+*/node_modules

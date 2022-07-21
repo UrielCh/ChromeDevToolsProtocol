@@ -1,0 +1,30 @@
+{
+  "name": "cdp-reverter",
+  "version": "1.0.0",
+  "description": "Generate a working CDP script from ws connexion",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chrome",
+    "reverse-engineer",
+    "proxy",
+    "debug",
+    "Chrome DevTools Protocol"
+  ],
+  "author": "Uriel Chemouni <uchemouni@gmail.com> (https://urielch.github.io/)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.0.6",
+    "@types/ws": "^8.5.3"
+  },
+  "dependencies": {
+    "commander": "^9.4.0",
+    "picocolors": "^1.0.0",
+    "ws": "^8.8.1"
+  },
+  "bin": {
+    "chrome-devtools-proxy": "client.js"
+  }
+}
