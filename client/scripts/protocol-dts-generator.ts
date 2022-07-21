@@ -1,10 +1,17 @@
-import * as fs from "fs";
-import { join, basename } from "path";
-import { Protocol as Proto } from "../lib/Protocol";
-import { localDescriptor } from "../lib/protocol1_3";
+import { ensureDirSync } from "https://deno.land/std@0.141.0/fs/ensure_dir.ts";
+import { basename } from "https://deno.land/std@0.126.0/node/path/posix.ts";
+import { Protocol as Proto } from "../lib/Protocol.ts";
+import { localDescriptor } from "../lib/protocol1_3.ts";
+import { join } from "https://deno.land/std@0.148.0/path/mod.ts";
+
+//import * as fs from "fs";
+//import { join, basename } from "path";
+//import { Protocol as Proto } from "../lib/Protocol";
+//import { localDescriptor } from "../lib/protocol1_3";
 
 //"" fot nodeJS ".d.ts" for deno
-const importExtantion = "";// .d.ts";
+// const importExtantion = "";// .d.ts";
+const importExtantion = ".d.ts";
 
 /**
  * forked from https://github.com/ChromeDevTools/devtools-protocol/blob/master/scripts/protocol-dts-generator.ts
@@ -545,8 +552,8 @@ const emitEvents = (moduleName: string, protocolModuleName: string, domains: Pro
 
 const flushEmitToFile = (path: string) => {
   console.log(`Writing to ${path}`);
-  fs.writeFileSync(path, emitStr, { encoding: "utf-8" });
-
+  // fs.writeFileSync(path, emitStr, { encoding: "utf-8" });
+  Deno.writeTextFileSync(path, emitStr);
   numIndents = 0;
   emitStr = "";
 };
@@ -557,11 +564,11 @@ const fixBaseName = (fn: string) => {
 
 // Main
 // substring windows only
-// const __dirname = new URL(".", import.meta.url).pathname.substring(1);
+const __dirname = new URL(".", import.meta.url).pathname.substring(1);
 
-console.log(__dirname);
 const typeDir = join(__dirname, "..", "types");
-fs.mkdirSync(typeDir, { recursive: true });
+// fs.mkdirSync(typeDir, { recursive: true });
+ensureDirSync(typeDir);
 const destProtocolFilePath = join(typeDir, "protocol.d.ts");
 const protocolModuleName = fixBaseName(basename(destProtocolFilePath, ".d.ts"));
 // console.log(`basename("${destProtocolFilePath}", ".d.ts"); = ${protocolModuleName}`)
