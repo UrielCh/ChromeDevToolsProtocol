@@ -2,27 +2,24 @@
   "name": "@u4/chrome-remote-interface",
   "author": "Uriel chemouni <uchemouni@gmail.com>",
   "license": "MIT",
-  "contributors": [
-    "Andrey Sidorov <sidoares@yandex.ru>",
-    "Andrea Cardaci <cyrus.and@gmail.com>",
-    "Greg Cochard <greg@gregcochard.com>"
-  ],
   "description": "Chrome Debugging Protocol interface",
   "keywords": [
     "chrome",
     "debug",
     "protocol",
     "remote",
-    "interface"
+    "interface",
+    "typescript",
+    "deno"
   ],
-  "homepage": "https://github.com/UrielCh/chrome-remote-interface",
+  "homepage": "https://github.com/UrielCh/ChromeDevToolsProtocol",
   "version": "0.3.2",
   "repository": {
     "type": "git",
-    "url": "git://github.com/UrielCh/chrome-remote-interface.git"
+    "url": "git://github.com/UrielCh/ChromeDevToolsProtocol.git"
   },
   "bugs": {
-    "url": "http://github.com/UrielCh/chrome-remote-interface/issues"
+    "url": "http://github.com/UrielCh/ChromeDevToolsProtocol/issues"
   },
   "engine-strict": {
     "node": ">=14"
@@ -37,14 +34,10 @@
     "lib",
     "types",
     "bin",
-    "index.*",
-    "chrome-remote-interface.js"
+    "index.d.ts",
+    "index.js"
   ],
-  "bin": {
-    "chrome-remote-interface": "bin/client.js"
-  },
   "main": "index.js",
-  "browser": "chrome-remote-interface.js",
   "devDependencies": {
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.0.4",
