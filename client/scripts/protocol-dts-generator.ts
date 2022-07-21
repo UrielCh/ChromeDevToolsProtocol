@@ -3,6 +3,9 @@ import { join, basename } from "path";
 import { Protocol as Proto } from "../lib/Protocol";
 import { localDescriptor } from "../lib/protocol1_3";
 
+//"" fot nodeJS ".d.ts" for deno
+const importExtantion = "";// .d.ts";
+
 /**
  * forked from https://github.com/ChromeDevTools/devtools-protocol/blob/master/scripts/protocol-dts-generator.ts
  */
@@ -330,7 +333,7 @@ const emitMapping = (
 ) => {
   moduleName = toTitleCase(moduleName);
   emitHeaderComments();
-  emitLine(`import Protocol from "./${protocolModuleName}";`);
+  emitLine(`import Protocol from "./${protocolModuleName}${importExtantion}";`);
   emitLine();
   emitDescription(
     "Mappings from protocol event and command names to the types required for them.",
@@ -436,7 +439,7 @@ const emitApi = (moduleName: string, protocolModuleName: string, domains: Proto.
   moduleName = toTitleCase(moduleName);
   emitLine("// deno-lint-ignore-file adjacent-overload-signatures");
   emitHeaderComments();
-  emitLine(`import Protocol from "./${protocolModuleName}";`);
+  emitLine(`import Protocol from "./${protocolModuleName}${importExtantion}";`);
   emitLine();
   emitDescription("API generated from Protocol commands and events.");
   emitOpenBlock(`export namespace ${moduleName}`);
@@ -461,7 +464,7 @@ const emitApi = (moduleName: string, protocolModuleName: string, domains: Proto.
 const emitEvents = (moduleName: string, protocolModuleName: string, domains: Proto.ProtocolDomain[]) => {
   moduleName = toTitleCase(moduleName);
   emitHeaderComments();
-  emitLine(`import Protocol from "./${protocolModuleName}";`);
+  emitLine(`import Protocol from "./${protocolModuleName}${importExtantion}";`);
   emitLine();
   emitDescription("all protocol events.");
   // emitLine("export type SessionId = string;");
