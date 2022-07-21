@@ -8,10 +8,11 @@ program
     // .option("--listen <ip>", "ip to listen for incomming connection", "127.0.0.1")
     .option("-s, --source <port>", "address to listen for incomming connextion", "9223")
     .option("-d, --destination <port>", "Address of the Chrome developer port", "9222")
+    .option<string[]>("-i, --ignore <event>", "Ignore some events names", (value: string, previous: string[]) => {previous.push(value); return previous}, [])
     .option("-p, --prefix <name>", "output fule prefix", "code");
 program.parse();
 
-const {source, destination, destHost, prefix } = program.opts();
+const {source, destination, destHost, prefix, ignore } = program.opts();
 // const limit = options.first ? 1 : undefined;
 // console.log(program.args[0].split(options.separator, limit));
 
@@ -19,6 +20,7 @@ const protoRevert = new ProtoRevert({
     srcPort: Number(source),
     dstPort: Number(destination),
     dstHost: destHost,
+    ignoreEvent: ignore,
     // srcHost: options.listen,
 });
 

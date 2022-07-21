@@ -22,6 +22,7 @@ Options:
   -h, --dest-host <ip>      host to to connect to (default: "127.0.0.1")
   -s, --source <port>       address to listen for incomming connextion (default: "9223")
   -d, --destination <port>  Address of the Chrome developer port (default: "9222")
+  -i, --ignore <event>      Ignore some events names (default: [])
   -p, --prefix <name>       output fule prefix (default: "code")
   --help                    display help for command
 ```
@@ -38,3 +39,10 @@ Press any Enter to terminate the session
 launch you automation script on cdp-reverter socket.
 
 press enter to generate simple low level Chrome DevTools Protocol script.
+
+
+## Usage Alternatif
+
+- Write you Chrome DevTools project, using exta long pause between each step.
+- Then use this proxy to find out event you should wait for instead of static delay.
+
