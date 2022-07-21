@@ -5,7 +5,7 @@ export { ProtocolMapping } from "./types/protocol-mapping";
 export {
   Chrome,
   Devtools,
-} from "./lib/devtools";
+} from "./lib/DDevtools";
 
 export {
   TargetType,
@@ -14,4 +14,4 @@ export {
   DevToolVersion,
 } from "./lib/models";
 
-export { Devtools as default } from "./lib/devtools";
+export { Devtools as default } from "./lib/DDevtools";

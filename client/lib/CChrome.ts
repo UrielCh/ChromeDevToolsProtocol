@@ -3,19 +3,7 @@ import WebSocket from "ws";
 import * as api from "./api";
 import { Protocol } from "./Protocol";
 import ProtocolEventsApi, { ProtocolEventsName } from "../types/protocol-events";
-
-export class ProtocolError extends Error {
-  constructor(
-    public request: { method: string, params?: unknown, undefined?: string },
-    public response: { message: string; data?: string; code?: number },
-  ) {
-    let { message } = response;
-    if (response.data) {
-      message += ` (${response.data})`;
-    }
-    super(message + " caused by " + request.method);
-  }
-}
+import { ProtocolError } from "./ProtocolError";
 
 /**
  * used to link request to response
