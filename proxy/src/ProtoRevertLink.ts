@@ -39,7 +39,6 @@ export class ProtoRevertLink {
      */
     rawData: string[] = [];
 
-
     endpoint: string;
     /**
      * request logs indexed by requestID
@@ -67,7 +66,7 @@ export class ProtoRevertLink {
         return name + cnt;
     }
 
-    constructor(wsClient: WebSocket.WebSocket, request: http.IncomingMessage, dstPort: number) {
+    constructor(private wsClient: WebSocket.WebSocket, request: http.IncomingMessage, dstPort: number, private ignoreEvent: Set<String>) {
         const queue: Array<WebSocket.RawData | string> = [];
         this.endpoint = `ws://127.0.0.1:${dstPort}${request.url}`;
         const wsChrome = new WebSocket(this.endpoint);
@@ -113,6 +112,10 @@ export class ProtoRevertLink {
                 wsChrome.close(code, reason);
             });
         })
+    }
+
+    public close() {
+        this.wsClient.close(1000);
     }
 
     indexResponce(requestId: number, method: string, data: { [key: string]: any }) {
@@ -313,7 +316,7 @@ export class ProtoRevertLink {
                 code += `await cdp.${meta.req.method}(`;
                 if (meta.req.params || meta.req.sessionId) {
                     let params = JSON.stringify(meta.req.params || {});
-                    params = params.replace(/"\$\{([A-Za-z0-9_.]+)\}"/g, '$1');
+                    params = params.replace(/"\$\{([A-Za-z0-9_.]+)\}"/g, '$1!');
                     const fileRef = params.match(/"__FILE__RAW__(\d)__"/);
                     if (fileRef) {
                         params = params.replace(fileRef[0], `getContent(${fileRef[1]})`);
@@ -335,7 +338,8 @@ export class ProtoRevertLink {
                     code += `await cdp.${mevent.method}(); // EVENT`;
                     code += '\r\n';
                 } else {
-                    waitEvents.add(mevent.method);
+                    if (!this.ignoreEvent.has(mevent.method))
+                        waitEvents.add(mevent.method);
                 }
             }
         }

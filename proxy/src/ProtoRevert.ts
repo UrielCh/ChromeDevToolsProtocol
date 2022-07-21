@@ -4,11 +4,20 @@ import fs from 'fs';
 import { ProtoRevertLink } from './ProtoRevertLink';
 
 export class ProtoRevert {
+    private server?: http.Server;
+    private ignoreEvent: Set<String>;
+
     constructor(private options: {
         // srcHost: string,
-        srcPort: number, 
+        srcPort: number,
         dstHost: string,
-        dstPort: number }) { }
+        dstPort: number,
+        ignoreEvent?: string[];
+    }) {
+        const ignoreEvent = options.ignoreEvent || [];
+        this.ignoreEvent = new Set(ignoreEvent);
+    }
+
     public sessions: ProtoRevertLink[] = [];
     logs = [] as Array<{ requestUrl: string, response: any }>;
 
@@ -39,11 +48,14 @@ export class ProtoRevert {
 
     public async start(): Promise<void> {
         // create http servce + ws server
+        if (this.server)
+            throw Error("already running");
         const wss = new WebSocketServer({ noServer: true });
-        const server = http.createServer((req, res) => this.requestListener(req, res));
+        const server = http.createServer((req, res) => this.requestListener(req, res));;
+        this.server = server;
 
         wss.on('connection', (ws: WebSocket.WebSocket, request: http.IncomingMessage) => {
-            this.sessions.push(new ProtoRevertLink(ws, request, this.options.dstPort));
+            this.sessions.push(new ProtoRevertLink(ws, request, this.options.dstPort, this.ignoreEvent));
         });
 
         server.on('upgrade', function upgrade(request, socket, head) {
@@ -90,6 +102,16 @@ export class ProtoRevert {
             code += `run${i + 1}(new Devtools());\r\n`;
 
             fs.writeFileSync(`${prefix}${i + 1}.ts`, code, { encoding: 'utf8' });
+        }
+    }
+
+    public close() {
+        if (this.server) {
+            this.server.close();
+            this.server = undefined;
+        }
+        for (const session of this.sessions) {
+            session.close();
         }
     }
 }

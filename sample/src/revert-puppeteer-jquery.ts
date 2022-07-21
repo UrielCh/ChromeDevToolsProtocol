@@ -8,7 +8,22 @@ import { ProtoRevert } from "cdp-reverter";
   puppeteer.use(new Plugin());
   // "C:\Program Files\Google\Chrome\Application\chrome.exe" --profile-directory="bot" --remote-debugging-port=9222
   //  chrome-protocol-proxy.exe
-  const protoRev = new ProtoRevert({ srcPort: 9555, dstPort: 9222, dstHost: "127.0.0.1" });
+  const ignoreEvent = [
+    "Page.loadEventFired",
+    "Page.frameStartedLoading",
+    "Page.lifecycleEvent",
+    "Target.targetInfoChanged",
+    "Runtime.executionContextsCleared",
+    "Page.frameStoppedLoading",
+    "Page.domContentEventFired",
+    "Page.lifecycleEvent",
+    "Network.requestWillBeSent",
+    "Network.requestWillBeSentExtraInfo",
+    "Network.responseReceivedExtraInfo",
+    "Network.responseReceived",
+    "Page.frameStartedLoading",
+    "Log.entryAdded"];
+  const protoRev = new ProtoRevert({ srcPort: 9555, dstPort: 9222, dstHost: "127.0.0.1", ignoreEvent });
   await protoRev.start();
   const browser = await puppeteer.connect({
     browserURL: "http://127.0.0.1:9555",
@@ -29,9 +44,10 @@ import { ProtoRevert } from "cdp-reverter";
   // browser.disconnect();
   // await browser.close();
   // write down session data
-  protoRev.writeSessions('code');
+  protoRev.writeSessions('revert');
   console.log('all done');
-  process.exit(0);
+  protoRev.close();
+  // process.exit(0);
 })();
 
 // Debugger.scriptParsed

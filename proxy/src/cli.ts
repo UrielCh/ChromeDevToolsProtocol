@@ -32,7 +32,7 @@ async function main() {
         rl.close();
         protoRevert.writeSessions(prefix);
         console.log('all done');
-        process.exit(0);
+        protoRevert.close();
     });
 }
 
