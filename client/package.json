@@ -31,11 +31,13 @@
   },
   "typings": "index.d.ts",
   "files": [
-    "lib",
+    "lib/*.js",
+    "lib/*.d.ts",
     "types",
     "bin",
     "index.d.ts",
-    "index.js"
+    "index.js",
+    "types/"
   ],
   "main": "index.js",
   "devDependencies": {
