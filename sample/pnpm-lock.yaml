@@ -1,0 +1,9 @@
+lockfileVersion: 5.4
+
+specifiers:
+  '@u4/chrome-remote-interface': link:..\client
+  cdp-reverter: link:..\proxy
+
+dependencies:
+  '@u4/chrome-remote-interface': link:../client
+  cdp-reverter: link:../proxy

@@ -6,3 +6,4 @@ client/lib/*.js
 client/lib/*.map
 */node_modules
 proxy/src/*.js
+proxy/src/*.d.ts

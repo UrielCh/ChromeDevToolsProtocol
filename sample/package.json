@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@u4/chrome-remote-interface": "link:..\\client",
+    "cdp-reverter": "link:..\\proxy"
+  }
 }

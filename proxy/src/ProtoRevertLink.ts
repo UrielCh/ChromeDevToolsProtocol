@@ -2,9 +2,6 @@ import http from 'http';
 import WebSocket from 'ws';
 import pc from 'picocolors';
 
-const SHOW_EVENT = false;
-const SHOW_MESSAGES = false;
-
 interface ProtoRequest {
     id: number;
     method: string;
@@ -34,6 +31,9 @@ export interface ProtoEvent {
 }
 
 export class ProtoRevertLink {
+    static SHOW_EVENT = false;
+    static SHOW_MESSAGES = false;
+    
     /**
      * storage for large code chunk
      */
@@ -232,7 +232,7 @@ export class ProtoRevertLink {
             }
             const method = req?.req.method || 'ERROR';
             req.resp = resp;
-            if (SHOW_MESSAGES) {
+            if (ProtoRevertLink.SHOW_MESSAGES) {
                 console.log(`Response ${pc.green(id)}: ${pc.yellow(method)} ${pc.green(sessionId || '')}`);
                 this.printNonEmpty(result);
             }
@@ -247,7 +247,7 @@ export class ProtoRevertLink {
     
             this.logs.push(event);
             this.indexEvent(event);
-            if (SHOW_EVENT) {
+            if (ProtoRevertLink.SHOW_EVENT) {
                 const { method, sessionId, params, ...rest } = message;
                 console.log(`${pc.bgMagenta('EVENT')}: ${pc.yellow(method)} ${pc.green(sessionId || '')}`);
                 this.printNonEmpty(params)
@@ -274,7 +274,7 @@ export class ProtoRevertLink {
             this.requests.set(id, { req, name: this.nameMessage(method, cnt) });
             this.logs.push(req);
 
-            if (SHOW_MESSAGES) {
+            if (ProtoRevertLink.SHOW_MESSAGES) {
                 console.log(`Request  ${pc.green(id)}: ${pc.yellow(method)} ${pc.green(sessionId || '')}`);
                 this.printNonEmpty(params);
             }
