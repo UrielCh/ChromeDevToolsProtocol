@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/adjacent-overload-signatures */
 // deno-lint-ignore-file adjacent-overload-signatures
 /* eslint-disable no-unused-vars */
 /**********************************************************************

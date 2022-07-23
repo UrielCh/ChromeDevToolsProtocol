@@ -438,6 +438,7 @@ const emitDomainApi = (domain: Proto.ProtocolDomain, modulePrefix: string) => {
 const emitApi = (moduleName: string, protocolModuleName: string, domains: Proto.ProtocolDomain[]) => {
   moduleName = toTitleCase(moduleName);
   emitLine("// deno-lint-ignore-file adjacent-overload-signatures");
+  emitLine("/* eslint-disable @typescript-eslint/adjacent-overload-signatures */");
   emitHeaderComments();
   emitLine(`import Protocol from "./${protocolModuleName}${importExtantion}";`);
   emitLine();
