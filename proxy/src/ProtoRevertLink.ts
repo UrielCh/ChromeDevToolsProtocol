@@ -120,7 +120,7 @@ export class ProtoRevertLink {
 
     indexResponce(requestId: number, method: string, data: { [key: string]: any }) {
         // if (requestId === 21) debugger; // should index objectId: '-1498025529418368793.5.3'
-        if (!data.result)
+        if (!data || !data.result)
             return;
         for (const [field, value] of Object.entries(data.result)) {
             this.tryIndexString(method, `result.${field}`, value, requestId, 0);

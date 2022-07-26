@@ -1,14 +1,7 @@
 {
   "name": "cdp-reverter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generate a working CDP script from ws connexion",
-  "main": "src/index.js",
-  "typings": "src/index.d.ts",
-  "scripts": {
-    "clean": "rimraf {test,lib,src,scripts}/*.{d.ts,js,js.map} ./index.{js,d.ts,js.map}",
-    "rebuild": "npm run clean && tsc",
-    "prepare": "npm run clean && tsc"
-  },
   "keywords": [
     "chrome",
     "reverse-engineer",
@@ -16,6 +9,21 @@
     "debug",
     "Chrome DevTools Protocol"
   ],
+  "homepage": "https://github.com/UrielCh/ChromeDevToolsProtocol",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/UrielCh/ChromeDevToolsProtocol.git"
+  },
+  "bugs": {
+    "url": "http://github.com/UrielCh/ChromeDevToolsProtocol/issues"
+  },
+  "main": "src/index.js",
+  "typings": "src/index.d.ts",
+  "scripts": {
+    "clean": "rimraf {test,lib,src,scripts}/*.{d.ts,js,js.map} ./index.{js,d.ts,js.map}",
+    "rebuild": "npm run clean && tsc",
+    "prepare": "npm run clean && tsc"
+  },
   "author": "Uriel Chemouni <uchemouni@gmail.com> (https://urielch.github.io/)",
   "license": "MIT",
   "devDependencies": {

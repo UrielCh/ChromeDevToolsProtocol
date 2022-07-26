@@ -6,16 +6,22 @@ If you use a hi-abstraction Chrome automation framework and want to understand h
 
 ## Usage
 
+### Setup
 Install the package:
-
 ```bash
 npm install -g cdp-reverter
 ```
+or using npx
+```bash
+npx cdp-reverter
+```
+
+### Help
 
 then use it:
 
 ```bash
-cdp-reverter --help
+npx cdp-reverter --help
 Usage: cdp-reverter [options]
 
 Options:
@@ -26,6 +32,8 @@ Options:
   -p, --prefix <name>       output fule prefix (default: "code")
   --help                    display help for command
 ```
+
+### use it
 
 Start it:
 
@@ -40,6 +48,10 @@ Launch your automation script on the cdp-reverter socket.
 
 Press enter to generate a simple low-level Chrome DevTools Protocol script.
 
+or with npx
+```bash
+npx cdp-reverter -s 9555 -d 9222 -p mysession
+```
 
 ## Usage Alternatif
 
