@@ -27,6 +27,7 @@ import { ProtoRevert } from "cdp-reverter";
   await protoRev.start();
   const browser = await puppeteer.connect({
     browserURL: "http://127.0.0.1:9555",
+    defaultViewport: null,
   });
   const pageOrg = await browser.newPage();
   const page = pageOrg as unknown as PageEx;

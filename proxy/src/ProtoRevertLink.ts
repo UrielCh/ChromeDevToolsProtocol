@@ -110,7 +110,10 @@ export class ProtoRevertLink {
                 wsClient.send(msg, { binary });
             })
             wsClient.on('close', (code: number, reason: Buffer) => {
-                wsChrome.close(code, reason);
+                // ws not happy with close code 1005, replace 1005 by 1000;
+                if (!code || code === 1005)
+                    code = 1000;
+                wsChrome.close(code || 1000, reason);
             });
         })
     }
