@@ -309,14 +309,14 @@ export class ProtoRevertLink {
     }
     public writeSession(): string {
         const session = this;
-        let waitEvents = new Set<string>;
+        let waitEvents = new Map<string, number>();
         const ls = '  ';
         let code = '';
         let waitCnt = 0;
         const flushWait = () => {
             if (waitEvents.size) {
                 code += `${ls}const wait${++waitCnt} = await cdp.waitForAllEvents(`;
-                code += [...waitEvents].map(a => `"${a}"`).join(', ');
+                code += [...waitEvents].map(a => (a[1] === 1) ? `"${a[0]}"` : `"${a[0]}" /* ${a[1]} */` ).join(', ');
                 code += `); // EVENT\r\n`;
                 waitEvents.clear();
             }
@@ -360,8 +360,13 @@ export class ProtoRevertLink {
                     code += `await cdp.${mevent.method}(); // EVENT`;
                     code += '\r\n';
                 } else {
-                    if (!this.ignoreEvent.has(mevent.method))
-                        waitEvents.add(mevent.method);
+                    if (!this.ignoreEvent.has(mevent.method)) {
+                        const cnt = waitEvents.get(mevent.method);
+                        if (cnt)
+                            waitEvents.set(mevent.method, cnt + 1);
+                        else
+                            waitEvents.set(mevent.method, 1);
+                    }
                 }
             }
         }

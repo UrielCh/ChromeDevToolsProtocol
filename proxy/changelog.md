@@ -1,3 +1,5 @@
+## v 0.0.5 (2022-07-26)
+show event count in generated ts
 ## v 0.0.4 (2022-07-26)
 extract more data chunk
 store datachunk with .b64 or .js extention

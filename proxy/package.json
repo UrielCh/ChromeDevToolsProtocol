@@ -1,6 +1,6 @@
 {
   "name": "cdp-reverter",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Generate a working CDP script from ws connexion",
   "keywords": [
     "chrome",

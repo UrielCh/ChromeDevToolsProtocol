@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@u4/chrome-remote-interface': link:..\client
   cdp-reverter: link:..\proxy
+  picocolors: ^1.0.0
   puppeteer: '14'
   puppeteer-extra: ^3.3.4
   puppeteer-extra-plugin-jquery: ^0.3.12
@@ -12,6 +13,7 @@ specifiers:
 dependencies:
   '@u4/chrome-remote-interface': link:../client
   cdp-reverter: link:../proxy
+  picocolors: 1.0.0
   puppeteer-extra: 3.3.4_puppeteer@14.4.1
   puppeteer-extra-plugin-jquery: 0.3.12_puppeteer-extra@3.3.4
 
@@ -405,6 +407,10 @@ packages:
 
   /pend/1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
+
+  /picocolors/1.0.0:
+    resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
+    dev: false
 
   /pkg-dir/4.2.0:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}

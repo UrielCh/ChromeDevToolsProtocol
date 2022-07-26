@@ -12,6 +12,7 @@
   "dependencies": {
     "@u4/chrome-remote-interface": "link:..\\client",
     "cdp-reverter": "link:..\\proxy",
+    "picocolors": "^1.0.0",
     "puppeteer-extra": "^3.3.4",
     "puppeteer-extra-plugin-jquery": "^0.3.12"
   },
