@@ -1,6 +1,7 @@
 import http from 'http';
 import WebSocket from 'ws';
 import pc from 'picocolors';
+import { type Protocol } from '@u4/chrome-remote-interface';
 
 interface ProtoRequest {
     id: number;
@@ -37,7 +38,7 @@ export class ProtoRevertLink {
     /**
      * storage for large code chunk
      */
-    rawData: string[] = [];
+    rawData: { data:string, type: "b64" | "js" }[] = [];
 
     endpoint: string;
     /**
@@ -260,18 +261,34 @@ export class ProtoRevertLink {
     }
 
     logRequest(message: any) {
+        const extractBig = (data: string, type: "b64" | "js"): string => {
+            if (!data || data.length < 512) return data;
+            this.rawData.push({data, type});
+            return `__FILE__RAW__${this.rawData.length}__`;
+        }
+
         if (message.id) {
             const req = message as ProtoRequest;
             this.injectVarRequest(req)
             const { id, method, sessionId, params, ...rest } = req;
             if (method === 'Runtime.evaluate') {
-                const expression = params.expression as string;
-                if (expression && expression.length > 512) {
-                    //params.expression = expression.substring(0, 128) + '...' + expression.substring(expression.length - 128);
-                    this.rawData.push(expression);
-                    params.expression = `__FILE__RAW__${this.rawData.length}__`;
+                const p2 = params as Protocol.Runtime.EvaluateRequest;
+                if (p2.expression)
+                    p2.expression = extractBig(p2.expression, 'b64');
+            }
+            if (method === 'Fetch.fulfillRequest') {
+                const p2 = params as Protocol.Fetch.FulfillRequestRequest;
+                if (p2.body) {
+                    p2.body = extractBig(p2.body, 'b64');
                 }
             }
+            if (method === 'Page.addScriptToEvaluateOnNewDocument') {
+                const p2 = params as Protocol.Page.AddScriptToEvaluateOnNewDocumentRequest;
+                if (p2.source) { // js
+                    p2.source = extractBig(p2.source, 'js');
+                }
+            }
+
             // counter use to names requests
             const cnt = this.incUsage(method);
             this.requests.set(id, { req, name: this.nameMessage(method, cnt) });
@@ -319,7 +336,9 @@ export class ProtoRevertLink {
                     params = params.replace(/"\$\{([A-Za-z0-9_.]+)\}"/g, '$1!');
                     const fileRef = params.match(/"__FILE__RAW__(\d)__"/);
                     if (fileRef) {
-                        params = params.replace(fileRef[0], `getContent(${fileRef[1]})`);
+                        const refId = Number(fileRef[1]);
+                        const entry = this.rawData[refId];
+                        params = params.replace(fileRef[0], `getContent(${refId}, "${entry.type}")`);
                     }
                     code += params;
                 }

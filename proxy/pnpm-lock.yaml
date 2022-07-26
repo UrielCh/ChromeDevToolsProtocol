@@ -3,12 +3,14 @@ lockfileVersion: 5.4
 specifiers:
   '@types/node': ^18.0.6
   '@types/ws': ^8.5.3
+  '@u4/chrome-remote-interface': ^0.3.3
   commander: ^9.4.0
   picocolors: ^1.0.0
   rimraf: ^3.0.2
   ws: ^8.8.1
 
 dependencies:
+  '@u4/chrome-remote-interface': 0.3.3
   commander: 9.4.0
   picocolors: 1.0.0
   ws: 8.8.1
@@ -30,6 +32,17 @@ packages:
       '@types/node': 18.0.6
     dev: true
 
+  /@u4/chrome-remote-interface/0.3.3:
+    resolution: {integrity: sha512-r+bOOfCmjnH8yJqqbIrRK9RwDW3eFC9T931pVipLK2JeB0ZXMsLJLilWmUQbeAJyccCvFCV2obYjXZ+td+dlNw==}
+    dependencies:
+      commander: 9.3.0
+      undici: 5.8.0
+      ws: 8.8.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
@@ -40,6 +53,11 @@ packages:
       balanced-match: 1.0.2
       concat-map: 0.0.1
     dev: true
+
+  /commander/9.3.0:
+    resolution: {integrity: sha512-hv95iU5uXPbK83mjrJKuZyFM/LBAoCV/XhVGkS5Je6tl7sxr6A0ITMw5WoRV46/UaJ46Nllm3Xt7IaJhXTIkzw==}
+    engines: {node: ^12.20.0 || >=14}
+    dev: false
 
   /commander/9.4.0:
     resolution: {integrity: sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==}
@@ -103,6 +121,11 @@ packages:
     dependencies:
       glob: 7.2.3
     dev: true
+
+  /undici/5.8.0:
+    resolution: {integrity: sha512-1F7Vtcez5w/LwH2G2tGnFIihuWUlc58YidwLiCv+jR2Z50x0tNXpRRw7eOIJ+GvqCqIkg9SB7NWAJ/T9TLfv8Q==}
+    engines: {node: '>=12.18'}
+    dev: false
 
   /wrappy/1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}

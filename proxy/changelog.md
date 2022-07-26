@@ -1,3 +1,6 @@
+## v 0.0.4 (2022-07-26)
+extract more data chunk
+store datachunk with .b64 or .js extention
 ## v 0.0.3 (2022-07-26)
 fix tsconfig
 ## v 0.0.2 (2022-07-26)

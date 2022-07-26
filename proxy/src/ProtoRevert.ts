@@ -82,12 +82,14 @@ export class ProtoRevert {
             code += "\r\n";
 
             if (session.rawData.length) {
-                code += 'function getContent(id: number): string {\r\n';
-                code += `  return fs.readFileSync("${prefix}_data_" + id + ".js", {encoding: "utf-8"});\r\n`;
+                code += 'function getContent(id: number, ext: "js" | "b64"): string {\r\n';
+                code += `  return fs.readFileSync("${prefix}_data_" + id + "." + ext, {encoding: "utf-8"});\r\n`;
                 code += '}\r\n';
             }
+            
             for (let id = 0; id < session.rawData.length; id++) {
-                fs.writeFileSync(prefix + "_data_" + (id + 1) + ".js", session.rawData[id], { encoding: 'utf8' });
+                const {data, type} = session.rawData[id];
+                fs.writeFileSync(`${prefix}_data_${id + 1}.${type}`, data, { encoding: 'utf8' });
             }
             // const session = protoRev.sessions[protoRev.sessions.length - 1];
             code += `async function run${i + 1}(devtools: Devtools) {\r\n`;
