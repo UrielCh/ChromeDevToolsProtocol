@@ -20,7 +20,7 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
   const page = await browser.newPage();
   await page.setCacheEnabled(false);
   await page.goto(
-    "https://github.com/UrielCh/puppeteer-jquery/tree/master/puppeteer-jquery",
+    "https://www.google.com/maps/",
   );
   let callback: (() => void) | null = null;
   const done = new Promise<void>(resolve => {
@@ -36,17 +36,7 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
       return
     }
 
-    if (textUrl.includes("collector.github.com")) {
-      console.log(pc.bgRed("block"), textUrl);
-      await request.continue()
-      // await request.abort('aborted', 0);
-      if (callback) {
-        callback();
-        callback = null;
-      }
-      return
-    }
-    if (textUrl.endsWith("js")) {
+    if (textUrl.includes("google.com/maps/vt/pb=")) {
       console.log(pc.bgRed("block"), textUrl);
       await request.continue()
       // await request.abort('aborted', 0);
@@ -61,8 +51,6 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
   })
   // await page.waitForNavigation({ waitUntil: "domcontentloaded" });
   await page.setRequestInterception(true);
-  
-
   await done;
   console.log('collect 2 more second of activity');
   await delay(2000);

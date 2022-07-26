@@ -315,7 +315,7 @@ export class ProtoRevertLink {
         let waitCnt = 0;
         const flushWait = () => {
             if (waitEvents.size) {
-                code += `${ls}const wait${++waitCnt} = await cdp.waitForAllEvents(`;
+                code += `${ls}const wait${++waitCnt} = await page.waitForAllEvents(`;
                 code += [...waitEvents].map(a => (a[1] === 1) ? `"${a[0]}"` : `"${a[0]}" /* ${a[1]} */` ).join(', ');
                 code += `); // EVENT\r\n`;
                 waitEvents.clear();
@@ -333,7 +333,7 @@ export class ProtoRevertLink {
                 if (meta.used) {
                     code += `const ${meta.name} = `;
                 }
-                code += `await cdp.${meta.req.method}(`;
+                code += `await page.${meta.req.method}(`;
                 if (meta.req.params || meta.req.sessionId) {
                     let params = JSON.stringify(meta.req.params || {});
                     params = params.replace(/"\$\{([A-Za-z0-9_.]+)\}"/g, '$1!');
@@ -357,7 +357,7 @@ export class ProtoRevertLink {
                 if (mevent.used) {
                     // used event;
                     code += `${ls}const ${mevent.name} = `;
-                    code += `await cdp.${mevent.method}(); // EVENT`;
+                    code += `await page.${mevent.method}(); // EVENT`;
                     code += '\r\n';
                 } else {
                     if (!this.ignoreEvent.has(mevent.method)) {
@@ -393,7 +393,7 @@ export class ProtoRevertLink {
         }
 
         for (const line of lines) {
-            let m1 = line.match(/^( +)const ([a-zA-Z0-9]+) = await (cdp.+); \/\/ EVENT$/);
+            let m1 = line.match(/^( +)const ([a-zA-Z0-9]+) = await (page.+); \/\/ EVENT$/);
             if (m1) {
                 eventsWait.push(m1);
                 continue;

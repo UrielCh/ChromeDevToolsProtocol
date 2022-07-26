@@ -94,9 +94,9 @@ export class ProtoRevert {
             // const session = protoRev.sessions[protoRev.sessions.length - 1];
             code += `async function run${i + 1}(devtools: Devtools) {\r\n`;
             if (session.endpoint.includes('devtools/browser'))
-                code += '  const cdp = await devtools.connectFirst("browser");';
+                code += '  const page = await devtools.connectFirst("browser");';
             else
-                code += '  const cdp = await devtools.connectFirst("page");';
+                code += '  const page = await devtools.connectFirst("page");';
             code += '\r\n';
             code += session.writeSession();
             code += '}\r\n';
