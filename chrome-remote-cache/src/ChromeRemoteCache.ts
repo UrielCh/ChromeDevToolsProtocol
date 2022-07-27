@@ -19,7 +19,7 @@ export class ChromeRemoteCache {
     private statCache = new CacheStat();
     private statPassthrough = new CacheStat();
 
-    constructor(private cm: CacheManager) {
+    constructor(private cm = new CacheManager()) {
     }
 
     public close() {

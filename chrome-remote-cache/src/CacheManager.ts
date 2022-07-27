@@ -8,7 +8,7 @@ const KEY_COUNTER = 'usage:'
 
 export class CacheManager {
 
-    constructor(private redis: Redis) {}
+    constructor(private redis = new Redis()) {}
 
     public close () {
         this.redis.disconnect();

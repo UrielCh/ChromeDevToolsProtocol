@@ -17,3 +17,4 @@ sample/src/logall.ts
 proxy/basic3.ts
 proxy/tmp/
 
+chrome-remote-cache/src/*.js

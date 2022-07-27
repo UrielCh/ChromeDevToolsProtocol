@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@types/node': ^18.0.6
   '@types/ws': ^8.5.3
-  '@u4/chrome-remote-interface': ^0.3.3
+  '@u4/chrome-remote-interface': link:..\client
   commander: ^9.4.0
   picocolors: ^1.0.0
   rimraf: ^3.0.2

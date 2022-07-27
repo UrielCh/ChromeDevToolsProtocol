@@ -1,6 +1,6 @@
 import Devtools from "@u4/chrome-remote-interface";
 import Redis from "ioredis";
-import ChromeRemoteCache from "./BlockTracking";
+import ChromeRemoteCache from "./ChromeRemoteCache";
 import CacheManager from "./CacheManager";
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -33,15 +33,14 @@ async function testAll() {
     // const blocker = new MyBlockTracking();
     await remoteCache.register(page);
     await page.Page.navigate({ url: 'https://www.google.com/maps/'});
-    await page.Page.frameNavigated();
+    // await page.Page.frameNavigated();
     await delay(5000);
     console.log('done');
     await delay(5000);
-    await delay(5000);
     console.log();
-    console.log();
-    console.log(remoteCache.getStats());
-    console.log();
+    const {cache, pt} = remoteCache.getStats();
+    console.log('cache:', cache);
+    console.log('passt:', pt);
     console.log();
     console.log();
 }

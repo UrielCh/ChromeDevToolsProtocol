@@ -9,14 +9,14 @@
             "type": "node",
             "request": "launch",
             "args": [
-                "${workspaceRoot}/cacher/src/BlockTracking.test.ts"
+                "${workspaceRoot}/chrome-remote-cache/src/BlockTracking.test.ts"
             ],
             "runtimeArgs": [
                 "-r",
                 "ts-node/register",
                 "--trace-warnings"
             ],
-            "cwd": "${workspaceRoot}/cacher",
+            "cwd": "${workspaceRoot}/chrome-remote-cache",
             "protocol": "inspector",
             "internalConsoleOptions": "openOnSessionStart"
         },
