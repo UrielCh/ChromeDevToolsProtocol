@@ -69,16 +69,12 @@ test('splitUrl path', t => {
     t.deepEqual(result, expected, 'split path')
 });
 
-
 test('splitUrl path no protocol', t => {
     const url = 'domain.com/path'
     const expected = ['domain.com', 'path']
     const result = splitUrl(url)
     t.deepEqual(result, expected, 'split path')
 });
-
-
-
 
 test('formatSize B', t => {
     const result = formatSize(2)

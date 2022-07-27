@@ -14,7 +14,10 @@ export class CacheManager {
         this.redis.disconnect();
     }
 
-    async getCacheMeta([domain, path]: [string, string]): Promise<string | null> {
+    async getCacheMeta(cachekey?: [string, string] | null): Promise<string | null> {
+        if (!cachekey)
+            return null;
+        const [domain, path] = cachekey
         // const [domain, path] = splitUrl(textUrl);
         const key = KEY_META + domain;
         const cached = await this.redis.hget(key, path);

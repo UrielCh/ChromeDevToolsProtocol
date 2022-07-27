@@ -12,9 +12,9 @@ const dummy = (url: string) => url;
 
 // cache https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkliZ0tt-7UEKoB_KBN7v3D121PhkkA1JZRlvvV4Rv&s=10
 export class BlockTracking {
-    blockedDomains = new UrlSet<boolean>();
-    ignoreDomains = new UrlSet<boolean>();
-    cacheDomain = new UrlSet<ToKey>();
+    private blockedDomains = new UrlSet<boolean>();
+    private ignoreDomains = new UrlSet<boolean>();
+    private cacheDomain = new UrlSet<ToKey>();
 
     statCache = new CacheStat();
     statPassthrough = new CacheStat();
@@ -26,14 +26,28 @@ export class BlockTracking {
         this.cm.close();
     }
 
-    blockDom(dom: string) {
+    block(dom: string) {
         this.blockedDomains.add(dom, true);
     }
 
-    cacheDoms(...doms: string[]) {
+    cache(...doms: string[]) {
         for (const dom of doms)
             this.cacheDomain.add(dom, dummy);
     }
+
+    cacheRemap(dom: string, mapping: (url: string) => string) {
+        this.cacheDomain.add(dom, mapping);
+    }
+    /**
+     * do not log those request
+     * @param doms 
+     */
+    ignore(...doms: string[]) {
+        for (const dom of doms)
+            this.ignoreDomains.add(dom, true);
+    }
+
+
 
     getCacheKey(textUrl: string): [string, string] | null {
         textUrl = dropQueryParam(textUrl, 'gclid');
@@ -44,115 +58,140 @@ export class BlockTracking {
         return null;
     }
 
-
     async register(page: Chrome) {
+        const continueRequest = async (requestId: string) => {
+            try {
+                await page.Fetch.continueRequest({ requestId });
+            } catch (e) {
+                console.log(`failed to continueRequest ${requestId}`);
+            }
+        }
+
+        const failRequest = async (requestId: string) => {
+            try {
+                await page.Fetch.failRequest({ requestId, errorReason: 'BlockedByClient' });
+            } catch (e) {
+                console.log(`failed to failRequest ${requestId}`);
+            }
+        }
+
         await page.Network.enable();
         // await page.Page.enable({});
         // await page.Page.setLifecycleEventsEnabled({ enabled: true });
         // cache must be disable to use Fetch.enable
-        await page.Network.setCacheDisabled({cacheDisabled: true});
+
+        await page.Network.setCacheDisabled({ cacheDisabled: true });
         await page.Fetch.enable({ "handleAuthRequests": true, patterns: [{ urlPattern: '*' }] });
 
         // await page.setRequestInterception(true);
-        const requests: Record<string, Protocol.Network.ResponseReceivedEvent> = {};
-        page.Network.on('responseReceived', (data) => {
-            requests[data.requestId] = data;
+        const responses: Record<string, Protocol.Network.ResponseReceivedEvent> = {};
+        const pausedRequests: Record<string, Protocol.Fetch.RequestPausedEvent> = {};
+
+        page.Network.on('responseReceived', (data: Protocol.Network.ResponseReceivedEvent) => {
+            responses[data.requestId] = data;
         });
 
-        page.Network.on('requestWillBeSent', async (event) => {
-            const { request } = event;
-            // await page.Fetch.requestPaused();
-            const textUrl = request.url;
-            console.log('in', textUrl);
+        page.Fetch.on("requestPaused", async (event) => {
+            pausedRequests[event.requestId] = event;
+            const textUrl = event.request.url;
             if (textUrl.startsWith('data:')) {
-                await page.Fetch.continueRequest({ requestId: event.requestId });
-                return
+                return continueRequest(event.requestId);
             }
-            
+            /**
+             * check from cache
+             */
             const cacheKey = this.getCacheKey(textUrl)
-            if (cacheKey)
-                try {
-                    const metaStr = await this.cm.getCacheMeta(cacheKey);
-                    if (metaStr) {
-                        const data = await this.cm.getCacheData(cacheKey);
-                        this.statCache.add(textUrl, metaStr, data?.length);
-                        await this.cm.cacheIncUsage(cacheKey, 1);
-                        const meta: CacheModel = JSON.parse(metaStr);
+            if (cacheKey) {
+                const metaStr = await this.cm.getCacheMeta(cacheKey);
+                if (metaStr) {
+                    const data = await this.cm.getCacheData(cacheKey);
+                    this.statCache.add(textUrl, metaStr, data?.length);
+                    await this.cm.cacheIncUsage(cacheKey, 1);
+                    const meta: CacheModel = JSON.parse(metaStr);
+                    if (meta) {
+                        const { status, headers } = meta;
+                        // delete headers['server'];
+                        // delete headers['last-modified'];
+                        // delete headers['etag'];
+                        delete headers['expires'];
+                        delete headers['date'];
+                        delete headers['connection'];
+                        const responseHeaders = [] as Protocol.Fetch.HeaderEntry[];
+                        for (const [name, value] of Object.entries(headers)) {
+                            responseHeaders.push({ name, value })
+                        }
+                        // let body: string;
+                        //if (meta.binary) {
+                        const body = data?.toString('base64') || '';
+                        // } else {
+                        //     body = data?.toString('utf-8') || '';
+                        // }
+
+                        // console.log(`${pc.green(pc.bold('inCache'))} URL: ${textUrl}`);
                         try {
-                            if (meta) {
-                                const { status, headers } = meta;
-                                // delete headers['server'];
-                                // delete headers['last-modified'];
-                                // delete headers['etag'];
-                                delete headers['expires'];
-                                delete headers['date'];
-                                delete headers['connection'];
-                                const responseHeaders = [] as Protocol.Fetch.HeaderEntry[];
-                                for (const [name, value] of Object.entries(headers)) {
-                                    responseHeaders.push({ name, value })
-                                }
-                                let body: string;
-                                if (meta.binary) {
-                                    body = data?.toString('base64') || '';
-                                } else {
-                                    body = data?.toString('utf-8') || '';
-                                }
-                                // delete headers['cache-control'];
-                                await page.Fetch.fulfillRequest({
-                                    requestId: event.requestId,
-                                    responseCode: status,
-                                    responseHeaders,
-                                    body,
-                                });
-                                console.log(`${pc.bgGreen('inCache')} URL: ${textUrl}`);
-                            } else {
-                                console.log(`invalid cached data for ${textUrl} metaStr: ${metaStr}`);
-                            }
-                            return;
+                            await page.Fetch.fulfillRequest({
+                                requestId: event.requestId,
+                                responseCode: status,
+                                responseHeaders,
+                                body,
+                            });
                         } catch (ee) {
                             console.log(`L164: (${meta.status})`, textUrl, ee)
                             console.log(JSON.stringify(meta.headers));
+                            return continueRequest(event.requestId);
                             // send blank page
-                            await page.Fetch.fulfillRequest({
-                                requestId: event.requestId,
-                                responseCode: 200,
-                                responseHeaders: [{ name: 'contentType', value: 'text/html' } as Protocol.Fetch.HeaderEntry],
-                                body: `<html><body><h1>Oups</h1><code></code>${ee}</body></html>`,
-                            });
-                            return;
+                            // await page.Fetch.fulfillRequest({
+                            //     requestId: event.requestId,
+                            //     responseCode: 200,
+                            //     responseHeaders: [{ name: 'contentType', value: 'text/html' } as Protocol.Fetch.HeaderEntry],
+                            //     body: `<html><body><h1>Oups</h1><code></code>${ee}</body></html>`,
+                            // });
                         }
-                    }
-                } catch (e) {
-                    console.error(e);
-                }
 
+                        return;
+                    } else {
+                        console.log(`invalid cached data for ${textUrl} metaStr: ${metaStr}`);
+                        return continueRequest(event.requestId);
+                    }
+                }
+                // if (!this.ignoreDomains.match(textUrl))
+                //     console.log(`${pc.bgMagenta('Miss Cache')}: ${cacheKey.join('/')}`);
+                return continueRequest(event.requestId);
+            }
+
+            /**
+             * is dom blocked
+             */
             if (this.blockedDomains.match(textUrl)) {
-                console.log(`${pc.red('Blocked')} URL: ${textUrl}`);
-                await page.Fetch.failRequest({ requestId: event.requestId, errorReason: 'BlockedByClient' });
-                return;
+                if (!this.ignoreDomains.match(textUrl))
+                    console.log(`${pc.red('Blocked')} URL: ${textUrl}`);
+                return failRequest(event.requestId);
             }
             if (!this.ignoreDomains.match(textUrl))
-                if (cacheKey) {
-                    console.log(`${pc.bgMagenta('Miss Cache')}: ${cacheKey.join('/')}`);
-                } else {
-                    console.log(`Pass ${pc.white(request.url)}`);
-                }
+                console.log(`Pass ${pc.white(textUrl)}`);
             try {
-                console.log('continueRequest', event.requestId)
-                await page.Fetch.continueRequest({ requestId: event.requestId });
+                return continueRequest(event.requestId);
             } catch (e) {
                 // await page.Fetch.continueResponse
                 // await page.Fetch.continueRequest({})
                 console.error(e);
             }
         });
+
+        // page.Network.on('requestWillBeSent', async (event) => {
+        //     const { request } = event;
+        //     const textUrl = request.url;
+        // });
         // page.Fetch.requestPaused();
 
-        page.Network.on('loadingFinished', async (data) => {
+        page.Network.on('loadingFinished', async (data: Protocol.Network.LoadingFinishedEvent) => {
             const { requestId } = data;
-            const req = requests[requestId];
+            // const req = pausedRequests[requestId];
+            const req = responses[requestId];
+
             if (!req)
                 return;
+            // const { url, status, headers } = req.response;
             const { url, status, headers } = req.response;
             if (url.startsWith('data:')) {
                 return
