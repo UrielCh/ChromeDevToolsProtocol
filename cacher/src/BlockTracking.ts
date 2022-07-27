@@ -47,9 +47,12 @@ export class BlockTracking {
 
     async register(page: Chrome) {
         await page.Network.enable();
-        await page.Page.enable({});
-        await page.Page.setLifecycleEventsEnabled({ enabled: true });
-        await page.Fetch.enable({});
+        // await page.Page.enable({});
+        // await page.Page.setLifecycleEventsEnabled({ enabled: true });
+        // cache must be disable to use Fetch.enable
+        await page.Network.setCacheDisabled({cacheDisabled: true});
+        await page.Fetch.enable({ "handleAuthRequests": true, patterns: [{ urlPattern: '*' }] });
+
         // await page.setRequestInterception(true);
         const requests: Record<string, Protocol.Network.ResponseReceivedEvent> = {};
         page.Network.on('responseReceived', (data) => {
@@ -58,12 +61,14 @@ export class BlockTracking {
 
         page.Network.on('requestWillBeSent', async (event) => {
             const { request } = event;
-            await page.Fetch.requestPaused();
+            // await page.Fetch.requestPaused();
             const textUrl = request.url;
+            console.log('in', textUrl);
             if (textUrl.startsWith('data:')) {
-                // request.continue()
+                await page.Fetch.continueRequest({ requestId: event.requestId });
                 return
             }
+            
             const cacheKey = this.getCacheKey(textUrl)
             if (cacheKey)
                 try {
@@ -117,7 +122,7 @@ export class BlockTracking {
                             return;
                         }
                     }
-                } catch (e) { 
+                } catch (e) {
                     console.error(e);
                 }
 
@@ -126,22 +131,20 @@ export class BlockTracking {
                 await page.Fetch.failRequest({ requestId: event.requestId, errorReason: 'BlockedByClient' });
                 return;
             }
-
             if (!this.ignoreDomains.match(textUrl))
                 if (cacheKey) {
                     console.log(`${pc.bgMagenta('Miss Cache')}: ${cacheKey.join('/')}`);
                 } else {
                     console.log(`Pass ${pc.white(request.url)}`);
                 }
-            // Block All Images
-            // if (request.url().endsWith('.png') || request.url().endsWith('.jpg')) {
-            //     request.abort();
             try {
+                console.log('continueRequest', event.requestId)
                 await page.Fetch.continueRequest({ requestId: event.requestId });
             } catch (e) {
-
+                // await page.Fetch.continueResponse
+                // await page.Fetch.continueRequest({})
+                console.error(e);
             }
-            // request.continue()
         });
         // page.Fetch.requestPaused();
 
@@ -154,12 +157,11 @@ export class BlockTracking {
             if (url.startsWith('data:')) {
                 return
             }
-            const body = await page.Network.getResponseBody({ requestId })
             const cacheKey = this.getCacheKey(url)
             if (!cacheKey) {
-                let len = body.body.length;
-                if (body.base64Encoded)
-                    len = len / 4 * 3
+                let len = 0;// body.body.length;
+                //if (body.base64Encoded)
+                //    len = len / 4 * 3
                 this.statPassthrough.add(url, JSON.stringify(headers), len)
                 return;
             }
@@ -176,6 +178,7 @@ export class BlockTracking {
             if (!this.ignoreDomains.match(url))
                 console.log(`${pc.bgMagenta('ADD Cache')}: ${cacheKey.join('/')}`);
             const maxAge = 60 * 60 * 24 * 32;
+            const body = await page.Network.getResponseBody({ requestId })
             const cacheData: CacheModel = {
                 status,
                 headers,

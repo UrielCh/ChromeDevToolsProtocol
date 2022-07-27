@@ -13,10 +13,11 @@ async function testAll() {
     blocker.cacheDoms('www.google.com/maps/dir///');
     blocker.cacheDoms('www.google.com/maps/vt/');
     blocker.cacheDoms('maps.gstatic.com');
+    blocker.cacheDoms('fonts.googleapis.com');
     
 
     // const blocker = new MyBlockTracking();
-    blocker.register(page);
+    await blocker.register(page);
     await page.Page.navigate({ url: 'https://www.google.com/maps/'});
     await page.Page.frameNavigated();
     await delay(5000);
