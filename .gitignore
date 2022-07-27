@@ -7,10 +7,10 @@ chrome-remote-interface/lib/*.d.ts
 chrome-remote-interface/lib/*.js
 chrome-remote-interface/lib/*.map
 */node_modules
-proxy/src/*.js
-proxy/src/*.d.ts
-proxy/basic3.ts
-proxy/tmp/
+cdp-reverter/src/*.js
+cdp-reverter/src/*.d.ts
+cdp-reverter/basic3.ts
+cdp-reverter/tmp/
 sample/*.ts
 sample/*.b64
 sample/*.js
