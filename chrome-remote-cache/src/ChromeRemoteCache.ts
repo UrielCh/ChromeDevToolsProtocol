@@ -15,15 +15,19 @@ export class ChromeRemoteCache {
     private blockedDomains = new UrlSet<boolean>();
     private ignoreDomains = new UrlSet<boolean>();
     private cacheDomain = new UrlSet<ToKey>();
-
     private statCache = new CacheStat();
     private statPassthrough = new CacheStat();
+    #logfnc: (message: string) => void = console.log;
 
     constructor(private cm = new CacheManager()) {
     }
 
     public close() {
         this.cm.close();
+    }
+
+    public set logFnc(fnc: (message: string) => void) {
+        this.#logfnc = fnc;
     }
 
     public block(dom: string) {
@@ -42,12 +46,12 @@ export class ChromeRemoteCache {
      * do not log those request
      * @param doms 
      */
-     public ignore(...doms: string[]) {
+    public ignore(...doms: string[]) {
         for (const dom of doms)
             this.ignoreDomains.add(dom, true);
     }
 
-    log(type: 'addcache' | 'cached' | 'missing' | 'blocked' | 'pass', textUrl: string) {
+    private log(type: 'addcache' | 'cached' | 'missing' | 'blocked' | 'pass', textUrl: string) {
         if (this.ignoreDomains.match(textUrl))
             return;
         let prefix = '';
@@ -68,10 +72,10 @@ export class ChromeRemoteCache {
                 prefix = pc.bgMagenta('ADD Cache');
                 break;
         }
-        console.log(`${prefix}: ${textUrl}`);
+        this.#logfnc(`${prefix}: ${textUrl}`);
     }
 
-    getCacheKey(textUrl: string): [string, string] | null {
+    private getCacheKey(textUrl: string): [string, string] | null {
         textUrl = dropQueryParam(textUrl, 'gclid');
         const toKey = this.cacheDomain.match(textUrl);
         if (toKey) {
@@ -80,7 +84,11 @@ export class ChromeRemoteCache {
         return null;
     }
 
-    async register(page: Chrome) {
+    /**
+     * connect the module to a chrome page
+     * @param page 
+     */
+    public async register(page: Chrome): Promise<void> {
         const continueRequest = async (requestId: string) => {
             try {
                 await page.Fetch.continueRequest({ requestId });
