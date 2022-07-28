@@ -10,6 +10,15 @@ import { Protocol, Chrome } from "@u4/chrome-remote-interface";
 type ToKey = (url: string) => string;
 const dummy = (url: string) => url;
 
+
+const PREFIXS = {
+    'cached': pc.bold(pc.green('cached')),
+    'missing': pc.magenta('missing'),
+    'blocked': pc.red('blocked'),
+    'pass': pc.bold(pc.white('pass')),
+    'addcache': pc.bgMagenta('ADD Cache'),
+}
+
 // cache https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkliZ0tt-7UEKoB_KBN7v3D121PhkkA1JZRlvvV4Rv&s=10
 export class ChromeRemoteCache {
     private blockedDomains = new UrlSet<boolean>();
@@ -40,6 +49,15 @@ export class ChromeRemoteCache {
             this.cacheDomain.add(dom, dummy);
     }
 
+    /**
+     * alias for cache(doms), ignore(doms)
+     * @param doms url selections
+     */
+    public cacheIgnore(...doms: string[]) {
+        this.cache(...doms);
+        this.ignore(...doms);
+    }
+
     public cacheRemap(dom: string, mapping: (url: string) => string) {
         this.cacheDomain.add(dom, mapping);
     }
@@ -55,24 +73,7 @@ export class ChromeRemoteCache {
     private log(type: 'addcache' | 'cached' | 'missing' | 'blocked' | 'pass', textUrl: string) {
         if (this.ignoreDomains.match(textUrl))
             return;
-        let prefix = '';
-        switch (type) {
-            case 'cached':
-                prefix = pc.bold(pc.green('cached'));
-                break;
-            case 'missing':
-                prefix = pc.magenta('missing');
-                break;
-            case 'blocked':
-                prefix = pc.red('blocked');
-                break;
-            case 'pass':
-                prefix = pc.white('pass');
-                break;
-            case 'addcache':
-                prefix = pc.bgMagenta('ADD Cache');
-                break;
-        }
+        let prefix = PREFIXS[type];
         this.#logfnc(`${prefix}: ${textUrl}`);
     }
 
@@ -202,10 +203,11 @@ export class ChromeRemoteCache {
             let resp: Protocol.Network.GetResponseBodyResponse | null = null;
             try {
                 resp = await page.Network.getResponseBody({ requestId })
-            } catch (e) {}
+            } catch (e) { }
             if (!resp) {
-                console.log('No body for url:', url);
-                return;
+                resp = { body: '', base64Encoded: false }
+                // console.log(`No body (${status}) for url: ${url}`, );
+                // return;
             }
             const cacheKey = this.getCacheKey(url)
             if (!cacheKey) {
@@ -236,12 +238,20 @@ export class ChromeRemoteCache {
         });
     }
 
-    public getStats(): { cache: string, pt: string } {
+    public getStats(): { cache: CacheStat, pt: CacheStat } {
         return {
-            cache: this.statCache.toString(),
-            pt: this.statPassthrough.toString(),
+            cache: this.statCache,
+            pt: this.statPassthrough,
         }
     }
+
+    /**
+     * return cache 
+     */
+    public get efficency(): number {
+        return this.statCache.transfert / (this.statCache.transfert + this.statPassthrough.transfert);
+    }
+
 }
 
 export default ChromeRemoteCache;

@@ -31,14 +31,14 @@ async function testAll() {
     
     await remoteCache.register(page);
     await page.Page.navigate({ url: 'https://www.google.com/maps/'});
-    await delay(10000);
+    await delay(7000);
     console.log();
     // display cache usage
     const {cache, pt} = remoteCache.getStats();
-    console.log('cache:', cache);
-    console.log('passt:', pt);
+    console.log('cache:', cache.toString(true));
+    console.log('passt:', pt.toString(true));
     console.log();
-    console.log();
+    console.log(`cache efficency: ${(remoteCache.efficency*100).toFixed(1)}%`);
 }
 
 testAll();
