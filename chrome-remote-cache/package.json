@@ -2,6 +2,19 @@
   "name": "chrome-remote-cache",
   "version": "0.0.1",
   "description": "Caching system for chrome devtools protocol",
+  "keywords": [
+    "chrome",
+    "cache",
+    "chrome devtools protocol"
+  ],
+  "homepage": "https://github.com/UrielCh/ChromeDevToolsProtocol",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/UrielCh/ChromeDevToolsProtocol.git"
+  },
+  "bugs": {
+    "url": "http://github.com/UrielCh/ChromeDevToolsProtocol/issues"
+  },
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
@@ -9,7 +22,6 @@
     "rebuild": "npm run clean && tsc",
     "prepare": "npm run clean && tsc"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
