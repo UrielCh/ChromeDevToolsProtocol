@@ -1,3 +1,10 @@
+/**
+ * drop http params form an url
+ * 
+ * @param url url to filter
+ * @param params params to drop
+ * @returns the url without the selected params
+ */
 export function dropQueryParam(url: string, ...params: string[]): string {
     const start = url.indexOf('?');
     if (start === -1)
@@ -51,6 +58,13 @@ export function splitUrl(url: string): [string, string] {
 
 const UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
 const STEP = 1000;
+
+/**
+ * output a sike in human readable format by using Unit like B, KB, MB, GB...
+ * 
+ * @param size size to format
+ * @returns the size formated as string
+ */
 export function formatSize(size: number) {
     let scale = 0
     while (size > STEP) {

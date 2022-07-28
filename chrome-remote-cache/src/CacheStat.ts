@@ -1,12 +1,21 @@
 import pc from 'picocolors'
-import { formatSize, splitUrl } from './MyUtils'
+import { formatSize, splitUrl } from './CacheUtils'
 
+/**
+ * a simple class to eveluate data transfert per domains
+ */
 export class CacheStat {
     public query = 0;
     public transfert = 0;
     public perDom: { [key: string]: number } = {};
 
-    add(url: string, meta: string, length?: number) {
+    /**
+     * increate data usage from a particular url.
+     * @param url 
+     * @param meta 
+     * @param length 
+     */
+    add(url: string, meta: string, length?: number): void {
         if (url.startsWith('data:'))
             return;
         this.query++;
@@ -20,6 +29,11 @@ export class CacheStat {
         this.perDom[dom] = old + size;
     }
 
+    /**
+     * output stat as a string
+     * 
+     * @param full will spit statistique per domains
+     */
     toString(full?: boolean): string {
         let out = `${pc.green(formatSize(this.transfert))} in ${pc.green(this.query.toString().padStart(3, ' '))} Query`;
         if (full) {

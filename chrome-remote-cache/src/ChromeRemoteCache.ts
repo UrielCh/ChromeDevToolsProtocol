@@ -1,5 +1,5 @@
 import pc from 'picocolors'
-import { dropQueryParam, splitUrl } from './MyUtils'
+import { dropQueryParam, splitUrl } from './CacheUtils'
 
 import UrlSet from './UrlSet';
 import { CacheManager } from './CacheManager';
@@ -30,8 +30,9 @@ export class ChromeRemoteCache {
         this.#logfnc = fnc;
     }
 
-    public block(dom: string) {
-        this.blockedDomains.add(dom, true);
+    public block(...doms: string[]) {
+        for (const dom of doms)
+            this.blockedDomains.add(dom, true);
     }
 
     public cache(...doms: string[]) {

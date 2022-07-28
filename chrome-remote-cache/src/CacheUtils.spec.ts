@@ -1,5 +1,5 @@
 import { serial as test } from 'ava';
-import { dropQueryParam, splitUrl, formatSize } from './MyUtils'
+import { dropQueryParam, splitUrl, formatSize } from './CacheUtils'
 
 test('dropQueryParam no params', t => {
     const url = 'http://domain.com/'

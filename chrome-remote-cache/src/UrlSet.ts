@@ -1,4 +1,4 @@
-import { splitUrl } from './MyUtils'
+import { splitUrl } from './CacheUtils'
 
 type RulesStore<T> = Map<string, Array<[string, T]>>;
 

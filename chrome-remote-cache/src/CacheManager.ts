@@ -10,7 +10,7 @@ export class CacheManager {
 
     constructor(private redis = new Redis()) {}
 
-    public close () {
+    public close() {
         this.redis.disconnect();
     }
 
