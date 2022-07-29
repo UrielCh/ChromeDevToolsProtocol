@@ -57,7 +57,7 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
   await page.close();
   const sessionname = Path.basename(__filename.replace('revert-', '').replace(/\.[jt]s$/, ''));
   protoRev.writeSessions(sessionname);
-  console.log(`Session: ${sessionname} saved`);
+  console.log(`Session: ${sessionname}1.ts saved`);
   // await browser.close();
   browser.disconnect();
   // write down session data

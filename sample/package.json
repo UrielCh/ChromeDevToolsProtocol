@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@u4/chrome-remote-interface": "link:..\\client",
+    "@u4/chrome-remote-interface": "link:..\\chrome-remote-interface",
     "cdp-reverter": "link:..\\cdp-reverter",
     "picocolors": "^1.0.0",
     "puppeteer-extra": "^3.3.4",
