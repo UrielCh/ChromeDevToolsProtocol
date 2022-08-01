@@ -6,6 +6,7 @@ import { ProtoRevertLink } from './ProtoRevertLink';
 export class ProtoRevert {
     private server?: http.Server;
     private ignoreEvent: Set<String>;
+    private maxParamLen: number;
 
     constructor(private options: {
         // srcHost: string,
@@ -13,9 +14,11 @@ export class ProtoRevert {
         dstHost: string,
         dstPort: number,
         ignoreEvent?: string[];
+        maxParamLen?: number;
     }) {
         const ignoreEvent = options.ignoreEvent || [];
         this.ignoreEvent = new Set(ignoreEvent);
+        this.maxParamLen = options.maxParamLen || 256;
     }
 
     public sessions: ProtoRevertLink[] = [];
@@ -55,7 +58,7 @@ export class ProtoRevert {
         this.server = server;
 
         wss.on('connection', (ws: WebSocket.WebSocket, request: http.IncomingMessage) => {
-            this.sessions.push(new ProtoRevertLink(ws, request, this.options.dstPort, this.ignoreEvent));
+            this.sessions.push(new ProtoRevertLink(ws, request, this.options.dstPort, {ignoreEvent: this.ignoreEvent, maxParamLen: this.maxParamLen}));
         });
 
         server.on('upgrade', function upgrade(request, socket, head) {
@@ -66,6 +69,12 @@ export class ProtoRevert {
         });
         // const hostname = this.options.srcHost;
         await new Promise<void>(resolve => server.listen(this.options.srcPort, resolve));
+    }
+
+    public bookmark(text: string): void {
+        for (const session of this.sessions){
+            session.bookmark(text);
+        }
     }
 
     /**

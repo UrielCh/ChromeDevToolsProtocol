@@ -2,6 +2,8 @@ import http from 'http';
 import WebSocket from 'ws';
 import pc from 'picocolors';
 import { type Protocol } from '@u4/chrome-remote-interface';
+import { assert } from 'console';
+import crypto from 'crypto';
 
 interface ProtoRequest {
     id: number;
@@ -34,11 +36,13 @@ export interface ProtoEvent {
 export class ProtoRevertLink {
     static SHOW_EVENT = false;
     static SHOW_MESSAGES = false;
-    
+    private ignoreEvent: Set<String>
+    private maxParamLen = 256;
+
     /**
      * storage for large code chunk
      */
-    rawData: { data:string, type: "b64" | "js" }[] = [];
+    rawData: { data: string, type: "b64" | "js", hash: string }[] = [];
 
     endpoint: string;
     /**
@@ -53,6 +57,10 @@ export class ProtoRevertLink {
     logs = [] as Array<ProtoRequest | ProtoEvent>;
 
 
+    public bookmark(text: string): void {
+        this.logs.push({ id: -1, method: 'bookmark', params: text });
+    }
+
     incUsage(method: string): number {
         let cnt = (this.methodCounter.get(method) || 0) + 1;
         this.methodCounter.set(method, cnt);
@@ -61,13 +69,17 @@ export class ProtoRevertLink {
 
     nameMessage(name: string, cnt: number) {
         name = name.replace(/\./g, '');
-        name = name.substring(0,1).toLocaleLowerCase() + name.substring(1);
+        name = name.substring(0, 1).toLocaleLowerCase() + name.substring(1);
         if (cnt === 1)
             return name;
         return name + cnt;
     }
 
-    constructor(private wsClient: WebSocket.WebSocket, request: http.IncomingMessage, dstPort: number, private ignoreEvent: Set<String>) {
+    constructor(private wsClient: WebSocket.WebSocket, request: http.IncomingMessage, dstPort: number, options: { ignoreEvent?: Set<String>, maxParamLen?: number }) {
+        options = options || {}
+        this.ignoreEvent = options.ignoreEvent || new Set();
+        this.maxParamLen = options.maxParamLen || 256;
+
         const queue: Array<WebSocket.RawData | string> = [];
         this.endpoint = `ws://127.0.0.1:${dstPort}${request.url}`;
         const wsChrome = new WebSocket(this.endpoint);
@@ -251,7 +263,7 @@ export class ProtoRevertLink {
             const { method } = event;
             const cnt = this.incUsage(method);
             event.name = this.nameMessage(method, cnt); // gen a reference name
-    
+
             this.logs.push(event);
             this.indexEvent(event);
             if (ProtoRevertLink.SHOW_EVENT) {
@@ -265,8 +277,11 @@ export class ProtoRevertLink {
 
     logRequest(message: any) {
         const extractBig = (data: string, type: "b64" | "js"): string => {
-            if (!data || data.length < 512) return data;
-            this.rawData.push({data, type});
+            if (!data || data.length < this.maxParamLen) return data;
+            const hash = crypto.createHash('md5').update(data).digest('hex');
+            let idx = this.rawData.findIndex(e => e.hash === hash);
+            if (idx === -1)
+                idx = this.rawData.push({ data, type, hash });
             return `__FILE__RAW__${this.rawData.length}__`;
         }
 
@@ -274,23 +289,39 @@ export class ProtoRevertLink {
             const req = message as ProtoRequest;
             this.injectVarRequest(req)
             const { id, method, sessionId, params, ...rest } = req;
+
+            if (method === 'Runtime.callFunctionOn') {
+                const p2 = params as Protocol.Runtime.CallFunctionOnRequest;
+                if (p2.arguments)
+                    for (let i = 0; i < p2.arguments.length; i++) {
+                        if (p2.arguments[i].value && typeof p2.arguments[i].value === 'string')
+                            p2.arguments[i].value = extractBig(p2.arguments[i].value, 'js');
+                    }
+                if (p2.functionDeclaration)
+                    p2.functionDeclaration = extractBig(p2.functionDeclaration, 'js');
+            }
+
             if (method === 'Runtime.evaluate') {
                 const p2 = params as Protocol.Runtime.EvaluateRequest;
                 if (p2.expression)
-                    p2.expression = extractBig(p2.expression, 'b64');
+                    p2.expression = extractBig(p2.expression, 'js');
             }
+
             if (method === 'Fetch.fulfillRequest') {
                 const p2 = params as Protocol.Fetch.FulfillRequestRequest;
                 if (p2.body) {
                     p2.body = extractBig(p2.body, 'b64');
                 }
             }
+
             if (method === 'Page.addScriptToEvaluateOnNewDocument') {
                 const p2 = params as Protocol.Page.AddScriptToEvaluateOnNewDocumentRequest;
                 if (p2.source) { // js
                     p2.source = extractBig(p2.source, 'js');
                 }
             }
+
+
 
             // counter use to names requests
             const cnt = this.incUsage(method);
@@ -316,7 +347,7 @@ export class ProtoRevertLink {
         const flushWait = () => {
             if (waitEvents.size) {
                 code += `${ls}const wait${++waitCnt} = await page.waitForAllEvents(`;
-                code += [...waitEvents].map(a => (a[1] === 1) ? `"${a[0]}"` : `"${a[0]}" /* ${a[1]} */` ).join(', ');
+                code += [...waitEvents].map(a => (a[1] === 1) ? `"${a[0]}"` : `"${a[0]}" /* ${a[1]} */`).join(', ');
                 code += `); // EVENT\r\n`;
                 waitEvents.clear();
             }
@@ -326,6 +357,13 @@ export class ProtoRevertLink {
             if ('id' in message) {
                 flushWait();
                 const { id } = message;
+                if (id === -1) {
+                    // bookmark
+                    code += ls;
+                    code += '// Bookmark: ' + message.params;
+                    code += '\r\n';
+                    continue;
+                }
                 const meta = session.requests.get(id);
                 if (!meta)
                     continue;
@@ -339,8 +377,9 @@ export class ProtoRevertLink {
                     params = params.replace(/"\$\{([A-Za-z0-9_.]+)\}"/g, '$1!');
                     const fileRef = params.match(/"__FILE__RAW__(\d)__"/);
                     if (fileRef) {
-                        const refId = Number(fileRef[1]);
+                        const refId = Number(fileRef[1]) - 1; // raw ids are indexed from 1
                         const entry = this.rawData[refId];
+                        assert(entry);
                         params = params.replace(fileRef[0], `getContent(${refId}, "${entry.type}")`);
                     }
                     code += params;
@@ -375,7 +414,7 @@ export class ProtoRevertLink {
         let prevs = [] as string[];
         let eventsWait = [] as RegExpMatchArray[];
 
-        const releaseLine = (prev: string ) => {
+        const releaseLine = (prev: string) => {
             for (const m of eventsWait) {
                 if (m[3].includes("waitForAllEvents"))
                     linesout.push(`${m[1]}const ${m[2]} = ${m[3]};`);
