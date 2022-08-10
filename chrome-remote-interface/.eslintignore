@@ -1,0 +1,9 @@
+/node_modules/
+/_tmp/
+/chrome-remote-interface.js
+
+# Travis CI
+/chrome/
+**/*.d.ts
+**/*.js
+lib/protocol1_3.ts
