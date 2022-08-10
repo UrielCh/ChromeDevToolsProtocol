@@ -29,6 +29,10 @@ export interface DevtoolsCreateOptions {
    * do not try to get protocol from chrome devtools server
    */
   local?: boolean;
+  /**
+   * Url modifiyer, used to transform url provided by Chrome.
+   */
+  alterUrl?: (url: string) => string;
 }
 
 /**
