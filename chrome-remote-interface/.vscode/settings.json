@@ -6,6 +6,6 @@
     "index.js": true,
     "index.d.ts": true
   },
-  "deno.enable": true,
+  "deno.enable": false,
   "deno.unstable": false
 }
