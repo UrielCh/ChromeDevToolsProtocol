@@ -29,6 +29,10 @@ export interface DevtoolsCreateOptions {
    * do not try to get protocol from chrome devtools server
    */
   local?: boolean;
+  /**
+   * Url modifiyer, used to transform url provided by Chrome.
+   */
+  alterUrl?: (url: string) => string;
 }
 
 /**
@@ -55,7 +59,7 @@ export interface DevToolTarget {
   devtoolsFrontendUrl: string; // 'https://chrome-devtools-frontend.appspot.com/serve_rev/@...../inspector.html?ws=127.0.0.1:9222/devtools/page/159'
   id: `${number}`;
   title: string;
-  type: "page" | string;
+  type: TargetType;
   url: string;
   webSocketDebuggerUrl: string; //'ws://127.0.0.1:9222/devtools/page/159'
   connect(): Promise<Chrome>;

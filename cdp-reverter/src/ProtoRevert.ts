@@ -6,6 +6,7 @@ import { ProtoRevertLink } from './ProtoRevertLink';
 export class ProtoRevert {
     private server?: http.Server;
     private ignoreEvent: Set<String>;
+    private maxParamLen: number;
 
     constructor(private options: {
         // srcHost: string,
@@ -13,9 +14,11 @@ export class ProtoRevert {
         dstHost: string,
         dstPort: number,
         ignoreEvent?: string[];
+        maxParamLen?: number;
     }) {
         const ignoreEvent = options.ignoreEvent || [];
         this.ignoreEvent = new Set(ignoreEvent);
+        this.maxParamLen = options.maxParamLen || 256;
     }
 
     public sessions: ProtoRevertLink[] = [];
@@ -55,7 +58,7 @@ export class ProtoRevert {
         this.server = server;
 
         wss.on('connection', (ws: WebSocket.WebSocket, request: http.IncomingMessage) => {
-            this.sessions.push(new ProtoRevertLink(ws, request, this.options.dstPort, this.ignoreEvent));
+            this.sessions.push(new ProtoRevertLink(ws, request, this.options.dstPort, {ignoreEvent: this.ignoreEvent, maxParamLen: this.maxParamLen}));
         });
 
         server.on('upgrade', function upgrade(request, socket, head) {
@@ -66,6 +69,12 @@ export class ProtoRevert {
         });
         // const hostname = this.options.srcHost;
         await new Promise<void>(resolve => server.listen(this.options.srcPort, resolve));
+    }
+
+    public bookmark(text: string): void {
+        for (const session of this.sessions){
+            session.bookmark(text);
+        }
     }
 
     /**
@@ -82,19 +91,21 @@ export class ProtoRevert {
             code += "\r\n";
 
             if (session.rawData.length) {
-                code += 'function getContent(id: number): string {\r\n';
-                code += `  return fs.readFileSync("${prefix}_data_" + id + ".js", {encoding: "utf-8"});\r\n`;
+                code += 'function getContent(id: number, ext: "js" | "b64"): string {\r\n';
+                code += `  return fs.readFileSync("${prefix}_data_" + id + "." + ext, {encoding: "utf-8"});\r\n`;
                 code += '}\r\n';
             }
+            
             for (let id = 0; id < session.rawData.length; id++) {
-                fs.writeFileSync(prefix + "_data_" + (id + 1) + ".js", session.rawData[id], { encoding: 'utf8' });
+                const {data, type} = session.rawData[id];
+                fs.writeFileSync(`${prefix}_data_${id + 1}.${type}`, data, { encoding: 'utf8' });
             }
             // const session = protoRev.sessions[protoRev.sessions.length - 1];
             code += `async function run${i + 1}(devtools: Devtools) {\r\n`;
             if (session.endpoint.includes('devtools/browser'))
-                code += '  const cdp = await devtools.connectFirst("browser");';
+                code += '  const page = await devtools.connectFirst("browser");';
             else
-                code += '  const cdp = await devtools.connectFirst("page");';
+                code += '  const page = await devtools.connectFirst("page");';
             code += '\r\n';
             code += session.writeSession();
             code += '}\r\n';

@@ -1,0 +1,40 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "BlockTracking.test",
+            "type": "node",
+            "request": "launch",
+            "args": [
+                "${workspaceRoot}/chrome-remote-cache/src/BlockTracking.test.ts"
+            ],
+            "runtimeArgs": [
+                "-r",
+                "ts-node/register",
+                "--trace-warnings"
+            ],
+            "cwd": "${workspaceRoot}/chrome-remote-cache",
+            "protocol": "inspector",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "revert-puppeteer-query-filter-multi",
+            "type": "node",
+            "request": "launch",
+            "args": [
+                "${workspaceRoot}/sample/src/revert-puppeteer-query-filter-multi.ts"
+            ],
+            "runtimeArgs": [
+                "-r",
+                "ts-node/register",
+                "--trace-warnings"
+            ],
+            "cwd": "${workspaceRoot}/sample",
+            "protocol": "inspector",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+    ]
+}

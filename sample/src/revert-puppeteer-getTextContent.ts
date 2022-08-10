@@ -1,11 +1,7 @@
-import { PageEx } from "puppeteer-extra-plugin-jquery";
-import puppeteer from "puppeteer-extra";
-import { Plugin } from "puppeteer-extra-plugin-jquery";
-/// import { pipePort } from "./pipePort";
+import puppeteer from "puppeteer";
 import { ProtoRevert } from "cdp-reverter";
 
 !(async () => {
-  puppeteer.use(new Plugin());
   // "C:\Program Files\Google\Chrome\Application\chrome.exe" --profile-directory="bot" --remote-debugging-port=9222
   //  chrome-protocol-proxy.exe
   const ignoreEvent = [
@@ -29,26 +25,20 @@ import { ProtoRevert } from "cdp-reverter";
     browserURL: "http://127.0.0.1:9555",
     defaultViewport: null,
   });
-  const pageOrg = await browser.newPage();
-  const page = pageOrg as unknown as PageEx;
+  protoRev.bookmark('newPage')
+  const page = await browser.newPage();
+  protoRev.bookmark('goto https://en.wikipedia.org/wiki/Main_Page')
   await page.goto(
-    "https://github.com/UrielCh/puppeteer-jquery/tree/master/puppeteer-jquery",
+    "https://en.wikipedia.org/wiki/Main_Page",
     { waitUntil: "domcontentloaded" }
   );
-  // await prompts({ type: "text", name: "continue", message: "Are you ready ?" });
-  // use waitForjQuery()
-  const start = await page.waitForjQuery("span.Counter.js-social-count");
-  console.log("selector match ", start.length, "elements");
-  // use any jQuery code.
-  const cnt = await page.jQuery("span.Counter.js-social-count").text();
-  console.log("this project have", cnt, "start");
-  // browser.disconnect();
-  // await browser.close();
-  // write down session data
-  protoRev.writeSessions('revert');
-  console.log('all done');
+  const elm = await page.waitForXPath('//a[@href="/wiki/Special:Statistics"]');
+  protoRev.bookmark('evaluate(el => el.textContent')
+  let value = await page.evaluate(el => el.textContent, elm);
+  console.log(value + ' articles in English');
+  protoRev.bookmark('all done')
+  protoRev.writeSessions('puppeteer-getTextContent');
   protoRev.close();
   // process.exit(0);
 })();
 
-// Debugger.scriptParsed
