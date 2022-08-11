@@ -1,4 +1,5 @@
-import { devTools } from "./common";
+import { devTools } from "./common.ts";
+import { describe, it } from "https://deno.land/std@0.152.0/testing/bdd.ts";
 
 describe("closing a connection", () => {
   it("should allow a subsequent new connection", async () => {

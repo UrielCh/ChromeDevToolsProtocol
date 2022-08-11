@@ -1,4 +1,5 @@
-import { devTools } from "./common";
+import { devTools } from "./common.ts";
+import { describe, it } from "https://deno.land/std@0.152.0/testing/bdd.ts";
 
 describe("visite github like puppeteer", () => {
   describe("without checking the result and without specifying parameters", () => {
@@ -14,7 +15,7 @@ describe("visite github like puppeteer", () => {
       const changes = cdp.waitForAllEvents("Target.targetInfoChanged");
       const { sessionId } = await cdp.Target.attachToTarget({ "targetId": targetId, "flatten": true }); // 4
       await changes;
-      await new Promise(r=>setTimeout(r, 1000));
+      await new Promise(r => setTimeout(r, 1000));
       await cdp.Page.enable({}, sessionId); // 5
       await cdp.Page.getFrameTree({}, sessionId); // 6
       await cdp.Target.setAutoAttach({ "autoAttach": true, "waitForDebuggerOnStart": false, "flatten": true }, sessionId); // 7

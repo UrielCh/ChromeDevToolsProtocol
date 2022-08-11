@@ -1,7 +1,7 @@
 import { EventEmitter } from "https://deno.land/x/event@2.0.0/mod.ts";
 import * as api from "./api.ts";
 import { Protocol } from "./Protocol.ts";
-import { ProtocolError} from "./ProtocolError.ts";
+import { ProtocolError } from "./ProtocolError.ts";
 import ProtocolEventsApi, {
   ProtocolEventParam,
   ProtocolEventsName,
@@ -213,8 +213,10 @@ export class Chrome extends EventEmitter<ProtocolEventsApi> {
       // this is an event
       const { method, params, sessionId } = message;
       this.emit("event", message);
+      // deno-lint-ignore no-explicit-any
       this.emit(method, params as any, sessionId);
       if (sessionId) {
+        // deno-lint-ignore no-explicit-any
         this.emit(`${method}.${sessionId}` as keyof ProtocolEventsApi, params as any, sessionId);
       }
     }
