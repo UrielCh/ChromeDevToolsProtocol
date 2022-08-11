@@ -525,11 +525,11 @@ const emitEvents = (moduleName: string, protocolModuleName: string, domains: Pro
     }
   });
   emitDescription("Catch all events");
-  emitLine("event: [ProtocolEventParam],");
+  emitLine("event: [params: ProtocolEventParam],");
   emitDescription("Message queue is empty");
-  emitLine("ready: [],");
+  emitLine("ready: [void],");
   emitDescription("websocket connection closed");
-  emitLine("disconnect: [],");
+  emitLine("disconnect: [void],");
   emitCloseBlock();
   emitLine();
   emitLine(
