@@ -1,6 +1,6 @@
 export { ProtocolError } from "./lib/ProtocolError.ts";
 export { type ProtocolProxyApi } from "./types/protocol-proxy-api.d.ts";
-export * as Protocol from "./types/protocol.d.ts";
+export { type Protocol } from "./lib/protocolModule.ts";
 export { type ProtocolMapping } from "./types/protocol-mapping.d.ts";
 export { type Chrome, Devtools } from "./lib/Devtools.ts";
 export {
