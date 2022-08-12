@@ -1,4 +1,5 @@
 import type * as Runtime from './runtime.d.ts'
+import type * as Debugger from './debugger.d.ts'
 
 export type integer = number;
 
@@ -776,7 +777,7 @@ export interface ScriptFailedToParseEvent {
     /**
      * The language of the script.
      */
-    scriptLanguage?: ScriptLanguage;
+    scriptLanguage?: Debugger.ScriptLanguage;
     /**
      * The name the embedder supplied for this script.
      */
@@ -855,11 +856,11 @@ export interface ScriptParsedEvent {
     /**
      * The language of the script.
      */
-    scriptLanguage?: ScriptLanguage;
+    scriptLanguage?: Debugger.ScriptLanguage;
     /**
      * If the scriptLanguage is WebASsembly, the source of debug symbols for the module.
      */
-    debugSymbols?: DebugSymbols;
+    debugSymbols?: Debugger.DebugSymbols;
     /**
      * The name the embedder supplied for this script.
      */

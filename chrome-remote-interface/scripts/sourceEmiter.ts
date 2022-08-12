@@ -1,6 +1,6 @@
 import { ensureDirSync } from "https://deno.land/std@0.141.0/fs/ensure_dir.ts";
 import { join } from "https://deno.land/std@0.148.0/path/mod.ts";
-import { basename } from "https://deno.land/std@0.126.0/node/path/posix.ts";
+// import { basename } from "https://deno.land/std@0.126.0/node/path/posix.ts";
 import { Protocol as Proto } from "../lib/Protocol.ts";
 import * as utils from './genutils.ts';
 
@@ -11,11 +11,10 @@ export class SourceEmiter {
     protocolModuleName: string;
     deps = new Set<string>;
 
-    constructor(filename: string, protocolModuleName?: string) {
+    constructor(filename: string) {
         ensureDirSync(utils.typeDir);
         this.destProtocolFilePath = join(utils.typeDir, `${filename}.d.ts`);
-        this.protocolModuleName = protocolModuleName || utils.fixBaseName(basename(this.destProtocolFilePath, ".d.ts"));
-        // console.log(this.protocolModuleName);
+        this.protocolModuleName = 'protocol'; // protocolModuleName || utils.fixBaseName(basename(this.destProtocolFilePath, ".d.ts"));
     }
 
     emit(str: string) {
@@ -362,12 +361,12 @@ export class SourceEmiter {
 
     emitMapping(
         moduleName: string,
-        // protocolModuleName: string,
         domains: Proto.ProtocolDomain[],
     ) {
         moduleName = utils.toTitleCase(moduleName);
         this.emitHeaderComments();
         this.emitLine(`import Protocol from "./${this.protocolModuleName}${utils.importExtantion}";`);
+        //this.emitLine(`import Protocol from "./protocol${utils.importExtantion}";`);
         this.emitLine();
         this.emitDescription(
             "Mappings from protocol event and command names to the types required for them.",

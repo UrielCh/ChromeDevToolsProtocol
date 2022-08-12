@@ -1,5 +1,6 @@
 import type * as Security from './security.d.ts'
 import type * as Runtime from './runtime.d.ts'
+import type * as Network from './network.d.ts'
 import type * as IO from './io.d.ts'
 import type * as Debugger from './debugger.d.ts'
 import type * as Emulation from './emulation.d.ts'
@@ -1063,7 +1064,7 @@ export interface ReportingApiReport {
     /**
      * When the report was generated.
      */
-    timestamp: TimeSinceEpoch;
+    timestamp: Network.TimeSinceEpoch;
     /**
      * How many uploads deep the related request was.
      */
@@ -1105,7 +1106,7 @@ export interface LoadNetworkResourcePageResult {
     /**
      * Response headers.
      */
-    headers?: Headers;
+    headers?: Network.Headers;
 }
 
 /**

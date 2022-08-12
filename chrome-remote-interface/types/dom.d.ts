@@ -1,5 +1,6 @@
 import type * as Page from './page.d.ts'
 import type * as Runtime from './runtime.d.ts'
+import type * as DOM from './dom.d.ts'
 
 export type integer = number;
 
@@ -793,7 +794,7 @@ export interface ResolveNodeRequest {
     /**
      * Backend identifier of the node to resolve.
      */
-    backendNodeId?: BackendNodeId;
+    backendNodeId?: DOM.BackendNodeId;
     /**
      * Symbolic group name that can be used to release multiple objects.
      */
