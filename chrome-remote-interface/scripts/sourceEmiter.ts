@@ -9,11 +9,13 @@ export class SourceEmiter {
     emitStr = "";
     destProtocolFilePath: string;
     protocolModuleName: string;
+    deps = new Set<string>;
 
-    constructor(public filename: string) {
+    constructor(filename: string, protocolModuleName?: string) {
         ensureDirSync(utils.typeDir);
-        this.destProtocolFilePath = join(utils.typeDir, "protocol.d.ts");
-        this.protocolModuleName = utils.fixBaseName(basename(this.destProtocolFilePath, ".d.ts"));
+        this.destProtocolFilePath = join(utils.typeDir, `${filename}.d.ts`);
+        this.protocolModuleName = protocolModuleName || utils.fixBaseName(basename(this.destProtocolFilePath, ".d.ts"));
+        // console.log(this.protocolModuleName);
     }
 
     emit(str: string) {
@@ -120,6 +122,14 @@ export class SourceEmiter {
         prop: Proto.ProtocolType,
     ): string {
         if ("$ref" in prop) {
+            const split = prop.$ref.split('.');
+            if (split.length === 2) {
+                const dom = split[0];
+                if (dom.toLocaleLowerCase() === this.protocolModuleName)
+                    prop.$ref = split[1]; // avoid self import
+                else
+                    this.deps.add(dom);
+            }
             return prop.$ref as string;
         } else if (prop.type === "array") {
             return `${this.getPropertyType(interfaceName, prop.items as Proto.ProtocolType)}[]`;
@@ -208,14 +218,14 @@ export class SourceEmiter {
 
 
     emitDomain(domain: Proto.ProtocolDomain) {
-        const domainName = utils.toTitleCase(domain.domain);
+        // const domainName = utils.toTitleCase(domain.domain);
         this.emitLine();
         this.emitDescription(domain.description);
-        this.emitOpenBlock(`export namespace ${domainName}`);
+        // this.emitOpenBlock(`export namespace ${domainName}`);
         if (domain.types) domain.types.forEach((d) => this.emitDomainType(d));
         if (domain.commands) domain.commands.forEach((d) => this.emitCommand(d));
         if (domain.events) domain.events.forEach((d) => this.emitEvent(d));
-        this.emitCloseBlock();
+        // this.emitCloseBlock();
     }
 
     emitInlineEnumsForCommands(command: Proto.ProtocolCommand) {
@@ -241,16 +251,55 @@ export class SourceEmiter {
     emitModule(domains: Proto.ProtocolDomain[]) {
         let moduleName = this.protocolModuleName
         moduleName = utils.toTitleCase(moduleName);
-        this.emitLine("// deno-lint-ignore-file no-explicit-any");
+        // this.emitLine("// deno-lint-ignore-file no-explicit-any");
         this.emitHeaderComments();
         this.emitPublicDocDeclaration();
-        this.emitOpenBlock(`export namespace ${moduleName}`);
+        //this.emitOpenBlock(`export namespace ${moduleName}`);
         this.emitGlobalTypeDefs();
-        domains.forEach((d) => this.emitDomain(d));
-        this.emitCloseBlock();
+        //domains.forEach((d) => this.emitDomain(d));
+
+        domains.forEach((d) => {
+            const fileName = `${d.domain.toLocaleLowerCase()}`; // .d.ts
+            const domainName = utils.toTitleCase(d.domain);
+            this.emitLine(`export * as ${domainName} from './${fileName}${utils.importExtantion}'`)
+            const se = new SourceEmiter(fileName)
+            se.emitsubModule(d);
+            se.flushEmitToFile();
+        });
+
+        //this.emitCloseBlock();
         this.emitLine();
-        this.emitLine(`export default ${moduleName};`);
+        //this.emitLine(`export default ${moduleName};`);
     }
+
+    /** main entry 1bis */
+    emitsubModule(domain: Proto.ProtocolDomain) {
+        // let moduleName = this.protocolModuleName
+        // moduleName = utils.toTitleCase(moduleName);
+        // this.emitLine("// deno-lint-ignore-file no-explicit-any");
+        // this.emitHeaderComments();
+        // this.emitPublicDocDeclaration();
+        //this.emitOpenBlock(`export namespace ${moduleName}`);
+        this.emitGlobalTypeDefs();
+        //domains.forEach((d) => this.emitDomain(d));
+
+        //domains.forEach((d) => {
+        // const domainName = utils.toTitleCase(domain.domain);
+        // this.emitLine(`export * as ${domainName} from './${domainName.toLocaleLowerCase()}.d.ts'`)
+        this.emitDomain(domain);
+        //});
+
+        //this.emitCloseBlock();
+        this.emitLine();
+
+        const extraImp = [...this.deps].map(d => `import type * as ${d} from './${d.toLowerCase()}.d.ts'`)
+        if (extraImp.length) {
+            const extraStr = extraImp.join('\n') + '\n';
+            this.emitStr = extraStr + this.emitStr;
+        }
+        //this.emitLine(`export default ${moduleName};`);
+    }
+
     ///////
     // can be move out of class
     getEventMapping(
@@ -406,9 +455,6 @@ export class SourceEmiter {
         this.emitLine();
     }
 
-
-
-
     emitDomainApi(domain: Proto.ProtocolDomain, modulePrefix: string) {
         this.emitLine();
         const domainName = utils.toTitleCase(domain.domain);
@@ -421,8 +467,6 @@ export class SourceEmiter {
         }
         this.emitCloseBlock();
     }
-
-
 
     /** main entry 3 */
 
@@ -452,7 +496,6 @@ export class SourceEmiter {
         this.emitLine();
         this.emitLine(`export default ${moduleName};`);
     }
-
 
     /**
      * main entry 4

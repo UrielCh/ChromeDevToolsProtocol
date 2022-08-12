@@ -17,21 +17,21 @@ import { SourceEmiter } from "./sourceEmiter.ts";
 
 
 // fs.mkdirSync(typeDir, { recursive: true });
-const se = new SourceEmiter("protocol.d.ts");
+const se = new SourceEmiter("protocol");
 se.emitModule(localDescriptor.domains);
 se.flushEmitToFile();
 
-const se2 = new SourceEmiter("protocol-mapping.d.ts");
+const se2 = new SourceEmiter("protocol-mapping", "ProtocolMapping");
 const mappingModuleName = "ProtocolMapping";
 se2.emitMapping(mappingModuleName, localDescriptor.domains);
 se2.flushEmitToFile();
 
-const se3 = new SourceEmiter("protocol-proxy-api.d.ts");
+const se3 = new SourceEmiter("protocol-proxy-api", "ProtocolProxyApi");
 const apiModuleName = "ProtocolProxyApi";
 se3.emitApi(apiModuleName, localDescriptor.domains);
 se3.flushEmitToFile();
 
-const se4 = new SourceEmiter("protocol-events.d.ts");
+const se4 = new SourceEmiter("protocol-events", "ProtocolEventsApi");
 const protocolEventsName = "ProtocolEventsApi";
 se4.emitEvents(protocolEventsName, localDescriptor.domains);
 se4.flushEmitToFile();
