@@ -4,6 +4,15 @@ import { join } from "https://deno.land/std@0.148.0/path/mod.ts";
 import { Protocol as Proto } from "../lib/Protocol.ts";
 import * as utils from './genutils.ts';
 
+
+function exportInterface(name: string) {
+    // emit interface by default
+    // return `export interface ${name}`;
+
+    // emit type to allos proper export type.
+    return `export type ${name} =`;
+}
+
 export class SourceEmiter {
     numIndents = 0;
     emitStr = "";
@@ -181,7 +190,7 @@ export class SourceEmiter {
         interfaceName: string,
         props?: Proto.ProtocolProperty[],
     ) {
-        this.emitOpenBlock(`export interface ${interfaceName}`);
+        this.emitOpenBlock(exportInterface(interfaceName));
         props
             ? props.forEach((prop) => this.emitProperty(interfaceName, prop))
             : this.emitLine("[key: string]: string;");
@@ -457,7 +466,7 @@ export class SourceEmiter {
     emitDomainApi(domain: Proto.ProtocolDomain, modulePrefix: string) {
         this.emitLine();
         const domainName = utils.toTitleCase(domain.domain);
-        this.emitOpenBlock(`export interface ${domainName}Api`);
+        this.emitOpenBlock(exportInterface(`${domainName}Api`));
         if (domain.commands) {
             domain.commands.forEach((c) => this.emitApiCommand(c, domainName, modulePrefix));
         }
@@ -480,7 +489,7 @@ export class SourceEmiter {
         this.emitOpenBlock(`export namespace ${moduleName}`);
         this.emitLine("export type SessionId = string;");
         this.emitLine();
-        this.emitOpenBlock("export interface ProtocolApi");
+        this.emitOpenBlock(exportInterface("ProtocolApi"));
         domains.forEach((d) => {
             this.emitLine(`${d.domain}: ${d.domain}Api;`);
             this.emitLine();
@@ -515,7 +524,7 @@ export class SourceEmiter {
         //   }
         // });
         //emitLine(`export type ProtocolEventsName = ${allEvents.map(e=>`"${e}"`).join(" | ")};`);
-        // emitOpenBlock(`export interface ${moduleName}`);
+        // emitOpenBlock(`exportInterface(moduleName));
         this.emitOpenBlock(`export type ${moduleName} =`);
 
         // list all interfaces;
@@ -566,7 +575,7 @@ export class SourceEmiter {
             'export type ProtocolEventsName = Exclude<keyof ProtocolEventsApi, "event" | "ready" >;',
         );
         this.emitLine();
-        this.emitOpenBlock("export interface ProtocolEventParam");
+        this.emitOpenBlock(exportInterface("ProtocolEventParam"));
         this.emitDescription("id of the message, empty if it's an event");
         this.emitLine("id?: number;");
         this.emitDescription("error messge");

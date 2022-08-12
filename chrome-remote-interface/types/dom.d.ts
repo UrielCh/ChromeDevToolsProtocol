@@ -28,7 +28,7 @@ export type BackendNodeId = integer;
 /**
  * Backend node with a friendly name.
  */
-export interface BackendNode {
+export type BackendNode = {
     /**
      * `Node`'s nodeType.
      */
@@ -59,7 +59,7 @@ export type CompatibilityMode = ("QuirksMode" | "LimitedQuirksMode" | "NoQuirksM
  * DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
  * DOMNode is a base node mirror type.
  */
-export interface Node {
+export type Node = {
     /**
      * Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
      * will only push node with given `id` once. It is aware of all requested nodes and will only
@@ -182,7 +182,7 @@ export interface Node {
 /**
  * A structure holding an RGBA color.
  */
-export interface RGBA {
+export type RGBA = {
     /**
      * The red component, in the [0-255] range.
      */
@@ -209,7 +209,7 @@ export type Quad = number[];
 /**
  * Box model.
  */
-export interface BoxModel {
+export type BoxModel = {
     /**
      * Content box
      */
@@ -243,7 +243,7 @@ export interface BoxModel {
 /**
  * CSS Shape Outside details.
  */
-export interface ShapeOutsideInfo {
+export type ShapeOutsideInfo = {
     /**
      * Shape bounds
      */
@@ -261,7 +261,7 @@ export interface ShapeOutsideInfo {
 /**
  * Rectangle.
  */
-export interface Rect {
+export type Rect = {
     /**
      * X coordinate
      */
@@ -280,7 +280,7 @@ export interface Rect {
     height: number;
 }
 
-export interface CSSComputedStyleProperty {
+export type CSSComputedStyleProperty = {
     /**
      * Computed style property name.
      */
@@ -291,21 +291,21 @@ export interface CSSComputedStyleProperty {
     value: string;
 }
 
-export interface CollectClassNamesFromSubtreeRequest {
+export type CollectClassNamesFromSubtreeRequest = {
     /**
      * Id of the node to collect class names.
      */
     nodeId: NodeId;
 }
 
-export interface CollectClassNamesFromSubtreeResponse {
+export type CollectClassNamesFromSubtreeResponse = {
     /**
      * Class name list.
      */
     classNames: string[];
 }
 
-export interface CopyToRequest {
+export type CopyToRequest = {
     /**
      * Id of the node to copy.
      */
@@ -321,14 +321,14 @@ export interface CopyToRequest {
     insertBeforeNodeId?: NodeId;
 }
 
-export interface CopyToResponse {
+export type CopyToResponse = {
     /**
      * Id of the node clone.
      */
     nodeId: NodeId;
 }
 
-export interface DescribeNodeRequest {
+export type DescribeNodeRequest = {
     /**
      * Identifier of the node.
      */
@@ -353,14 +353,14 @@ export interface DescribeNodeRequest {
     pierce?: boolean;
 }
 
-export interface DescribeNodeResponse {
+export type DescribeNodeResponse = {
     /**
      * Node description.
      */
     node: Node;
 }
 
-export interface ScrollIntoViewIfNeededRequest {
+export type ScrollIntoViewIfNeededRequest = {
     /**
      * Identifier of the node.
      */
@@ -380,7 +380,7 @@ export interface ScrollIntoViewIfNeededRequest {
     rect?: Rect;
 }
 
-export interface DiscardSearchResultsRequest {
+export type DiscardSearchResultsRequest = {
     /**
      * Unique search session identifier.
      */
@@ -392,14 +392,14 @@ export const enum EnableRequestIncludeWhitespace {
     All = "all",
 }
 
-export interface EnableRequest {
+export type EnableRequest = {
     /**
      * Whether to include whitespaces in the children array of returned Nodes. (EnableRequestIncludeWhitespace enum)
      */
     includeWhitespace?: ("none" | "all");
 }
 
-export interface FocusRequest {
+export type FocusRequest = {
     /**
      * Identifier of the node.
      */
@@ -414,21 +414,21 @@ export interface FocusRequest {
     objectId?: Runtime.RemoteObjectId;
 }
 
-export interface GetAttributesRequest {
+export type GetAttributesRequest = {
     /**
      * Id of the node to retrieve attibutes for.
      */
     nodeId: NodeId;
 }
 
-export interface GetAttributesResponse {
+export type GetAttributesResponse = {
     /**
      * An interleaved array of node attribute names and values.
      */
     attributes: string[];
 }
 
-export interface GetBoxModelRequest {
+export type GetBoxModelRequest = {
     /**
      * Identifier of the node.
      */
@@ -443,14 +443,14 @@ export interface GetBoxModelRequest {
     objectId?: Runtime.RemoteObjectId;
 }
 
-export interface GetBoxModelResponse {
+export type GetBoxModelResponse = {
     /**
      * Box model for the node.
      */
     model: BoxModel;
 }
 
-export interface GetContentQuadsRequest {
+export type GetContentQuadsRequest = {
     /**
      * Identifier of the node.
      */
@@ -465,14 +465,14 @@ export interface GetContentQuadsRequest {
     objectId?: Runtime.RemoteObjectId;
 }
 
-export interface GetContentQuadsResponse {
+export type GetContentQuadsResponse = {
     /**
      * Quads that describe node layout relative to viewport.
      */
     quads: Quad[];
 }
 
-export interface GetDocumentRequest {
+export type GetDocumentRequest = {
     /**
      * The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
      * entire subtree or provide an integer larger than 0.
@@ -485,14 +485,14 @@ export interface GetDocumentRequest {
     pierce?: boolean;
 }
 
-export interface GetDocumentResponse {
+export type GetDocumentResponse = {
     /**
      * Resulting node.
      */
     root: Node;
 }
 
-export interface GetFlattenedDocumentRequest {
+export type GetFlattenedDocumentRequest = {
     /**
      * The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
      * entire subtree or provide an integer larger than 0.
@@ -505,14 +505,14 @@ export interface GetFlattenedDocumentRequest {
     pierce?: boolean;
 }
 
-export interface GetFlattenedDocumentResponse {
+export type GetFlattenedDocumentResponse = {
     /**
      * Resulting node.
      */
     nodes: Node[];
 }
 
-export interface GetNodesForSubtreeByStyleRequest {
+export type GetNodesForSubtreeByStyleRequest = {
     /**
      * Node ID pointing to the root of a subtree.
      */
@@ -528,14 +528,14 @@ export interface GetNodesForSubtreeByStyleRequest {
     pierce?: boolean;
 }
 
-export interface GetNodesForSubtreeByStyleResponse {
+export type GetNodesForSubtreeByStyleResponse = {
     /**
      * Resulting nodes.
      */
     nodeIds: NodeId[];
 }
 
-export interface GetNodeForLocationRequest {
+export type GetNodeForLocationRequest = {
     /**
      * X coordinate.
      */
@@ -554,7 +554,7 @@ export interface GetNodeForLocationRequest {
     ignorePointerEventsNone?: boolean;
 }
 
-export interface GetNodeForLocationResponse {
+export type GetNodeForLocationResponse = {
     /**
      * Resulting node.
      */
@@ -569,7 +569,7 @@ export interface GetNodeForLocationResponse {
     nodeId?: NodeId;
 }
 
-export interface GetOuterHTMLRequest {
+export type GetOuterHTMLRequest = {
     /**
      * Identifier of the node.
      */
@@ -584,28 +584,28 @@ export interface GetOuterHTMLRequest {
     objectId?: Runtime.RemoteObjectId;
 }
 
-export interface GetOuterHTMLResponse {
+export type GetOuterHTMLResponse = {
     /**
      * Outer HTML markup.
      */
     outerHTML: string;
 }
 
-export interface GetRelayoutBoundaryRequest {
+export type GetRelayoutBoundaryRequest = {
     /**
      * Id of the node.
      */
     nodeId: NodeId;
 }
 
-export interface GetRelayoutBoundaryResponse {
+export type GetRelayoutBoundaryResponse = {
     /**
      * Relayout boundary node id for the given node.
      */
     nodeId: NodeId;
 }
 
-export interface GetSearchResultsRequest {
+export type GetSearchResultsRequest = {
     /**
      * Unique search session identifier.
      */
@@ -620,14 +620,14 @@ export interface GetSearchResultsRequest {
     toIndex: integer;
 }
 
-export interface GetSearchResultsResponse {
+export type GetSearchResultsResponse = {
     /**
      * Ids of the search result nodes.
      */
     nodeIds: NodeId[];
 }
 
-export interface MoveToRequest {
+export type MoveToRequest = {
     /**
      * Id of the node to move.
      */
@@ -643,14 +643,14 @@ export interface MoveToRequest {
     insertBeforeNodeId?: NodeId;
 }
 
-export interface MoveToResponse {
+export type MoveToResponse = {
     /**
      * New id of the moved node.
      */
     nodeId: NodeId;
 }
 
-export interface PerformSearchRequest {
+export type PerformSearchRequest = {
     /**
      * Plain text or query selector or XPath search query.
      */
@@ -661,7 +661,7 @@ export interface PerformSearchRequest {
     includeUserAgentShadowDOM?: boolean;
 }
 
-export interface PerformSearchResponse {
+export type PerformSearchResponse = {
     /**
      * Unique search session identifier.
      */
@@ -672,28 +672,28 @@ export interface PerformSearchResponse {
     resultCount: integer;
 }
 
-export interface PushNodeByPathToFrontendRequest {
+export type PushNodeByPathToFrontendRequest = {
     /**
      * Path to node in the proprietary format.
      */
     path: string;
 }
 
-export interface PushNodeByPathToFrontendResponse {
+export type PushNodeByPathToFrontendResponse = {
     /**
      * Id of the node for given path.
      */
     nodeId: NodeId;
 }
 
-export interface PushNodesByBackendIdsToFrontendRequest {
+export type PushNodesByBackendIdsToFrontendRequest = {
     /**
      * The array of backend node ids.
      */
     backendNodeIds: BackendNodeId[];
 }
 
-export interface PushNodesByBackendIdsToFrontendResponse {
+export type PushNodesByBackendIdsToFrontendResponse = {
     /**
      * The array of ids of pushed nodes that correspond to the backend ids specified in
      * backendNodeIds.
@@ -701,7 +701,7 @@ export interface PushNodesByBackendIdsToFrontendResponse {
     nodeIds: NodeId[];
 }
 
-export interface QuerySelectorRequest {
+export type QuerySelectorRequest = {
     /**
      * Id of the node to query upon.
      */
@@ -712,14 +712,14 @@ export interface QuerySelectorRequest {
     selector: string;
 }
 
-export interface QuerySelectorResponse {
+export type QuerySelectorResponse = {
     /**
      * Query selector result.
      */
     nodeId: NodeId;
 }
 
-export interface QuerySelectorAllRequest {
+export type QuerySelectorAllRequest = {
     /**
      * Id of the node to query upon.
      */
@@ -730,14 +730,14 @@ export interface QuerySelectorAllRequest {
     selector: string;
 }
 
-export interface QuerySelectorAllResponse {
+export type QuerySelectorAllResponse = {
     /**
      * Query selector result.
      */
     nodeIds: NodeId[];
 }
 
-export interface RemoveAttributeRequest {
+export type RemoveAttributeRequest = {
     /**
      * Id of the element to remove attribute from.
      */
@@ -748,14 +748,14 @@ export interface RemoveAttributeRequest {
     name: string;
 }
 
-export interface RemoveNodeRequest {
+export type RemoveNodeRequest = {
     /**
      * Id of the node to remove.
      */
     nodeId: NodeId;
 }
 
-export interface RequestChildNodesRequest {
+export type RequestChildNodesRequest = {
     /**
      * Id of the node to get children for.
      */
@@ -772,21 +772,21 @@ export interface RequestChildNodesRequest {
     pierce?: boolean;
 }
 
-export interface RequestNodeRequest {
+export type RequestNodeRequest = {
     /**
      * JavaScript object id to convert into node.
      */
     objectId: Runtime.RemoteObjectId;
 }
 
-export interface RequestNodeResponse {
+export type RequestNodeResponse = {
     /**
      * Node id for given object.
      */
     nodeId: NodeId;
 }
 
-export interface ResolveNodeRequest {
+export type ResolveNodeRequest = {
     /**
      * Id of the node to resolve.
      */
@@ -805,14 +805,14 @@ export interface ResolveNodeRequest {
     executionContextId?: Runtime.ExecutionContextId;
 }
 
-export interface ResolveNodeResponse {
+export type ResolveNodeResponse = {
     /**
      * JavaScript object wrapper for given node.
      */
     object: Runtime.RemoteObject;
 }
 
-export interface SetAttributeValueRequest {
+export type SetAttributeValueRequest = {
     /**
      * Id of the element to set attribute for.
      */
@@ -827,7 +827,7 @@ export interface SetAttributeValueRequest {
     value: string;
 }
 
-export interface SetAttributesAsTextRequest {
+export type SetAttributesAsTextRequest = {
     /**
      * Id of the element to set attributes for.
      */
@@ -843,7 +843,7 @@ export interface SetAttributesAsTextRequest {
     name?: string;
 }
 
-export interface SetFileInputFilesRequest {
+export type SetFileInputFilesRequest = {
     /**
      * Array of file paths to set.
      */
@@ -862,46 +862,46 @@ export interface SetFileInputFilesRequest {
     objectId?: Runtime.RemoteObjectId;
 }
 
-export interface SetNodeStackTracesEnabledRequest {
+export type SetNodeStackTracesEnabledRequest = {
     /**
      * Enable or disable.
      */
     enable: boolean;
 }
 
-export interface GetNodeStackTracesRequest {
+export type GetNodeStackTracesRequest = {
     /**
      * Id of the node to get stack traces for.
      */
     nodeId: NodeId;
 }
 
-export interface GetNodeStackTracesResponse {
+export type GetNodeStackTracesResponse = {
     /**
      * Creation stack trace, if available.
      */
     creation?: Runtime.StackTrace;
 }
 
-export interface GetFileInfoRequest {
+export type GetFileInfoRequest = {
     /**
      * JavaScript object id of the node wrapper.
      */
     objectId: Runtime.RemoteObjectId;
 }
 
-export interface GetFileInfoResponse {
+export type GetFileInfoResponse = {
     path: string;
 }
 
-export interface SetInspectedNodeRequest {
+export type SetInspectedNodeRequest = {
     /**
      * DOM node id to be accessible by means of $x command line API.
      */
     nodeId: NodeId;
 }
 
-export interface SetNodeNameRequest {
+export type SetNodeNameRequest = {
     /**
      * Id of the node to set name for.
      */
@@ -912,14 +912,14 @@ export interface SetNodeNameRequest {
     name: string;
 }
 
-export interface SetNodeNameResponse {
+export type SetNodeNameResponse = {
     /**
      * New node's id.
      */
     nodeId: NodeId;
 }
 
-export interface SetNodeValueRequest {
+export type SetNodeValueRequest = {
     /**
      * Id of the node to set value for.
      */
@@ -930,7 +930,7 @@ export interface SetNodeValueRequest {
     value: string;
 }
 
-export interface SetOuterHTMLRequest {
+export type SetOuterHTMLRequest = {
     /**
      * Id of the node to set markup for.
      */
@@ -941,11 +941,11 @@ export interface SetOuterHTMLRequest {
     outerHTML: string;
 }
 
-export interface GetFrameOwnerRequest {
+export type GetFrameOwnerRequest = {
     frameId: Page.FrameId;
 }
 
-export interface GetFrameOwnerResponse {
+export type GetFrameOwnerResponse = {
     /**
      * Resulting node.
      */
@@ -956,26 +956,26 @@ export interface GetFrameOwnerResponse {
     nodeId?: NodeId;
 }
 
-export interface GetContainerForNodeRequest {
+export type GetContainerForNodeRequest = {
     nodeId: NodeId;
     containerName?: string;
 }
 
-export interface GetContainerForNodeResponse {
+export type GetContainerForNodeResponse = {
     /**
      * The container node for the given node, or null if not found.
      */
     nodeId?: NodeId;
 }
 
-export interface GetQueryingDescendantsForContainerRequest {
+export type GetQueryingDescendantsForContainerRequest = {
     /**
      * Id of the container node to find querying descendants from.
      */
     nodeId: NodeId;
 }
 
-export interface GetQueryingDescendantsForContainerResponse {
+export type GetQueryingDescendantsForContainerResponse = {
     /**
      * Descendant nodes with container queries against the given container.
      */
@@ -985,7 +985,7 @@ export interface GetQueryingDescendantsForContainerResponse {
 /**
  * Fired when `Element`'s attribute is modified.
  */
-export interface AttributeModifiedEvent {
+export type AttributeModifiedEvent = {
     /**
      * Id of the node that has changed.
      */
@@ -1003,7 +1003,7 @@ export interface AttributeModifiedEvent {
 /**
  * Fired when `Element`'s attribute is removed.
  */
-export interface AttributeRemovedEvent {
+export type AttributeRemovedEvent = {
     /**
      * Id of the node that has changed.
      */
@@ -1017,7 +1017,7 @@ export interface AttributeRemovedEvent {
 /**
  * Mirrors `DOMCharacterDataModified` event.
  */
-export interface CharacterDataModifiedEvent {
+export type CharacterDataModifiedEvent = {
     /**
      * Id of the node that has changed.
      */
@@ -1031,7 +1031,7 @@ export interface CharacterDataModifiedEvent {
 /**
  * Fired when `Container`'s child node count has changed.
  */
-export interface ChildNodeCountUpdatedEvent {
+export type ChildNodeCountUpdatedEvent = {
     /**
      * Id of the node that has changed.
      */
@@ -1045,7 +1045,7 @@ export interface ChildNodeCountUpdatedEvent {
 /**
  * Mirrors `DOMNodeInserted` event.
  */
-export interface ChildNodeInsertedEvent {
+export type ChildNodeInsertedEvent = {
     /**
      * Id of the node that has changed.
      */
@@ -1063,7 +1063,7 @@ export interface ChildNodeInsertedEvent {
 /**
  * Mirrors `DOMNodeRemoved` event.
  */
-export interface ChildNodeRemovedEvent {
+export type ChildNodeRemovedEvent = {
     /**
      * Parent id.
      */
@@ -1077,7 +1077,7 @@ export interface ChildNodeRemovedEvent {
 /**
  * Called when distribution is changed.
  */
-export interface DistributedNodesUpdatedEvent {
+export type DistributedNodesUpdatedEvent = {
     /**
      * Insertion point where distributed nodes were updated.
      */
@@ -1091,7 +1091,7 @@ export interface DistributedNodesUpdatedEvent {
 /**
  * Fired when `Element`'s inline style is modified via a CSS property modification.
  */
-export interface InlineStyleInvalidatedEvent {
+export type InlineStyleInvalidatedEvent = {
     /**
      * Ids of the nodes for which the inline styles have been invalidated.
      */
@@ -1101,7 +1101,7 @@ export interface InlineStyleInvalidatedEvent {
 /**
  * Called when a pseudo element is added to an element.
  */
-export interface PseudoElementAddedEvent {
+export type PseudoElementAddedEvent = {
     /**
      * Pseudo element's parent element id.
      */
@@ -1115,7 +1115,7 @@ export interface PseudoElementAddedEvent {
 /**
  * Called when a pseudo element is removed from an element.
  */
-export interface PseudoElementRemovedEvent {
+export type PseudoElementRemovedEvent = {
     /**
      * Pseudo element's parent element id.
      */
@@ -1130,7 +1130,7 @@ export interface PseudoElementRemovedEvent {
  * Fired when backend wants to provide client with the missing DOM structure. This happens upon
  * most of the calls requesting node ids.
  */
-export interface SetChildNodesEvent {
+export type SetChildNodesEvent = {
     /**
      * Parent node id to populate with children.
      */
@@ -1144,7 +1144,7 @@ export interface SetChildNodesEvent {
 /**
  * Called when shadow root is popped from the element.
  */
-export interface ShadowRootPoppedEvent {
+export type ShadowRootPoppedEvent = {
     /**
      * Host element id.
      */
@@ -1158,7 +1158,7 @@ export interface ShadowRootPoppedEvent {
 /**
  * Called when shadow root is pushed into the element.
  */
-export interface ShadowRootPushedEvent {
+export type ShadowRootPushedEvent = {
     /**
      * Host element id.
      */

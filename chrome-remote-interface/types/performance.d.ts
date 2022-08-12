@@ -5,7 +5,7 @@ export type integer = number;
 /**
  * Run-time execution metric.
  */
-export interface Metric {
+export type Metric = {
     /**
      * Metric name.
      */
@@ -21,7 +21,7 @@ export const enum EnableRequestTimeDomain {
     ThreadTicks = "threadTicks",
 }
 
-export interface EnableRequest {
+export type EnableRequest = {
     /**
      * Time domain to use for collecting and reporting duration metrics. (EnableRequestTimeDomain enum)
      */
@@ -33,14 +33,14 @@ export const enum SetTimeDomainRequestTimeDomain {
     ThreadTicks = "threadTicks",
 }
 
-export interface SetTimeDomainRequest {
+export type SetTimeDomainRequest = {
     /**
      * Time domain (SetTimeDomainRequestTimeDomain enum)
      */
     timeDomain: ("timeTicks" | "threadTicks");
 }
 
-export interface GetMetricsResponse {
+export type GetMetricsResponse = {
     /**
      * Current values for run-time metrics.
      */
@@ -50,7 +50,7 @@ export interface GetMetricsResponse {
 /**
  * Current values of the metrics.
  */
-export interface MetricsEvent {
+export type MetricsEvent = {
     /**
      * Current values of the metrics.
      */

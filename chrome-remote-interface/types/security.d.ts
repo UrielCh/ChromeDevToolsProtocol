@@ -25,7 +25,7 @@ export type SecurityState = ("unknown" | "neutral" | "insecure" | "secure" | "in
 /**
  * Details about the security state of the page certificate.
  */
-export interface CertificateSecurityState {
+export type CertificateSecurityState = {
     /**
      * Protocol name (e.g. "TLS 1.2" or "QUIC").
      */
@@ -102,7 +102,7 @@ export interface CertificateSecurityState {
 
 export type SafetyTipStatus = ("badReputation" | "lookalike");
 
-export interface SafetyTipInfo {
+export type SafetyTipInfo = {
     /**
      * Describes whether the page triggers any safety tips or reputation warnings. Default is unknown.
      */
@@ -116,7 +116,7 @@ export interface SafetyTipInfo {
 /**
  * Security state information about the page.
  */
-export interface VisibleSecurityState {
+export type VisibleSecurityState = {
     /**
      * The security level of the page.
      */
@@ -138,7 +138,7 @@ export interface VisibleSecurityState {
 /**
  * An explanation of an factor contributing to the security state.
  */
-export interface SecurityStateExplanation {
+export type SecurityStateExplanation = {
     /**
      * Security state representing the severity of the factor being explained.
      */
@@ -172,7 +172,7 @@ export interface SecurityStateExplanation {
 /**
  * Information about insecure content on the page.
  */
-export interface InsecureContentStatus {
+export type InsecureContentStatus = {
     /**
      * Always false.
      */
@@ -209,14 +209,14 @@ export interface InsecureContentStatus {
  */
 export type CertificateErrorAction = ("continue" | "cancel");
 
-export interface SetIgnoreCertificateErrorsRequest {
+export type SetIgnoreCertificateErrorsRequest = {
     /**
      * If true, all certificate errors will be ignored.
      */
     ignore: boolean;
 }
 
-export interface HandleCertificateErrorRequest {
+export type HandleCertificateErrorRequest = {
     /**
      * The ID of the event.
      */
@@ -227,7 +227,7 @@ export interface HandleCertificateErrorRequest {
     action: CertificateErrorAction;
 }
 
-export interface SetOverrideCertificateErrorsRequest {
+export type SetOverrideCertificateErrorsRequest = {
     /**
      * If true, certificate errors will be overridden.
      */
@@ -240,7 +240,7 @@ export interface SetOverrideCertificateErrorsRequest {
  * certificate error has been allowed internally. Only one client per target should override
  * certificate errors at the same time.
  */
-export interface CertificateErrorEvent {
+export type CertificateErrorEvent = {
     /**
      * The ID of the event.
      */
@@ -258,7 +258,7 @@ export interface CertificateErrorEvent {
 /**
  * The security state of the page changed.
  */
-export interface VisibleSecurityStateChangedEvent {
+export type VisibleSecurityStateChangedEvent = {
     /**
      * Security state information about the page.
      */
@@ -268,7 +268,7 @@ export interface VisibleSecurityStateChangedEvent {
 /**
  * The security state of the page changed. No longer being sent.
  */
-export interface SecurityStateChangedEvent {
+export type SecurityStateChangedEvent = {
     /**
      * Security state.
      */

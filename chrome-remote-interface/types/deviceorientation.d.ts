@@ -2,7 +2,7 @@
 export type integer = number;
 
 
-export interface SetDeviceOrientationOverrideRequest {
+export type SetDeviceOrientationOverrideRequest = {
     /**
      * Mock alpha
      */

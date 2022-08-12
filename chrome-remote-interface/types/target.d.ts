@@ -14,7 +14,7 @@ export type TargetID = string;
  */
 export type SessionID = string;
 
-export interface TargetInfo {
+export type TargetInfo = {
     targetId: TargetID;
     type: string;
     title: string;
@@ -38,16 +38,16 @@ export interface TargetInfo {
     browserContextId?: Browser.BrowserContextID;
 }
 
-export interface RemoteLocation {
+export type RemoteLocation = {
     host: string;
     port: integer;
 }
 
-export interface ActivateTargetRequest {
+export type ActivateTargetRequest = {
     targetId: TargetID;
 }
 
-export interface AttachToTargetRequest {
+export type AttachToTargetRequest = {
     targetId: TargetID;
     /**
      * Enables "flat" access to the session via specifying sessionId attribute in the commands.
@@ -57,32 +57,32 @@ export interface AttachToTargetRequest {
     flatten?: boolean;
 }
 
-export interface AttachToTargetResponse {
+export type AttachToTargetResponse = {
     /**
      * Id assigned to the session.
      */
     sessionId: SessionID;
 }
 
-export interface AttachToBrowserTargetResponse {
+export type AttachToBrowserTargetResponse = {
     /**
      * Id assigned to the session.
      */
     sessionId: SessionID;
 }
 
-export interface CloseTargetRequest {
+export type CloseTargetRequest = {
     targetId: TargetID;
 }
 
-export interface CloseTargetResponse {
+export type CloseTargetResponse = {
     /**
      * Always set to true. If an error occurs, the response indicates protocol error.
      */
     success: boolean;
 }
 
-export interface ExposeDevToolsProtocolRequest {
+export type ExposeDevToolsProtocolRequest = {
     targetId: TargetID;
     /**
      * Binding name, 'cdp' if not specified.
@@ -90,7 +90,7 @@ export interface ExposeDevToolsProtocolRequest {
     bindingName?: string;
 }
 
-export interface CreateBrowserContextRequest {
+export type CreateBrowserContextRequest = {
     /**
      * If specified, disposes this context when debugging session disconnects.
      */
@@ -110,21 +110,21 @@ export interface CreateBrowserContextRequest {
     originsWithUniversalNetworkAccess?: string[];
 }
 
-export interface CreateBrowserContextResponse {
+export type CreateBrowserContextResponse = {
     /**
      * The id of the context created.
      */
     browserContextId: Browser.BrowserContextID;
 }
 
-export interface GetBrowserContextsResponse {
+export type GetBrowserContextsResponse = {
     /**
      * An array of browser context ids.
      */
     browserContextIds: Browser.BrowserContextID[];
 }
 
-export interface CreateTargetRequest {
+export type CreateTargetRequest = {
     /**
      * The initial URL the page will be navigated to. An empty string indicates about:blank.
      */
@@ -157,14 +157,14 @@ export interface CreateTargetRequest {
     background?: boolean;
 }
 
-export interface CreateTargetResponse {
+export type CreateTargetResponse = {
     /**
      * The id of the page opened.
      */
     targetId: TargetID;
 }
 
-export interface DetachFromTargetRequest {
+export type DetachFromTargetRequest = {
     /**
      * Session to detach.
      */
@@ -175,26 +175,26 @@ export interface DetachFromTargetRequest {
     targetId?: TargetID;
 }
 
-export interface DisposeBrowserContextRequest {
+export type DisposeBrowserContextRequest = {
     browserContextId: Browser.BrowserContextID;
 }
 
-export interface GetTargetInfoRequest {
+export type GetTargetInfoRequest = {
     targetId?: TargetID;
 }
 
-export interface GetTargetInfoResponse {
+export type GetTargetInfoResponse = {
     targetInfo: TargetInfo;
 }
 
-export interface GetTargetsResponse {
+export type GetTargetsResponse = {
     /**
      * The list of targets.
      */
     targetInfos: TargetInfo[];
 }
 
-export interface SendMessageToTargetRequest {
+export type SendMessageToTargetRequest = {
     message: string;
     /**
      * Identifier of the session.
@@ -206,7 +206,7 @@ export interface SendMessageToTargetRequest {
     targetId?: TargetID;
 }
 
-export interface SetAutoAttachRequest {
+export type SetAutoAttachRequest = {
     /**
      * Whether to auto-attach to related targets.
      */
@@ -224,7 +224,7 @@ export interface SetAutoAttachRequest {
     flatten?: boolean;
 }
 
-export interface AutoAttachRelatedRequest {
+export type AutoAttachRelatedRequest = {
     targetId: TargetID;
     /**
      * Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
@@ -233,14 +233,14 @@ export interface AutoAttachRelatedRequest {
     waitForDebuggerOnStart: boolean;
 }
 
-export interface SetDiscoverTargetsRequest {
+export type SetDiscoverTargetsRequest = {
     /**
      * Whether to discover available targets.
      */
     discover: boolean;
 }
 
-export interface SetRemoteLocationsRequest {
+export type SetRemoteLocationsRequest = {
     /**
      * List of remote locations.
      */
@@ -250,7 +250,7 @@ export interface SetRemoteLocationsRequest {
 /**
  * Issued when attached to target because of auto-attach or `attachToTarget` command.
  */
-export interface AttachedToTargetEvent {
+export type AttachedToTargetEvent = {
     /**
      * Identifier assigned to the session used to send/receive messages.
      */
@@ -263,7 +263,7 @@ export interface AttachedToTargetEvent {
  * Issued when detached from target for any reason (including `detachFromTarget` command). Can be
  * issued multiple times per target if multiple sessions have been attached to it.
  */
-export interface DetachedFromTargetEvent {
+export type DetachedFromTargetEvent = {
     /**
      * Detached session identifier.
      */
@@ -278,7 +278,7 @@ export interface DetachedFromTargetEvent {
  * Notifies about a new protocol message received from the session (as reported in
  * `attachedToTarget` event).
  */
-export interface ReceivedMessageFromTargetEvent {
+export type ReceivedMessageFromTargetEvent = {
     /**
      * Identifier of a session which sends a message.
      */
@@ -293,21 +293,21 @@ export interface ReceivedMessageFromTargetEvent {
 /**
  * Issued when a possible inspection target is created.
  */
-export interface TargetCreatedEvent {
+export type TargetCreatedEvent = {
     targetInfo: TargetInfo;
 }
 
 /**
  * Issued when a target is destroyed.
  */
-export interface TargetDestroyedEvent {
+export type TargetDestroyedEvent = {
     targetId: TargetID;
 }
 
 /**
  * Issued when a target has crashed.
  */
-export interface TargetCrashedEvent {
+export type TargetCrashedEvent = {
     targetId: TargetID;
     /**
      * Termination status type.
@@ -323,7 +323,7 @@ export interface TargetCrashedEvent {
  * Issued when some information about a target has changed. This only happens between
  * `targetCreated` and `targetDestroyed`.
  */
-export interface TargetInfoChangedEvent {
+export type TargetInfoChangedEvent = {
     targetInfo: TargetInfo;
 }
 

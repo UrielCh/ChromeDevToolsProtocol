@@ -28,7 +28,7 @@ export type AXValueNativeSourceType = ("description" | "figcaption" | "label" | 
 /**
  * A single source for a computed AX property.
  */
-export interface AXValueSource {
+export type AXValueSource = {
     /**
      * What type of source this is.
      */
@@ -67,7 +67,7 @@ export interface AXValueSource {
     invalidReason?: string;
 }
 
-export interface AXRelatedNode {
+export type AXRelatedNode = {
     /**
      * The BackendNodeId of the related DOM node.
      */
@@ -82,7 +82,7 @@ export interface AXRelatedNode {
     text?: string;
 }
 
-export interface AXProperty {
+export type AXProperty = {
     /**
      * The name of this property.
      */
@@ -96,7 +96,7 @@ export interface AXProperty {
 /**
  * A single computed AX property.
  */
-export interface AXValue {
+export type AXValue = {
     /**
      * The type of this value.
      */
@@ -128,7 +128,7 @@ export type AXPropertyName = ("busy" | "disabled" | "editable" | "focusable" | "
 /**
  * A node in the accessibility tree.
  */
-export interface AXNode {
+export type AXNode = {
     /**
      * Unique identifier for this node.
      */
@@ -179,7 +179,7 @@ export interface AXNode {
     frameId?: Page.FrameId;
 }
 
-export interface GetPartialAXTreeRequest {
+export type GetPartialAXTreeRequest = {
     /**
      * Identifier of the node to get the partial accessibility tree for.
      */
@@ -198,7 +198,7 @@ export interface GetPartialAXTreeRequest {
     fetchRelatives?: boolean;
 }
 
-export interface GetPartialAXTreeResponse {
+export type GetPartialAXTreeResponse = {
     /**
      * The `Accessibility.AXNode` for this DOM node, if it exists, plus its ancestors, siblings and
      * children, if requested.
@@ -206,7 +206,7 @@ export interface GetPartialAXTreeResponse {
     nodes: AXNode[];
 }
 
-export interface GetFullAXTreeRequest {
+export type GetFullAXTreeRequest = {
     /**
      * The maximum depth at which descendants of the root node should be retrieved.
      * If omitted, the full tree is returned.
@@ -223,11 +223,11 @@ export interface GetFullAXTreeRequest {
     frameId?: Page.FrameId;
 }
 
-export interface GetFullAXTreeResponse {
+export type GetFullAXTreeResponse = {
     nodes: AXNode[];
 }
 
-export interface GetRootAXNodeRequest {
+export type GetRootAXNodeRequest = {
     /**
      * The frame in whose document the node resides.
      * If omitted, the root frame is used.
@@ -235,11 +235,11 @@ export interface GetRootAXNodeRequest {
     frameId?: Page.FrameId;
 }
 
-export interface GetRootAXNodeResponse {
+export type GetRootAXNodeResponse = {
     node: AXNode;
 }
 
-export interface GetAXNodeAndAncestorsRequest {
+export type GetAXNodeAndAncestorsRequest = {
     /**
      * Identifier of the node to get.
      */
@@ -254,11 +254,11 @@ export interface GetAXNodeAndAncestorsRequest {
     objectId?: Runtime.RemoteObjectId;
 }
 
-export interface GetAXNodeAndAncestorsResponse {
+export type GetAXNodeAndAncestorsResponse = {
     nodes: AXNode[];
 }
 
-export interface GetChildAXNodesRequest {
+export type GetChildAXNodesRequest = {
     id: AXNodeId;
     /**
      * The frame in whose document the node resides.
@@ -267,11 +267,11 @@ export interface GetChildAXNodesRequest {
     frameId?: Page.FrameId;
 }
 
-export interface GetChildAXNodesResponse {
+export type GetChildAXNodesResponse = {
     nodes: AXNode[];
 }
 
-export interface QueryAXTreeRequest {
+export type QueryAXTreeRequest = {
     /**
      * Identifier of the node for the root to query.
      */
@@ -294,7 +294,7 @@ export interface QueryAXTreeRequest {
     role?: string;
 }
 
-export interface QueryAXTreeResponse {
+export type QueryAXTreeResponse = {
     /**
      * A list of `Accessibility.AXNode` matching the specified attributes,
      * including nodes that are ignored for accessibility.
@@ -306,7 +306,7 @@ export interface QueryAXTreeResponse {
  * The loadComplete event mirrors the load complete event sent by the browser to assistive
  * technology when the web page has finished loading.
  */
-export interface LoadCompleteEvent {
+export type LoadCompleteEvent = {
     /**
      * New document root node.
      */
@@ -316,7 +316,7 @@ export interface LoadCompleteEvent {
 /**
  * The nodesUpdated event is sent every time a previously requested node has changed the in tree.
  */
-export interface NodesUpdatedEvent {
+export type NodesUpdatedEvent = {
     /**
      * Updated node data.
      */

@@ -10,7 +10,7 @@ export type PressureLevel = ("moderate" | "critical");
 /**
  * Heap profile sample.
  */
-export interface SamplingProfileNode {
+export type SamplingProfileNode = {
     /**
      * Size of the sampled allocation.
      */
@@ -28,7 +28,7 @@ export interface SamplingProfileNode {
 /**
  * Array of heap profile samples.
  */
-export interface SamplingProfile {
+export type SamplingProfile = {
     samples: SamplingProfileNode[];
     modules: Module[];
 }
@@ -36,7 +36,7 @@ export interface SamplingProfile {
 /**
  * Executable module information
  */
-export interface Module {
+export type Module = {
     /**
      * Name of the module.
      */
@@ -56,27 +56,27 @@ export interface Module {
     size: number;
 }
 
-export interface GetDOMCountersResponse {
+export type GetDOMCountersResponse = {
     documents: integer;
     nodes: integer;
     jsEventListeners: integer;
 }
 
-export interface SetPressureNotificationsSuppressedRequest {
+export type SetPressureNotificationsSuppressedRequest = {
     /**
      * If true, memory pressure notifications will be suppressed.
      */
     suppressed: boolean;
 }
 
-export interface SimulatePressureNotificationRequest {
+export type SimulatePressureNotificationRequest = {
     /**
      * Memory pressure level of the notification.
      */
     level: PressureLevel;
 }
 
-export interface StartSamplingRequest {
+export type StartSamplingRequest = {
     /**
      * Average number of bytes between samples.
      */
@@ -87,15 +87,15 @@ export interface StartSamplingRequest {
     suppressRandomness?: boolean;
 }
 
-export interface GetAllTimeSamplingProfileResponse {
+export type GetAllTimeSamplingProfileResponse = {
     profile: SamplingProfile;
 }
 
-export interface GetBrowserSamplingProfileResponse {
+export type GetBrowserSamplingProfileResponse = {
     profile: SamplingProfile;
 }
 
-export interface GetSamplingProfileResponse {
+export type GetSamplingProfileResponse = {
     profile: SamplingProfile;
 }
 

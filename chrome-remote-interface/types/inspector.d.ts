@@ -5,7 +5,7 @@ export type integer = number;
 /**
  * Fired when remote debugging connection is about to be terminated. Contains detach reason.
  */
-export interface DetachedEvent {
+export type DetachedEvent = {
     /**
      * The reason why connection has been terminated.
      */

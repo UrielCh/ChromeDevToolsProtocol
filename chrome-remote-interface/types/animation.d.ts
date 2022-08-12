@@ -13,7 +13,7 @@ export const enum AnimationType {
 /**
  * Animation instance.
  */
-export interface Animation {
+export type Animation = {
     /**
      * `Animation`'s id.
      */
@@ -60,7 +60,7 @@ export interface Animation {
 /**
  * AnimationEffect instance
  */
-export interface AnimationEffect {
+export type AnimationEffect = {
     /**
      * `AnimationEffect`'s delay.
      */
@@ -106,7 +106,7 @@ export interface AnimationEffect {
 /**
  * Keyframes Rule
  */
-export interface KeyframesRule {
+export type KeyframesRule = {
     /**
      * CSS keyframed animation's name.
      */
@@ -120,7 +120,7 @@ export interface KeyframesRule {
 /**
  * Keyframe Style
  */
-export interface KeyframeStyle {
+export type KeyframeStyle = {
     /**
      * Keyframe's time offset.
      */
@@ -131,49 +131,49 @@ export interface KeyframeStyle {
     easing: string;
 }
 
-export interface GetCurrentTimeRequest {
+export type GetCurrentTimeRequest = {
     /**
      * Id of animation.
      */
     id: string;
 }
 
-export interface GetCurrentTimeResponse {
+export type GetCurrentTimeResponse = {
     /**
      * Current time of the page.
      */
     currentTime: number;
 }
 
-export interface GetPlaybackRateResponse {
+export type GetPlaybackRateResponse = {
     /**
      * Playback rate for animations on page.
      */
     playbackRate: number;
 }
 
-export interface ReleaseAnimationsRequest {
+export type ReleaseAnimationsRequest = {
     /**
      * List of animation ids to seek.
      */
     animations: string[];
 }
 
-export interface ResolveAnimationRequest {
+export type ResolveAnimationRequest = {
     /**
      * Animation id.
      */
     animationId: string;
 }
 
-export interface ResolveAnimationResponse {
+export type ResolveAnimationResponse = {
     /**
      * Corresponding remote object.
      */
     remoteObject: Runtime.RemoteObject;
 }
 
-export interface SeekAnimationsRequest {
+export type SeekAnimationsRequest = {
     /**
      * List of animation ids to seek.
      */
@@ -184,7 +184,7 @@ export interface SeekAnimationsRequest {
     currentTime: number;
 }
 
-export interface SetPausedRequest {
+export type SetPausedRequest = {
     /**
      * Animations to set the pause state of.
      */
@@ -195,14 +195,14 @@ export interface SetPausedRequest {
     paused: boolean;
 }
 
-export interface SetPlaybackRateRequest {
+export type SetPlaybackRateRequest = {
     /**
      * Playback rate for animations on page
      */
     playbackRate: number;
 }
 
-export interface SetTimingRequest {
+export type SetTimingRequest = {
     /**
      * Animation id.
      */
@@ -220,7 +220,7 @@ export interface SetTimingRequest {
 /**
  * Event for when an animation has been cancelled.
  */
-export interface AnimationCanceledEvent {
+export type AnimationCanceledEvent = {
     /**
      * Id of the animation that was cancelled.
      */
@@ -230,7 +230,7 @@ export interface AnimationCanceledEvent {
 /**
  * Event for each animation that has been created.
  */
-export interface AnimationCreatedEvent {
+export type AnimationCreatedEvent = {
     /**
      * Id of the animation that was created.
      */
@@ -240,7 +240,7 @@ export interface AnimationCreatedEvent {
 /**
  * Event for animation that has been started.
  */
-export interface AnimationStartedEvent {
+export type AnimationStartedEvent = {
     /**
      * Animation that was started.
      */

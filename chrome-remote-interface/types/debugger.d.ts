@@ -21,7 +21,7 @@ export type CallFrameId = string;
 /**
  * Location in the source code.
  */
-export interface Location {
+export type Location = {
     /**
      * Script identifier as reported in the `Debugger.scriptParsed`.
      */
@@ -39,7 +39,7 @@ export interface Location {
 /**
  * Location in the source code.
  */
-export interface ScriptPosition {
+export type ScriptPosition = {
     lineNumber: integer;
     columnNumber: integer;
 }
@@ -47,7 +47,7 @@ export interface ScriptPosition {
 /**
  * Location range within one script.
  */
-export interface LocationRange {
+export type LocationRange = {
     scriptId: Runtime.ScriptId;
     start: ScriptPosition;
     end: ScriptPosition;
@@ -56,7 +56,7 @@ export interface LocationRange {
 /**
  * JavaScript call frame. Array of call frames form the call stack.
  */
-export interface CallFrame {
+export type CallFrame = {
     /**
      * Call frame identifier. This identifier is only valid while the virtual machine is paused.
      */
@@ -107,7 +107,7 @@ export const enum ScopeType {
 /**
  * Scope description.
  */
-export interface Scope {
+export type Scope = {
     /**
      * Scope type. (ScopeType enum)
      */
@@ -132,7 +132,7 @@ export interface Scope {
 /**
  * Search match for resource.
  */
-export interface SearchMatch {
+export type SearchMatch = {
     /**
      * Line number in resource content.
      */
@@ -149,7 +149,7 @@ export const enum BreakLocationType {
     Return = "return",
 }
 
-export interface BreakLocation {
+export type BreakLocation = {
     /**
      * Script identifier as reported in the `Debugger.scriptParsed`.
      */
@@ -183,7 +183,7 @@ export const enum DebugSymbolsType {
 /**
  * Debug symbols available for a wasm script.
  */
-export interface DebugSymbols {
+export type DebugSymbols = {
     /**
      * Type of the debug symbols. (DebugSymbolsType enum)
      */
@@ -199,7 +199,7 @@ export const enum ContinueToLocationRequestTargetCallFrames {
     Current = "current",
 }
 
-export interface ContinueToLocationRequest {
+export type ContinueToLocationRequest = {
     /**
      * Location to continue to.
      */
@@ -210,7 +210,7 @@ export interface ContinueToLocationRequest {
     targetCallFrames?: ("any" | "current");
 }
 
-export interface EnableRequest {
+export type EnableRequest = {
     /**
      * The maximum size in bytes of collected scripts (not referenced by other heap objects)
      * the debugger can hold. Puts no limit if parameter is omitted.
@@ -218,14 +218,14 @@ export interface EnableRequest {
     maxScriptsCacheSize?: number;
 }
 
-export interface EnableResponse {
+export type EnableResponse = {
     /**
      * Unique identifier of the debugger.
      */
     debuggerId: Runtime.UniqueDebuggerId;
 }
 
-export interface EvaluateOnCallFrameRequest {
+export type EvaluateOnCallFrameRequest = {
     /**
      * Call frame identifier to evaluate on.
      */
@@ -267,7 +267,7 @@ export interface EvaluateOnCallFrameRequest {
     timeout?: Runtime.TimeDelta;
 }
 
-export interface EvaluateOnCallFrameResponse {
+export type EvaluateOnCallFrameResponse = {
     /**
      * Object wrapper for the evaluation result.
      */
@@ -278,7 +278,7 @@ export interface EvaluateOnCallFrameResponse {
     exceptionDetails?: Runtime.ExceptionDetails;
 }
 
-export interface GetPossibleBreakpointsRequest {
+export type GetPossibleBreakpointsRequest = {
     /**
      * Start of range to search possible breakpoint locations in.
      */
@@ -294,21 +294,21 @@ export interface GetPossibleBreakpointsRequest {
     restrictToFunction?: boolean;
 }
 
-export interface GetPossibleBreakpointsResponse {
+export type GetPossibleBreakpointsResponse = {
     /**
      * List of the possible breakpoint locations.
      */
     locations: BreakLocation[];
 }
 
-export interface GetScriptSourceRequest {
+export type GetScriptSourceRequest = {
     /**
      * Id of the script to get source for.
      */
     scriptId: Runtime.ScriptId;
 }
 
-export interface GetScriptSourceResponse {
+export type GetScriptSourceResponse = {
     /**
      * Script source (empty in case of Wasm bytecode).
      */
@@ -319,47 +319,47 @@ export interface GetScriptSourceResponse {
     bytecode?: string;
 }
 
-export interface GetWasmBytecodeRequest {
+export type GetWasmBytecodeRequest = {
     /**
      * Id of the Wasm script to get source for.
      */
     scriptId: Runtime.ScriptId;
 }
 
-export interface GetWasmBytecodeResponse {
+export type GetWasmBytecodeResponse = {
     /**
      * Script source. (Encoded as a base64 string when passed over JSON)
      */
     bytecode: string;
 }
 
-export interface GetStackTraceRequest {
+export type GetStackTraceRequest = {
     stackTraceId: Runtime.StackTraceId;
 }
 
-export interface GetStackTraceResponse {
+export type GetStackTraceResponse = {
     stackTrace: Runtime.StackTrace;
 }
 
-export interface PauseOnAsyncCallRequest {
+export type PauseOnAsyncCallRequest = {
     /**
      * Debugger will pause when async call with given stack trace is started.
      */
     parentStackTraceId: Runtime.StackTraceId;
 }
 
-export interface RemoveBreakpointRequest {
+export type RemoveBreakpointRequest = {
     breakpointId: BreakpointId;
 }
 
-export interface RestartFrameRequest {
+export type RestartFrameRequest = {
     /**
      * Call frame identifier to evaluate on.
      */
     callFrameId: CallFrameId;
 }
 
-export interface RestartFrameResponse {
+export type RestartFrameResponse = {
     /**
      * New stack trace.
      */
@@ -374,7 +374,7 @@ export interface RestartFrameResponse {
     asyncStackTraceId?: Runtime.StackTraceId;
 }
 
-export interface ResumeRequest {
+export type ResumeRequest = {
     /**
      * Set to true to terminate execution upon resuming execution. In contrast
      * to Runtime.terminateExecution, this will allows to execute further
@@ -385,7 +385,7 @@ export interface ResumeRequest {
     terminateOnResume?: boolean;
 }
 
-export interface SearchInContentRequest {
+export type SearchInContentRequest = {
     /**
      * Id of the script to search in.
      */
@@ -404,14 +404,14 @@ export interface SearchInContentRequest {
     isRegex?: boolean;
 }
 
-export interface SearchInContentResponse {
+export type SearchInContentResponse = {
     /**
      * List of search matches.
      */
     result: SearchMatch[];
 }
 
-export interface SetAsyncCallStackDepthRequest {
+export type SetAsyncCallStackDepthRequest = {
     /**
      * Maximum depth of async call stacks. Setting to `0` will effectively disable collecting async
      * call stacks (default).
@@ -419,14 +419,14 @@ export interface SetAsyncCallStackDepthRequest {
     maxDepth: integer;
 }
 
-export interface SetBlackboxPatternsRequest {
+export type SetBlackboxPatternsRequest = {
     /**
      * Array of regexps that will be used to check script url for blackbox state.
      */
     patterns: string[];
 }
 
-export interface SetBlackboxedRangesRequest {
+export type SetBlackboxedRangesRequest = {
     /**
      * Id of the script.
      */
@@ -434,7 +434,7 @@ export interface SetBlackboxedRangesRequest {
     positions: ScriptPosition[];
 }
 
-export interface SetBreakpointRequest {
+export type SetBreakpointRequest = {
     /**
      * Location to set breakpoint in.
      */
@@ -446,7 +446,7 @@ export interface SetBreakpointRequest {
     condition?: string;
 }
 
-export interface SetBreakpointResponse {
+export type SetBreakpointResponse = {
     /**
      * Id of the created breakpoint for further reference.
      */
@@ -462,21 +462,21 @@ export const enum SetInstrumentationBreakpointRequestInstrumentation {
     BeforeScriptWithSourceMapExecution = "beforeScriptWithSourceMapExecution",
 }
 
-export interface SetInstrumentationBreakpointRequest {
+export type SetInstrumentationBreakpointRequest = {
     /**
      * Instrumentation name. (SetInstrumentationBreakpointRequestInstrumentation enum)
      */
     instrumentation: ("beforeScriptExecution" | "beforeScriptWithSourceMapExecution");
 }
 
-export interface SetInstrumentationBreakpointResponse {
+export type SetInstrumentationBreakpointResponse = {
     /**
      * Id of the created breakpoint for further reference.
      */
     breakpointId: BreakpointId;
 }
 
-export interface SetBreakpointByUrlRequest {
+export type SetBreakpointByUrlRequest = {
     /**
      * Line number to set breakpoint at.
      */
@@ -505,7 +505,7 @@ export interface SetBreakpointByUrlRequest {
     condition?: string;
 }
 
-export interface SetBreakpointByUrlResponse {
+export type SetBreakpointByUrlResponse = {
     /**
      * Id of the created breakpoint for further reference.
      */
@@ -516,7 +516,7 @@ export interface SetBreakpointByUrlResponse {
     locations: Location[];
 }
 
-export interface SetBreakpointOnFunctionCallRequest {
+export type SetBreakpointOnFunctionCallRequest = {
     /**
      * Function object id.
      */
@@ -528,14 +528,14 @@ export interface SetBreakpointOnFunctionCallRequest {
     condition?: string;
 }
 
-export interface SetBreakpointOnFunctionCallResponse {
+export type SetBreakpointOnFunctionCallResponse = {
     /**
      * Id of the created breakpoint for further reference.
      */
     breakpointId: BreakpointId;
 }
 
-export interface SetBreakpointsActiveRequest {
+export type SetBreakpointsActiveRequest = {
     /**
      * New value for breakpoints active state.
      */
@@ -548,21 +548,21 @@ export const enum SetPauseOnExceptionsRequestState {
     All = "all",
 }
 
-export interface SetPauseOnExceptionsRequest {
+export type SetPauseOnExceptionsRequest = {
     /**
      * Pause on exceptions mode. (SetPauseOnExceptionsRequestState enum)
      */
     state: ("none" | "uncaught" | "all");
 }
 
-export interface SetReturnValueRequest {
+export type SetReturnValueRequest = {
     /**
      * New return value.
      */
     newValue: Runtime.CallArgument;
 }
 
-export interface SetScriptSourceRequest {
+export type SetScriptSourceRequest = {
     /**
      * Id of the script to edit.
      */
@@ -578,7 +578,7 @@ export interface SetScriptSourceRequest {
     dryRun?: boolean;
 }
 
-export interface SetScriptSourceResponse {
+export type SetScriptSourceResponse = {
     /**
      * New stack trace in case editing has happened while VM was stopped.
      */
@@ -601,14 +601,14 @@ export interface SetScriptSourceResponse {
     exceptionDetails?: Runtime.ExceptionDetails;
 }
 
-export interface SetSkipAllPausesRequest {
+export type SetSkipAllPausesRequest = {
     /**
      * New value for skip pauses state.
      */
     skip: boolean;
 }
 
-export interface SetVariableValueRequest {
+export type SetVariableValueRequest = {
     /**
      * 0-based number of scope as was listed in scope chain. Only 'local', 'closure' and 'catch'
      * scope types are allowed. Other scopes could be manipulated manually.
@@ -628,7 +628,7 @@ export interface SetVariableValueRequest {
     callFrameId: CallFrameId;
 }
 
-export interface StepIntoRequest {
+export type StepIntoRequest = {
     /**
      * Debugger will pause on the execution of the first async task which was scheduled
      * before next pause.
@@ -640,7 +640,7 @@ export interface StepIntoRequest {
     skipList?: LocationRange[];
 }
 
-export interface StepOverRequest {
+export type StepOverRequest = {
     /**
      * The skipList specifies location ranges that should be skipped on step over.
      */
@@ -650,7 +650,7 @@ export interface StepOverRequest {
 /**
  * Fired when breakpoint is resolved to an actual script and location.
  */
-export interface BreakpointResolvedEvent {
+export type BreakpointResolvedEvent = {
     /**
      * Breakpoint unique identifier.
      */
@@ -679,7 +679,7 @@ export const enum PausedEventReason {
 /**
  * Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria.
  */
-export interface PausedEvent {
+export type PausedEvent = {
     /**
      * Call stack the virtual machine stopped on.
      */
@@ -713,7 +713,7 @@ export interface PausedEvent {
 /**
  * Fired when virtual machine fails to parse the script.
  */
-export interface ScriptFailedToParseEvent {
+export type ScriptFailedToParseEvent = {
     /**
      * Identifier of the script parsed.
      */
@@ -788,7 +788,7 @@ export interface ScriptFailedToParseEvent {
  * Fired when virtual machine parses script. This event is also fired for all known and uncollected
  * scripts upon enabling debugger.
  */
-export interface ScriptParsedEvent {
+export type ScriptParsedEvent = {
     /**
      * Identifier of the script parsed.
      */

@@ -11,7 +11,7 @@ export type integer = number;
 /**
  * Configuration data for drawing the source order of an elements children.
  */
-export interface SourceOrderConfig {
+export type SourceOrderConfig = {
     /**
      * the color to outline the givent element in.
      */
@@ -25,7 +25,7 @@ export interface SourceOrderConfig {
 /**
  * Configuration data for the highlighting of Grid elements.
  */
-export interface GridHighlightConfig {
+export type GridHighlightConfig = {
     /**
      * Whether the extension lines from grid cells to the rulers should be shown (default: false).
      */
@@ -111,7 +111,7 @@ export interface GridHighlightConfig {
 /**
  * Configuration data for the highlighting of Flex container elements.
  */
-export interface FlexContainerHighlightConfig {
+export type FlexContainerHighlightConfig = {
     /**
      * The style of the container border
      */
@@ -149,7 +149,7 @@ export interface FlexContainerHighlightConfig {
 /**
  * Configuration data for the highlighting of Flex item elements.
  */
-export interface FlexItemHighlightConfig {
+export type FlexItemHighlightConfig = {
     /**
      * Style of the box representing the item's base size
      */
@@ -172,7 +172,7 @@ export const enum LineStylePattern {
 /**
  * Style information for drawing a line.
  */
-export interface LineStyle {
+export type LineStyle = {
     /**
      * The color of the line (default: transparent)
      */
@@ -186,7 +186,7 @@ export interface LineStyle {
 /**
  * Style information for drawing a box.
  */
-export interface BoxStyle {
+export type BoxStyle = {
     /**
      * The background color for the box (default: transparent)
      */
@@ -202,7 +202,7 @@ export type ContrastAlgorithm = ("aa" | "aaa" | "apca");
 /**
  * Configuration data for the highlighting of page elements.
  */
-export interface HighlightConfig {
+export type HighlightConfig = {
     /**
      * Whether the node info tooltip should be shown (default: false).
      */
@@ -286,7 +286,7 @@ export type ColorFormat = ("rgb" | "hsl" | "hex");
 /**
  * Configurations for Persistent Grid Highlight
  */
-export interface GridNodeHighlightConfig {
+export type GridNodeHighlightConfig = {
     /**
      * A descriptor for the highlight appearance.
      */
@@ -297,7 +297,7 @@ export interface GridNodeHighlightConfig {
     nodeId: DOM.NodeId;
 }
 
-export interface FlexNodeHighlightConfig {
+export type FlexNodeHighlightConfig = {
     /**
      * A descriptor for the highlight appearance of flex containers.
      */
@@ -308,7 +308,7 @@ export interface FlexNodeHighlightConfig {
     nodeId: DOM.NodeId;
 }
 
-export interface ScrollSnapContainerHighlightConfig {
+export type ScrollSnapContainerHighlightConfig = {
     /**
      * The style of the snapport border (default: transparent)
      */
@@ -327,7 +327,7 @@ export interface ScrollSnapContainerHighlightConfig {
     scrollPaddingColor?: DOM.RGBA;
 }
 
-export interface ScrollSnapHighlightConfig {
+export type ScrollSnapHighlightConfig = {
     /**
      * A descriptor for the highlight appearance of scroll snap containers.
      */
@@ -341,7 +341,7 @@ export interface ScrollSnapHighlightConfig {
 /**
  * Configuration for dual screen hinge
  */
-export interface HingeConfig {
+export type HingeConfig = {
     /**
      * A rectangle represent hinge
      */
@@ -356,7 +356,7 @@ export interface HingeConfig {
     outlineColor?: DOM.RGBA;
 }
 
-export interface ContainerQueryHighlightConfig {
+export type ContainerQueryHighlightConfig = {
     /**
      * A descriptor for the highlight appearance of container query containers.
      */
@@ -367,7 +367,7 @@ export interface ContainerQueryHighlightConfig {
     nodeId: DOM.NodeId;
 }
 
-export interface ContainerQueryContainerHighlightConfig {
+export type ContainerQueryContainerHighlightConfig = {
     /**
      * The style of the container border.
      */
@@ -378,7 +378,7 @@ export interface ContainerQueryContainerHighlightConfig {
     descendantBorder?: LineStyle;
 }
 
-export interface IsolatedElementHighlightConfig {
+export type IsolatedElementHighlightConfig = {
     /**
      * A descriptor for the highlight appearance of an element in isolation mode.
      */
@@ -389,7 +389,7 @@ export interface IsolatedElementHighlightConfig {
     nodeId: DOM.NodeId;
 }
 
-export interface IsolationModeHighlightConfig {
+export type IsolationModeHighlightConfig = {
     /**
      * The fill color of the resizers (default: transparent).
      */
@@ -406,7 +406,7 @@ export interface IsolationModeHighlightConfig {
 
 export type InspectMode = ("searchForNode" | "searchForUAShadowDOM" | "captureAreaScreenshot" | "showDistances" | "none");
 
-export interface GetHighlightObjectForTestRequest {
+export type GetHighlightObjectForTestRequest = {
     /**
      * Id of the node to get highlight object for.
      */
@@ -429,42 +429,42 @@ export interface GetHighlightObjectForTestRequest {
     showAccessibilityInfo?: boolean;
 }
 
-export interface GetHighlightObjectForTestResponse {
+export type GetHighlightObjectForTestResponse = {
     /**
      * Highlight data for the node.
      */
     highlight: any;
 }
 
-export interface GetGridHighlightObjectsForTestRequest {
+export type GetGridHighlightObjectsForTestRequest = {
     /**
      * Ids of the node to get highlight object for.
      */
     nodeIds: DOM.NodeId[];
 }
 
-export interface GetGridHighlightObjectsForTestResponse {
+export type GetGridHighlightObjectsForTestResponse = {
     /**
      * Grid Highlight data for the node ids provided.
      */
     highlights: any;
 }
 
-export interface GetSourceOrderHighlightObjectForTestRequest {
+export type GetSourceOrderHighlightObjectForTestRequest = {
     /**
      * Id of the node to highlight.
      */
     nodeId: DOM.NodeId;
 }
 
-export interface GetSourceOrderHighlightObjectForTestResponse {
+export type GetSourceOrderHighlightObjectForTestResponse = {
     /**
      * Source order highlight data for the node id provided.
      */
     highlight: any;
 }
 
-export interface HighlightFrameRequest {
+export type HighlightFrameRequest = {
     /**
      * Identifier of the frame to highlight.
      */
@@ -479,7 +479,7 @@ export interface HighlightFrameRequest {
     contentOutlineColor?: DOM.RGBA;
 }
 
-export interface HighlightNodeRequest {
+export type HighlightNodeRequest = {
     /**
      * A descriptor for the highlight appearance.
      */
@@ -502,7 +502,7 @@ export interface HighlightNodeRequest {
     selector?: string;
 }
 
-export interface HighlightQuadRequest {
+export type HighlightQuadRequest = {
     /**
      * Quad to highlight
      */
@@ -517,7 +517,7 @@ export interface HighlightQuadRequest {
     outlineColor?: DOM.RGBA;
 }
 
-export interface HighlightRectRequest {
+export type HighlightRectRequest = {
     /**
      * X coordinate
      */
@@ -544,7 +544,7 @@ export interface HighlightRectRequest {
     outlineColor?: DOM.RGBA;
 }
 
-export interface HighlightSourceOrderRequest {
+export type HighlightSourceOrderRequest = {
     /**
      * A descriptor for the appearance of the overlay drawing.
      */
@@ -563,7 +563,7 @@ export interface HighlightSourceOrderRequest {
     objectId?: Runtime.RemoteObjectId;
 }
 
-export interface SetInspectModeRequest {
+export type SetInspectModeRequest = {
     /**
      * Set an inspection mode.
      */
@@ -575,109 +575,109 @@ export interface SetInspectModeRequest {
     highlightConfig?: HighlightConfig;
 }
 
-export interface SetShowAdHighlightsRequest {
+export type SetShowAdHighlightsRequest = {
     /**
      * True for showing ad highlights
      */
     show: boolean;
 }
 
-export interface SetPausedInDebuggerMessageRequest {
+export type SetPausedInDebuggerMessageRequest = {
     /**
      * The message to display, also triggers resume and step over controls.
      */
     message?: string;
 }
 
-export interface SetShowDebugBordersRequest {
+export type SetShowDebugBordersRequest = {
     /**
      * True for showing debug borders
      */
     show: boolean;
 }
 
-export interface SetShowFPSCounterRequest {
+export type SetShowFPSCounterRequest = {
     /**
      * True for showing the FPS counter
      */
     show: boolean;
 }
 
-export interface SetShowGridOverlaysRequest {
+export type SetShowGridOverlaysRequest = {
     /**
      * An array of node identifiers and descriptors for the highlight appearance.
      */
     gridNodeHighlightConfigs: GridNodeHighlightConfig[];
 }
 
-export interface SetShowFlexOverlaysRequest {
+export type SetShowFlexOverlaysRequest = {
     /**
      * An array of node identifiers and descriptors for the highlight appearance.
      */
     flexNodeHighlightConfigs: FlexNodeHighlightConfig[];
 }
 
-export interface SetShowScrollSnapOverlaysRequest {
+export type SetShowScrollSnapOverlaysRequest = {
     /**
      * An array of node identifiers and descriptors for the highlight appearance.
      */
     scrollSnapHighlightConfigs: ScrollSnapHighlightConfig[];
 }
 
-export interface SetShowContainerQueryOverlaysRequest {
+export type SetShowContainerQueryOverlaysRequest = {
     /**
      * An array of node identifiers and descriptors for the highlight appearance.
      */
     containerQueryHighlightConfigs: ContainerQueryHighlightConfig[];
 }
 
-export interface SetShowPaintRectsRequest {
+export type SetShowPaintRectsRequest = {
     /**
      * True for showing paint rectangles
      */
     result: boolean;
 }
 
-export interface SetShowLayoutShiftRegionsRequest {
+export type SetShowLayoutShiftRegionsRequest = {
     /**
      * True for showing layout shift regions
      */
     result: boolean;
 }
 
-export interface SetShowScrollBottleneckRectsRequest {
+export type SetShowScrollBottleneckRectsRequest = {
     /**
      * True for showing scroll bottleneck rects
      */
     show: boolean;
 }
 
-export interface SetShowHitTestBordersRequest {
+export type SetShowHitTestBordersRequest = {
     /**
      * True for showing hit-test borders
      */
     show: boolean;
 }
 
-export interface SetShowWebVitalsRequest {
+export type SetShowWebVitalsRequest = {
     show: boolean;
 }
 
-export interface SetShowViewportSizeOnResizeRequest {
+export type SetShowViewportSizeOnResizeRequest = {
     /**
      * Whether to paint size or not.
      */
     show: boolean;
 }
 
-export interface SetShowHingeRequest {
+export type SetShowHingeRequest = {
     /**
      * hinge data, null means hideHinge
      */
     hingeConfig?: HingeConfig;
 }
 
-export interface SetShowIsolatedElementsRequest {
+export type SetShowIsolatedElementsRequest = {
     /**
      * An array of node identifiers and descriptors for the highlight appearance.
      */
@@ -688,7 +688,7 @@ export interface SetShowIsolatedElementsRequest {
  * Fired when the node should be inspected. This happens after call to `setInspectMode` or when
  * user manually inspects an element.
  */
-export interface InspectNodeRequestedEvent {
+export type InspectNodeRequestedEvent = {
     /**
      * Id of the node to inspect.
      */
@@ -698,14 +698,14 @@ export interface InspectNodeRequestedEvent {
 /**
  * Fired when the node should be highlighted. This happens after call to `setInspectMode`.
  */
-export interface NodeHighlightRequestedEvent {
+export type NodeHighlightRequestedEvent = {
     nodeId: DOM.NodeId;
 }
 
 /**
  * Fired when user asks to capture screenshot of some area on the page.
  */
-export interface ScreenshotRequestedEvent {
+export type ScreenshotRequestedEvent = {
     /**
      * Viewport to capture, in device independent pixels (dip).
      */

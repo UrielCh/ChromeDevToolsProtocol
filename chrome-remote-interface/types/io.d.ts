@@ -12,14 +12,14 @@ export type integer = number;
  */
 export type StreamHandle = string;
 
-export interface CloseRequest {
+export type CloseRequest = {
     /**
      * Handle of the stream to close.
      */
     handle: StreamHandle;
 }
 
-export interface ReadRequest {
+export type ReadRequest = {
     /**
      * Handle of the stream to read.
      */
@@ -35,7 +35,7 @@ export interface ReadRequest {
     size?: integer;
 }
 
-export interface ReadResponse {
+export type ReadResponse = {
     /**
      * Set if the data is base64-encoded
      */
@@ -50,14 +50,14 @@ export interface ReadResponse {
     eof: boolean;
 }
 
-export interface ResolveBlobRequest {
+export type ResolveBlobRequest = {
     /**
      * Object id of a Blob object wrapper.
      */
     objectId: Runtime.RemoteObjectId;
 }
 
-export interface ResolveBlobResponse {
+export type ResolveBlobResponse = {
     /**
      * UUID of the specified Blob.
      */

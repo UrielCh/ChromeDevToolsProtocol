@@ -8,14 +8,14 @@ export type integer = number;
  * breakpoint set.
  */
 
-export interface SetInstrumentationBreakpointRequest {
+export type SetInstrumentationBreakpointRequest = {
     /**
      * Instrumentation name to stop on.
      */
     eventName: string;
 }
 
-export interface RemoveInstrumentationBreakpointRequest {
+export type RemoveInstrumentationBreakpointRequest = {
     /**
      * Instrumentation name to stop on.
      */

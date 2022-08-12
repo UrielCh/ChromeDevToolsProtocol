@@ -51,7 +51,7 @@ export type MonotonicTime = number;
 /**
  * Request / response headers as keys / values of JSON object.
  */
-export interface Headers {
+export type Headers = {
     [key: string]: string;
 }
 
@@ -82,7 +82,7 @@ export type CookieSourceScheme = ("Unset" | "NonSecure" | "Secure");
 /**
  * Timing information for the request.
  */
-export interface ResourceTiming {
+export type ResourceTiming = {
     /**
      * Timing's requestTime is a baseline in seconds, while the other numbers are ticks in
      * milliseconds relatively to this requestTime.
@@ -166,7 +166,7 @@ export type ResourcePriority = ("VeryLow" | "Low" | "Medium" | "High" | "VeryHig
 /**
  * Post data entry for HTTP request
  */
-export interface PostDataEntry {
+export type PostDataEntry = {
     bytes?: string;
 }
 
@@ -184,7 +184,7 @@ export const enum RequestReferrerPolicy {
 /**
  * HTTP request data.
  */
-export interface Request {
+export type Request = {
     /**
      * Request URL (without fragment).
      */
@@ -244,7 +244,7 @@ export interface Request {
 /**
  * Details of a signed certificate timestamp (SCT).
  */
-export interface SignedCertificateTimestamp {
+export type SignedCertificateTimestamp = {
     /**
      * Validation status.
      */
@@ -283,7 +283,7 @@ export interface SignedCertificateTimestamp {
 /**
  * Security details about a request.
  */
-export interface SecurityDetails {
+export type SecurityDetails = {
     /**
      * Protocol name (e.g. "TLS 1.2" or "QUIC").
      */
@@ -353,7 +353,7 @@ export type BlockedReason = ("other" | "csp" | "mixed-content" | "origin" | "ins
  */
 export type CorsError = ("DisallowedByMode" | "InvalidResponse" | "WildcardOriginNotAllowed" | "MissingAllowOriginHeader" | "MultipleAllowOriginValues" | "InvalidAllowOriginValue" | "AllowOriginMismatch" | "InvalidAllowCredentials" | "CorsDisabledScheme" | "PreflightInvalidStatus" | "PreflightDisallowedRedirect" | "PreflightWildcardOriginNotAllowed" | "PreflightMissingAllowOriginHeader" | "PreflightMultipleAllowOriginValues" | "PreflightInvalidAllowOriginValue" | "PreflightAllowOriginMismatch" | "PreflightInvalidAllowCredentials" | "PreflightMissingAllowExternal" | "PreflightInvalidAllowExternal" | "PreflightMissingAllowPrivateNetwork" | "PreflightInvalidAllowPrivateNetwork" | "InvalidAllowMethodsPreflightResponse" | "InvalidAllowHeadersPreflightResponse" | "MethodDisallowedByPreflightResponse" | "HeaderDisallowedByPreflightResponse" | "RedirectContainsCredentials" | "InsecurePrivateNetwork" | "InvalidPrivateNetworkAccess" | "UnexpectedPrivateNetworkAccess" | "NoCorsRedirectModeNotFollow");
 
-export interface CorsErrorStatus {
+export type CorsErrorStatus = {
     corsError: CorsError;
     failedParameter: string;
 }
@@ -373,7 +373,7 @@ export const enum TrustTokenParamsRefreshPolicy {
  * depending on the type, some additional parameters. The values
  * are specified in third_party/blink/renderer/core/fetch/trust_token.idl.
  */
-export interface TrustTokenParams {
+export type TrustTokenParams = {
     type: TrustTokenOperationType;
     /**
      * Only set for "token-redemption" type and determine whether
@@ -392,7 +392,7 @@ export type TrustTokenOperationType = ("Issuance" | "Redemption" | "Signing");
 /**
  * HTTP response data.
  */
-export interface Response {
+export type Response = {
     /**
      * Response URL. This URL can be different from CachedResource.url in case of redirect.
      */
@@ -490,7 +490,7 @@ export interface Response {
 /**
  * WebSocket request data.
  */
-export interface WebSocketRequest {
+export type WebSocketRequest = {
     /**
      * HTTP request headers.
      */
@@ -500,7 +500,7 @@ export interface WebSocketRequest {
 /**
  * WebSocket response data.
  */
-export interface WebSocketResponse {
+export type WebSocketResponse = {
     /**
      * HTTP response status code.
      */
@@ -530,7 +530,7 @@ export interface WebSocketResponse {
 /**
  * WebSocket message data. This represents an entire WebSocket message, not just a fragmented frame as the name suggests.
  */
-export interface WebSocketFrame {
+export type WebSocketFrame = {
     /**
      * WebSocket message opcode.
      */
@@ -550,7 +550,7 @@ export interface WebSocketFrame {
 /**
  * Information about the cached resource.
  */
-export interface CachedResource {
+export type CachedResource = {
     /**
      * Resource URL. This is the url of the original network request.
      */
@@ -581,7 +581,7 @@ export const enum InitiatorType {
 /**
  * Information about the request initiator.
  */
-export interface Initiator {
+export type Initiator = {
     /**
      * Type of this initiator. (InitiatorType enum)
      */
@@ -613,7 +613,7 @@ export interface Initiator {
 /**
  * Cookie object
  */
-export interface Cookie {
+export type Cookie = {
     /**
      * Cookie name.
      */
@@ -696,7 +696,7 @@ export type CookieBlockedReason = ("SecureOnly" | "NotOnPath" | "DomainMismatch"
 /**
  * A cookie which was not stored from a response with the corresponding reason.
  */
-export interface BlockedSetCookieWithReason {
+export type BlockedSetCookieWithReason = {
     /**
      * The reason(s) this cookie was blocked.
      */
@@ -717,7 +717,7 @@ export interface BlockedSetCookieWithReason {
 /**
  * A cookie with was not sent with a request with the corresponding reason.
  */
-export interface BlockedCookieWithReason {
+export type BlockedCookieWithReason = {
     /**
      * The reason(s) the cookie was blocked.
      */
@@ -731,7 +731,7 @@ export interface BlockedCookieWithReason {
 /**
  * Cookie parameter object
  */
-export interface CookieParam {
+export type CookieParam = {
     /**
      * Cookie name.
      */
@@ -803,7 +803,7 @@ export const enum AuthChallengeSource {
 /**
  * Authorization challenge for HTTP status code 401 or 407.
  */
-export interface AuthChallenge {
+export type AuthChallenge = {
     /**
      * Source of the authentication challenge. (AuthChallengeSource enum)
      */
@@ -831,7 +831,7 @@ export const enum AuthChallengeResponseResponse {
 /**
  * Response to an AuthChallenge.
  */
-export interface AuthChallengeResponse {
+export type AuthChallengeResponse = {
     /**
      * The decision on what to do in response to the authorization challenge.  Default means
      * deferring to the default behavior of the net stack, which will likely either the Cancel
@@ -859,7 +859,7 @@ export type InterceptionStage = ("Request" | "HeadersReceived");
 /**
  * Request pattern for interception.
  */
-export interface RequestPattern {
+export type RequestPattern = {
     /**
      * Wildcards (`'*'` -> zero or more, `'?'` -> exactly one) are allowed. Escape character is
      * backslash. Omitting is equivalent to `"*"`.
@@ -879,7 +879,7 @@ export interface RequestPattern {
  * Information about a signed exchange signature.
  * https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#rfc.section.3.1
  */
-export interface SignedExchangeSignature {
+export type SignedExchangeSignature = {
     /**
      * Signed exchange signature label.
      */
@@ -922,7 +922,7 @@ export interface SignedExchangeSignature {
  * Information about a signed exchange header.
  * https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#cbor-representation
  */
-export interface SignedExchangeHeader {
+export type SignedExchangeHeader = {
     /**
      * Signed exchange request URL.
      */
@@ -953,7 +953,7 @@ export type SignedExchangeErrorField = ("signatureSig" | "signatureIntegrity" | 
 /**
  * Information about a signed exchange response.
  */
-export interface SignedExchangeError {
+export type SignedExchangeError = {
     /**
      * Error message.
      */
@@ -971,7 +971,7 @@ export interface SignedExchangeError {
 /**
  * Information about a signed exchange response.
  */
-export interface SignedExchangeInfo {
+export type SignedExchangeInfo = {
     /**
      * The outer response of signed HTTP exchange which was received from network.
      */
@@ -999,7 +999,7 @@ export type PrivateNetworkRequestPolicy = ("Allow" | "BlockFromInsecureToMorePri
 
 export type IPAddressSpace = ("Local" | "Private" | "Public" | "Unknown");
 
-export interface ConnectTiming {
+export type ConnectTiming = {
     /**
      * Timing's requestTime is a baseline in seconds, while the other numbers are ticks in
      * milliseconds relatively to this requestTime. Matches ResourceTiming's requestTime for
@@ -1008,7 +1008,7 @@ export interface ConnectTiming {
     requestTime: number;
 }
 
-export interface ClientSecurityState {
+export type ClientSecurityState = {
     initiatorIsSecureContext: boolean;
     initiatorIPAddressSpace: IPAddressSpace;
     privateNetworkRequestPolicy: PrivateNetworkRequestPolicy;
@@ -1016,7 +1016,7 @@ export interface ClientSecurityState {
 
 export type CrossOriginOpenerPolicyValue = ("SameOrigin" | "SameOriginAllowPopups" | "UnsafeNone" | "SameOriginPlusCoep" | "SameOriginAllowPopupsPlusCoep");
 
-export interface CrossOriginOpenerPolicyStatus {
+export type CrossOriginOpenerPolicyStatus = {
     value: CrossOriginOpenerPolicyValue;
     reportOnlyValue: CrossOriginOpenerPolicyValue;
     reportingEndpoint?: string;
@@ -1025,14 +1025,14 @@ export interface CrossOriginOpenerPolicyStatus {
 
 export type CrossOriginEmbedderPolicyValue = ("None" | "Credentialless" | "RequireCorp");
 
-export interface CrossOriginEmbedderPolicyStatus {
+export type CrossOriginEmbedderPolicyStatus = {
     value: CrossOriginEmbedderPolicyValue;
     reportOnlyValue: CrossOriginEmbedderPolicyValue;
     reportingEndpoint?: string;
     reportOnlyReportingEndpoint?: string;
 }
 
-export interface SecurityIsolationStatus {
+export type SecurityIsolationStatus = {
     coop?: CrossOriginOpenerPolicyStatus;
     coep?: CrossOriginEmbedderPolicyStatus;
 }
@@ -1047,7 +1047,7 @@ export type ReportId = string;
 /**
  * An object representing a report generated by the Reporting API.
  */
-export interface ReportingApiReport {
+export type ReportingApiReport = {
     id: ReportId;
     /**
      * The URL of the document that triggered the report.
@@ -1077,7 +1077,7 @@ export interface ReportingApiReport {
     status: ReportStatus;
 }
 
-export interface ReportingApiEndpoint {
+export type ReportingApiEndpoint = {
     /**
      * The URL of the endpoint to which reports may be delivered.
      */
@@ -1091,7 +1091,7 @@ export interface ReportingApiEndpoint {
 /**
  * An object providing the result of a network resource load.
  */
-export interface LoadNetworkResourcePageResult {
+export type LoadNetworkResourcePageResult = {
     success: boolean;
     /**
      * Optional values used for error reporting.
@@ -1113,40 +1113,40 @@ export interface LoadNetworkResourcePageResult {
  * An options object that may be extended later to better support CORS,
  * CORB and streaming.
  */
-export interface LoadNetworkResourceOptions {
+export type LoadNetworkResourceOptions = {
     disableCache: boolean;
     includeCredentials: boolean;
 }
 
-export interface SetAcceptedEncodingsRequest {
+export type SetAcceptedEncodingsRequest = {
     /**
      * List of accepted content encodings.
      */
     encodings: ContentEncoding[];
 }
 
-export interface CanClearBrowserCacheResponse {
+export type CanClearBrowserCacheResponse = {
     /**
      * True if browser cache can be cleared.
      */
     result: boolean;
 }
 
-export interface CanClearBrowserCookiesResponse {
+export type CanClearBrowserCookiesResponse = {
     /**
      * True if browser cookies can be cleared.
      */
     result: boolean;
 }
 
-export interface CanEmulateNetworkConditionsResponse {
+export type CanEmulateNetworkConditionsResponse = {
     /**
      * True if emulation of network conditions is supported.
      */
     result: boolean;
 }
 
-export interface ContinueInterceptedRequestRequest {
+export type ContinueInterceptedRequestRequest = {
     interceptionId: InterceptionId;
     /**
      * If set this causes the request to fail with the given reason. Passing `Aborted` for requests
@@ -1184,7 +1184,7 @@ export interface ContinueInterceptedRequestRequest {
     authChallengeResponse?: AuthChallengeResponse;
 }
 
-export interface DeleteCookiesRequest {
+export type DeleteCookiesRequest = {
     /**
      * Name of the cookies to remove.
      */
@@ -1204,7 +1204,7 @@ export interface DeleteCookiesRequest {
     path?: string;
 }
 
-export interface EmulateNetworkConditionsRequest {
+export type EmulateNetworkConditionsRequest = {
     /**
      * True to emulate internet disconnection.
      */
@@ -1227,7 +1227,7 @@ export interface EmulateNetworkConditionsRequest {
     connectionType?: ConnectionType;
 }
 
-export interface EnableRequest {
+export type EnableRequest = {
     /**
      * Buffer size in bytes to use when preserving network payloads (XHRs, etc).
      */
@@ -1242,25 +1242,25 @@ export interface EnableRequest {
     maxPostDataSize?: integer;
 }
 
-export interface GetAllCookiesResponse {
+export type GetAllCookiesResponse = {
     /**
      * Array of cookie objects.
      */
     cookies: Cookie[];
 }
 
-export interface GetCertificateRequest {
+export type GetCertificateRequest = {
     /**
      * Origin to get certificate for.
      */
     origin: string;
 }
 
-export interface GetCertificateResponse {
+export type GetCertificateResponse = {
     tableNames: string[];
 }
 
-export interface GetCookiesRequest {
+export type GetCookiesRequest = {
     /**
      * The list of URLs for which applicable cookies will be fetched.
      * If not specified, it's assumed to be set to the list containing
@@ -1269,21 +1269,21 @@ export interface GetCookiesRequest {
     urls?: string[];
 }
 
-export interface GetCookiesResponse {
+export type GetCookiesResponse = {
     /**
      * Array of cookie objects.
      */
     cookies: Cookie[];
 }
 
-export interface GetResponseBodyRequest {
+export type GetResponseBodyRequest = {
     /**
      * Identifier of the network request to get content for.
      */
     requestId: RequestId;
 }
 
-export interface GetResponseBodyResponse {
+export type GetResponseBodyResponse = {
     /**
      * Response body.
      */
@@ -1294,28 +1294,28 @@ export interface GetResponseBodyResponse {
     base64Encoded: boolean;
 }
 
-export interface GetRequestPostDataRequest {
+export type GetRequestPostDataRequest = {
     /**
      * Identifier of the network request to get content for.
      */
     requestId: RequestId;
 }
 
-export interface GetRequestPostDataResponse {
+export type GetRequestPostDataResponse = {
     /**
      * Request body string, omitting files from multipart requests
      */
     postData: string;
 }
 
-export interface GetResponseBodyForInterceptionRequest {
+export type GetResponseBodyForInterceptionRequest = {
     /**
      * Identifier for the intercepted request to get body for.
      */
     interceptionId: InterceptionId;
 }
 
-export interface GetResponseBodyForInterceptionResponse {
+export type GetResponseBodyForInterceptionResponse = {
     /**
      * Response body.
      */
@@ -1326,22 +1326,22 @@ export interface GetResponseBodyForInterceptionResponse {
     base64Encoded: boolean;
 }
 
-export interface TakeResponseBodyForInterceptionAsStreamRequest {
+export type TakeResponseBodyForInterceptionAsStreamRequest = {
     interceptionId: InterceptionId;
 }
 
-export interface TakeResponseBodyForInterceptionAsStreamResponse {
+export type TakeResponseBodyForInterceptionAsStreamResponse = {
     stream: IO.StreamHandle;
 }
 
-export interface ReplayXHRRequest {
+export type ReplayXHRRequest = {
     /**
      * Identifier of XHR to replay.
      */
     requestId: RequestId;
 }
 
-export interface SearchInResponseBodyRequest {
+export type SearchInResponseBodyRequest = {
     /**
      * Identifier of the network response to search.
      */
@@ -1360,35 +1360,35 @@ export interface SearchInResponseBodyRequest {
     isRegex?: boolean;
 }
 
-export interface SearchInResponseBodyResponse {
+export type SearchInResponseBodyResponse = {
     /**
      * List of search matches.
      */
     result: Debugger.SearchMatch[];
 }
 
-export interface SetBlockedURLsRequest {
+export type SetBlockedURLsRequest = {
     /**
      * URL patterns to block. Wildcards ('*') are allowed.
      */
     urls: string[];
 }
 
-export interface SetBypassServiceWorkerRequest {
+export type SetBypassServiceWorkerRequest = {
     /**
      * Bypass service worker and load from network.
      */
     bypass: boolean;
 }
 
-export interface SetCacheDisabledRequest {
+export type SetCacheDisabledRequest = {
     /**
      * Cache disabled state.
      */
     cacheDisabled: boolean;
 }
 
-export interface SetCookieRequest {
+export type SetCookieRequest = {
     /**
      * Cookie name.
      */
@@ -1452,35 +1452,35 @@ export interface SetCookieRequest {
     partitionKey?: string;
 }
 
-export interface SetCookieResponse {
+export type SetCookieResponse = {
     /**
      * Always set to true. If an error occurs, the response indicates protocol error.
      */
     success: boolean;
 }
 
-export interface SetCookiesRequest {
+export type SetCookiesRequest = {
     /**
      * Cookies to be set.
      */
     cookies: CookieParam[];
 }
 
-export interface SetExtraHTTPHeadersRequest {
+export type SetExtraHTTPHeadersRequest = {
     /**
      * Map with extra HTTP headers.
      */
     headers: Headers;
 }
 
-export interface SetAttachDebugStackRequest {
+export type SetAttachDebugStackRequest = {
     /**
      * Whether to attach a page script stack for debugging purpose.
      */
     enabled: boolean;
 }
 
-export interface SetRequestInterceptionRequest {
+export type SetRequestInterceptionRequest = {
     /**
      * Requests matching any of these patterns will be forwarded and wait for the corresponding
      * continueInterceptedRequest call.
@@ -1488,7 +1488,7 @@ export interface SetRequestInterceptionRequest {
     patterns: RequestPattern[];
 }
 
-export interface SetUserAgentOverrideRequest {
+export type SetUserAgentOverrideRequest = {
     /**
      * User agent to use.
      */
@@ -1507,25 +1507,25 @@ export interface SetUserAgentOverrideRequest {
     userAgentMetadata?: Emulation.UserAgentMetadata;
 }
 
-export interface GetSecurityIsolationStatusRequest {
+export type GetSecurityIsolationStatusRequest = {
     /**
      * If no frameId is provided, the status of the target is provided.
      */
     frameId?: Page.FrameId;
 }
 
-export interface GetSecurityIsolationStatusResponse {
+export type GetSecurityIsolationStatusResponse = {
     status: SecurityIsolationStatus;
 }
 
-export interface EnableReportingApiRequest {
+export type EnableReportingApiRequest = {
     /**
      * Whether to enable or disable events for the Reporting API
      */
     enable: boolean;
 }
 
-export interface LoadNetworkResourceRequest {
+export type LoadNetworkResourceRequest = {
     /**
      * Frame id to get the resource for. Mandatory for frame targets, and
      * should be omitted for worker targets.
@@ -1541,14 +1541,14 @@ export interface LoadNetworkResourceRequest {
     options: LoadNetworkResourceOptions;
 }
 
-export interface LoadNetworkResourceResponse {
+export type LoadNetworkResourceResponse = {
     resource: LoadNetworkResourcePageResult;
 }
 
 /**
  * Fired when data chunk was received over the network.
  */
-export interface DataReceivedEvent {
+export type DataReceivedEvent = {
     /**
      * Request identifier.
      */
@@ -1570,7 +1570,7 @@ export interface DataReceivedEvent {
 /**
  * Fired when EventSource message is received.
  */
-export interface EventSourceMessageReceivedEvent {
+export type EventSourceMessageReceivedEvent = {
     /**
      * Request identifier.
      */
@@ -1596,7 +1596,7 @@ export interface EventSourceMessageReceivedEvent {
 /**
  * Fired when HTTP request has failed to load.
  */
-export interface LoadingFailedEvent {
+export type LoadingFailedEvent = {
     /**
      * Request identifier.
      */
@@ -1630,7 +1630,7 @@ export interface LoadingFailedEvent {
 /**
  * Fired when HTTP request has finished loading.
  */
-export interface LoadingFinishedEvent {
+export type LoadingFinishedEvent = {
     /**
      * Request identifier.
      */
@@ -1655,7 +1655,7 @@ export interface LoadingFinishedEvent {
  * mocked.
  * Deprecated, use Fetch.requestPaused instead.
  */
-export interface RequestInterceptedEvent {
+export type RequestInterceptedEvent = {
     /**
      * Each request the page makes will have a unique id, however if any redirects are encountered
      * while processing that fetch, they will be reported with the same id as the original fetch.
@@ -1714,7 +1714,7 @@ export interface RequestInterceptedEvent {
 /**
  * Fired if request ended up loading from cache.
  */
-export interface RequestServedFromCacheEvent {
+export type RequestServedFromCacheEvent = {
     /**
      * Request identifier.
      */
@@ -1724,7 +1724,7 @@ export interface RequestServedFromCacheEvent {
 /**
  * Fired when page is about to send HTTP request.
  */
-export interface RequestWillBeSentEvent {
+export type RequestWillBeSentEvent = {
     /**
      * Request identifier.
      */
@@ -1780,7 +1780,7 @@ export interface RequestWillBeSentEvent {
 /**
  * Fired when resource loading priority is changed
  */
-export interface ResourceChangedPriorityEvent {
+export type ResourceChangedPriorityEvent = {
     /**
      * Request identifier.
      */
@@ -1798,7 +1798,7 @@ export interface ResourceChangedPriorityEvent {
 /**
  * Fired when a signed exchange was received over the network
  */
-export interface SignedExchangeReceivedEvent {
+export type SignedExchangeReceivedEvent = {
     /**
      * Request identifier.
      */
@@ -1812,7 +1812,7 @@ export interface SignedExchangeReceivedEvent {
 /**
  * Fired when HTTP response is available.
  */
-export interface ResponseReceivedEvent {
+export type ResponseReceivedEvent = {
     /**
      * Request identifier.
      */
@@ -1847,7 +1847,7 @@ export interface ResponseReceivedEvent {
 /**
  * Fired when WebSocket is closed.
  */
-export interface WebSocketClosedEvent {
+export type WebSocketClosedEvent = {
     /**
      * Request identifier.
      */
@@ -1861,7 +1861,7 @@ export interface WebSocketClosedEvent {
 /**
  * Fired upon WebSocket creation.
  */
-export interface WebSocketCreatedEvent {
+export type WebSocketCreatedEvent = {
     /**
      * Request identifier.
      */
@@ -1879,7 +1879,7 @@ export interface WebSocketCreatedEvent {
 /**
  * Fired when WebSocket message error occurs.
  */
-export interface WebSocketFrameErrorEvent {
+export type WebSocketFrameErrorEvent = {
     /**
      * Request identifier.
      */
@@ -1897,7 +1897,7 @@ export interface WebSocketFrameErrorEvent {
 /**
  * Fired when WebSocket message is received.
  */
-export interface WebSocketFrameReceivedEvent {
+export type WebSocketFrameReceivedEvent = {
     /**
      * Request identifier.
      */
@@ -1915,7 +1915,7 @@ export interface WebSocketFrameReceivedEvent {
 /**
  * Fired when WebSocket message is sent.
  */
-export interface WebSocketFrameSentEvent {
+export type WebSocketFrameSentEvent = {
     /**
      * Request identifier.
      */
@@ -1933,7 +1933,7 @@ export interface WebSocketFrameSentEvent {
 /**
  * Fired when WebSocket handshake response becomes available.
  */
-export interface WebSocketHandshakeResponseReceivedEvent {
+export type WebSocketHandshakeResponseReceivedEvent = {
     /**
      * Request identifier.
      */
@@ -1951,7 +1951,7 @@ export interface WebSocketHandshakeResponseReceivedEvent {
 /**
  * Fired when WebSocket is about to initiate handshake.
  */
-export interface WebSocketWillSendHandshakeRequestEvent {
+export type WebSocketWillSendHandshakeRequestEvent = {
     /**
      * Request identifier.
      */
@@ -1973,7 +1973,7 @@ export interface WebSocketWillSendHandshakeRequestEvent {
 /**
  * Fired upon WebTransport creation.
  */
-export interface WebTransportCreatedEvent {
+export type WebTransportCreatedEvent = {
     /**
      * WebTransport identifier.
      */
@@ -1995,7 +1995,7 @@ export interface WebTransportCreatedEvent {
 /**
  * Fired when WebTransport handshake is finished.
  */
-export interface WebTransportConnectionEstablishedEvent {
+export type WebTransportConnectionEstablishedEvent = {
     /**
      * WebTransport identifier.
      */
@@ -2009,7 +2009,7 @@ export interface WebTransportConnectionEstablishedEvent {
 /**
  * Fired when WebTransport is disposed.
  */
-export interface WebTransportClosedEvent {
+export type WebTransportClosedEvent = {
     /**
      * WebTransport identifier.
      */
@@ -2026,7 +2026,7 @@ export interface WebTransportClosedEvent {
  * requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
  * or requestWillBeSentExtraInfo will be fired first for the same request.
  */
-export interface RequestWillBeSentExtraInfoEvent {
+export type RequestWillBeSentExtraInfoEvent = {
     /**
      * Request identifier. Used to match this information to an existing requestWillBeSent event.
      */
@@ -2055,7 +2055,7 @@ export interface RequestWillBeSentExtraInfoEvent {
  * stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
  * it, and responseReceivedExtraInfo may be fired before or after responseReceived.
  */
-export interface ResponseReceivedExtraInfoEvent {
+export type ResponseReceivedExtraInfoEvent = {
     /**
      * Request identifier. Used to match this information to another responseReceived event.
      */
@@ -2107,7 +2107,7 @@ export const enum TrustTokenOperationDoneEventStatus {
  * failed, the event is fired before the corresponding request was sent
  * or after the response was received.
  */
-export interface TrustTokenOperationDoneEvent {
+export type TrustTokenOperationDoneEvent = {
     /**
      * Detailed success or error status of the operation.
      * 'AlreadyExists' also signifies a successful operation, as the result
@@ -2135,7 +2135,7 @@ export interface TrustTokenOperationDoneEvent {
  * Fired once when parsing the .wbn file has succeeded.
  * The event contains the information about the web bundle contents.
  */
-export interface SubresourceWebBundleMetadataReceivedEvent {
+export type SubresourceWebBundleMetadataReceivedEvent = {
     /**
      * Request identifier. Used to match this information to another event.
      */
@@ -2149,7 +2149,7 @@ export interface SubresourceWebBundleMetadataReceivedEvent {
 /**
  * Fired once when parsing the .wbn file has failed.
  */
-export interface SubresourceWebBundleMetadataErrorEvent {
+export type SubresourceWebBundleMetadataErrorEvent = {
     /**
      * Request identifier. Used to match this information to another event.
      */
@@ -2164,7 +2164,7 @@ export interface SubresourceWebBundleMetadataErrorEvent {
  * Fired when handling requests for resources within a .wbn file.
  * Note: this will only be fired for resources that are requested by the webpage.
  */
-export interface SubresourceWebBundleInnerResponseParsedEvent {
+export type SubresourceWebBundleInnerResponseParsedEvent = {
     /**
      * Request identifier of the subresource request
      */
@@ -2184,7 +2184,7 @@ export interface SubresourceWebBundleInnerResponseParsedEvent {
 /**
  * Fired when request for resources within a .wbn file failed.
  */
-export interface SubresourceWebBundleInnerResponseErrorEvent {
+export type SubresourceWebBundleInnerResponseErrorEvent = {
     /**
      * Request identifier of the subresource request
      */
@@ -2209,15 +2209,15 @@ export interface SubresourceWebBundleInnerResponseErrorEvent {
  * Is sent whenever a new report is added.
  * And after 'enableReportingApi' for all existing reports.
  */
-export interface ReportingApiReportAddedEvent {
+export type ReportingApiReportAddedEvent = {
     report: ReportingApiReport;
 }
 
-export interface ReportingApiReportUpdatedEvent {
+export type ReportingApiReportUpdatedEvent = {
     report: ReportingApiReport;
 }
 
-export interface ReportingApiEndpointsChangedForOriginEvent {
+export type ReportingApiEndpointsChangedForOriginEvent = {
     /**
      * Origin of the document(s) which configured the endpoints.
      */

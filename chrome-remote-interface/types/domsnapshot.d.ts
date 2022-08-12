@@ -11,7 +11,7 @@ export type integer = number;
 /**
  * A Node in the DOM tree.
  */
-export interface DOMNode {
+export type DOMNode = {
     /**
      * `Node`'s nodeType.
      */
@@ -133,7 +133,7 @@ export interface DOMNode {
  * Details of post layout rendered text positions. The exact layout should not be regarded as
  * stable and may change between versions.
  */
-export interface InlineTextBox {
+export type InlineTextBox = {
     /**
      * The bounding box in document coordinates. Note that scroll offset of the document is ignored.
      */
@@ -153,7 +153,7 @@ export interface InlineTextBox {
 /**
  * Details of an element in the DOM tree with a LayoutObject.
  */
-export interface LayoutTreeNode {
+export type LayoutTreeNode = {
     /**
      * The index of the related DOM node in the `domNodes` array returned by `getSnapshot`.
      */
@@ -189,7 +189,7 @@ export interface LayoutTreeNode {
 /**
  * A subset of the full ComputedStyle as defined by the request whitelist.
  */
-export interface ComputedStyle {
+export type ComputedStyle = {
     /**
      * Name/value pairs of computed style properties.
      */
@@ -199,7 +199,7 @@ export interface ComputedStyle {
 /**
  * A name/value pair.
  */
-export interface NameValue {
+export type NameValue = {
     /**
      * Attribute/property name.
      */
@@ -223,16 +223,16 @@ export type ArrayOfStrings = StringIndex[];
 /**
  * Data that is only present on rare nodes.
  */
-export interface RareStringData {
+export type RareStringData = {
     index: integer[];
     value: StringIndex[];
 }
 
-export interface RareBooleanData {
+export type RareBooleanData = {
     index: integer[];
 }
 
-export interface RareIntegerData {
+export type RareIntegerData = {
     index: integer[];
     value: integer[];
 }
@@ -242,7 +242,7 @@ export type Rectangle = number[];
 /**
  * Document snapshot.
  */
-export interface DocumentSnapshot {
+export type DocumentSnapshot = {
     /**
      * Document URL that `Document` or `FrameOwner` node points to.
      */
@@ -308,7 +308,7 @@ export interface DocumentSnapshot {
 /**
  * Table containing nodes.
  */
-export interface NodeTreeSnapshot {
+export type NodeTreeSnapshot = {
     /**
      * Parent node index.
      */
@@ -380,7 +380,7 @@ export interface NodeTreeSnapshot {
 /**
  * Table of details of an element in the DOM tree with a LayoutObject.
  */
-export interface LayoutTreeSnapshot {
+export type LayoutTreeSnapshot = {
     /**
      * Index of the corresponding node in the `NodeTreeSnapshot` array returned by `captureSnapshot`.
      */
@@ -433,7 +433,7 @@ export interface LayoutTreeSnapshot {
  * Table of details of the post layout rendered text positions. The exact layout should not be regarded as
  * stable and may change between versions.
  */
-export interface TextBoxSnapshot {
+export type TextBoxSnapshot = {
     /**
      * Index of the layout tree node that owns this box collection.
      */
@@ -454,7 +454,7 @@ export interface TextBoxSnapshot {
     length: integer[];
 }
 
-export interface GetSnapshotRequest {
+export type GetSnapshotRequest = {
     /**
      * Whitelist of computed styles to return.
      */
@@ -473,7 +473,7 @@ export interface GetSnapshotRequest {
     includeUserAgentShadowTree?: boolean;
 }
 
-export interface GetSnapshotResponse {
+export type GetSnapshotResponse = {
     /**
      * The nodes in the DOM tree. The DOMNode at index 0 corresponds to the root document.
      */
@@ -488,7 +488,7 @@ export interface GetSnapshotResponse {
     computedStyles: ComputedStyle[];
 }
 
-export interface CaptureSnapshotRequest {
+export type CaptureSnapshotRequest = {
     /**
      * Whitelist of computed styles to return.
      */
@@ -515,7 +515,7 @@ export interface CaptureSnapshotRequest {
     includeTextColorOpacities?: boolean;
 }
 
-export interface CaptureSnapshotResponse {
+export type CaptureSnapshotResponse = {
     /**
      * The nodes in the DOM tree. The DOMNode at index 0 corresponds to the root document.
      */

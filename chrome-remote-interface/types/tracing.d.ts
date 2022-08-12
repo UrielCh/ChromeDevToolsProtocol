@@ -6,7 +6,7 @@ export type integer = number;
 /**
  * Configuration for memory dump. Used only when "memory-infra" category is enabled.
  */
-export interface MemoryDumpConfig {
+export type MemoryDumpConfig = {
     [key: string]: string;
 }
 
@@ -17,7 +17,7 @@ export const enum TraceConfigRecordMode {
     EchoToConsole = "echoToConsole",
 }
 
-export interface TraceConfig {
+export type TraceConfig = {
     /**
      * Controls how the trace buffer stores data. (TraceConfigRecordMode enum)
      */
@@ -79,21 +79,21 @@ export type MemoryDumpLevelOfDetail = ("background" | "light" | "detailed");
  */
 export type TracingBackend = ("auto" | "chrome" | "system");
 
-export interface GetCategoriesResponse {
+export type GetCategoriesResponse = {
     /**
      * A list of supported tracing categories.
      */
     categories: string[];
 }
 
-export interface RecordClockSyncMarkerRequest {
+export type RecordClockSyncMarkerRequest = {
     /**
      * The ID of this clock sync marker
      */
     syncId: string;
 }
 
-export interface RequestMemoryDumpRequest {
+export type RequestMemoryDumpRequest = {
     /**
      * Enables more deterministic results by forcing garbage collection
      */
@@ -104,7 +104,7 @@ export interface RequestMemoryDumpRequest {
     levelOfDetail?: MemoryDumpLevelOfDetail;
 }
 
-export interface RequestMemoryDumpResponse {
+export type RequestMemoryDumpResponse = {
     /**
      * GUID of the resulting global memory dump.
      */
@@ -120,7 +120,7 @@ export const enum StartRequestTransferMode {
     ReturnAsStream = "ReturnAsStream",
 }
 
-export interface StartRequest {
+export type StartRequest = {
     /**
      * Category/tag filter
      */
@@ -161,7 +161,7 @@ export interface StartRequest {
     tracingBackend?: TracingBackend;
 }
 
-export interface BufferUsageEvent {
+export type BufferUsageEvent = {
     /**
      * A number in range [0..1] that indicates the used size of event buffer as a fraction of its
      * total size.
@@ -182,7 +182,7 @@ export interface BufferUsageEvent {
  * Contains an bucket of collected trace events. When tracing is stopped collected events will be
  * send as a sequence of dataCollected events followed by tracingComplete event.
  */
-export interface DataCollectedEvent {
+export type DataCollectedEvent = {
     value: any[];
 }
 
@@ -190,7 +190,7 @@ export interface DataCollectedEvent {
  * Signals that tracing is stopped and there is no trace buffers pending flush, all data were
  * delivered via dataCollected events.
  */
-export interface TracingCompleteEvent {
+export type TracingCompleteEvent = {
     /**
      * Indicates whether some trace data is known to have been lost, e.g. because the trace ring
      * buffer wrapped around.

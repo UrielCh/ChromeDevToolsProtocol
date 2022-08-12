@@ -11,7 +11,7 @@ export type HeapSnapshotObjectId = string;
 /**
  * Sampling Heap Profile node. Holds callsite information, allocation statistics and child nodes.
  */
-export interface SamplingHeapProfileNode {
+export type SamplingHeapProfileNode = {
     /**
      * Function location.
      */
@@ -33,7 +33,7 @@ export interface SamplingHeapProfileNode {
 /**
  * A single sample from a sampling profile.
  */
-export interface SamplingHeapProfileSample {
+export type SamplingHeapProfileSample = {
     /**
      * Allocation size in bytes attributed to the sample.
      */
@@ -52,33 +52,33 @@ export interface SamplingHeapProfileSample {
 /**
  * Sampling profile.
  */
-export interface SamplingHeapProfile {
+export type SamplingHeapProfile = {
     head: SamplingHeapProfileNode;
     samples: SamplingHeapProfileSample[];
 }
 
-export interface AddInspectedHeapObjectRequest {
+export type AddInspectedHeapObjectRequest = {
     /**
      * Heap snapshot object id to be accessible by means of $x command line API.
      */
     heapObjectId: HeapSnapshotObjectId;
 }
 
-export interface GetHeapObjectIdRequest {
+export type GetHeapObjectIdRequest = {
     /**
      * Identifier of the object to get heap object id for.
      */
     objectId: Runtime.RemoteObjectId;
 }
 
-export interface GetHeapObjectIdResponse {
+export type GetHeapObjectIdResponse = {
     /**
      * Id of the heap snapshot object corresponding to the passed remote object id.
      */
     heapSnapshotObjectId: HeapSnapshotObjectId;
 }
 
-export interface GetObjectByHeapObjectIdRequest {
+export type GetObjectByHeapObjectIdRequest = {
     objectId: HeapSnapshotObjectId;
     /**
      * Symbolic group name that can be used to release multiple objects.
@@ -86,21 +86,21 @@ export interface GetObjectByHeapObjectIdRequest {
     objectGroup?: string;
 }
 
-export interface GetObjectByHeapObjectIdResponse {
+export type GetObjectByHeapObjectIdResponse = {
     /**
      * Evaluation result.
      */
     result: Runtime.RemoteObject;
 }
 
-export interface GetSamplingProfileResponse {
+export type GetSamplingProfileResponse = {
     /**
      * Return the sampling profile being collected.
      */
     profile: SamplingHeapProfile;
 }
 
-export interface StartSamplingRequest {
+export type StartSamplingRequest = {
     /**
      * Average sample interval in bytes. Poisson distribution is used for the intervals. The
      * default value is 32768 bytes.
@@ -108,18 +108,18 @@ export interface StartSamplingRequest {
     samplingInterval?: number;
 }
 
-export interface StartTrackingHeapObjectsRequest {
+export type StartTrackingHeapObjectsRequest = {
     trackAllocations?: boolean;
 }
 
-export interface StopSamplingResponse {
+export type StopSamplingResponse = {
     /**
      * Recorded sampling heap profile.
      */
     profile: SamplingHeapProfile;
 }
 
-export interface StopTrackingHeapObjectsRequest {
+export type StopTrackingHeapObjectsRequest = {
     /**
      * If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken
      * when the tracking is stopped.
@@ -132,7 +132,7 @@ export interface StopTrackingHeapObjectsRequest {
     captureNumericValue?: boolean;
 }
 
-export interface TakeHeapSnapshotRequest {
+export type TakeHeapSnapshotRequest = {
     /**
      * If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken.
      */
@@ -147,14 +147,14 @@ export interface TakeHeapSnapshotRequest {
     captureNumericValue?: boolean;
 }
 
-export interface AddHeapSnapshotChunkEvent {
+export type AddHeapSnapshotChunkEvent = {
     chunk: string;
 }
 
 /**
  * If heap objects tracking has been started then backend may send update for one or more fragments
  */
-export interface HeapStatsUpdateEvent {
+export type HeapStatsUpdateEvent = {
     /**
      * An array of triplets. Each triplet describes a fragment. The first integer is the fragment
      * index, the second integer is a total count of objects for the fragment, the third integer is
@@ -168,12 +168,12 @@ export interface HeapStatsUpdateEvent {
  * seen object id and corresponding timestamp. If the were changes in the heap since last event
  * then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event.
  */
-export interface LastSeenObjectIdEvent {
+export type LastSeenObjectIdEvent = {
     lastSeenObjectId: integer;
     timestamp: number;
 }
 
-export interface ReportHeapSnapshotProgressEvent {
+export type ReportHeapSnapshotProgressEvent = {
     done: integer;
     total: integer;
     finished?: boolean;

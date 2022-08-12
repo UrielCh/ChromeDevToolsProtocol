@@ -12,7 +12,7 @@ export type StorageType = ("appcache" | "cookies" | "file_systems" | "indexeddb"
 /**
  * Usage for a storage type.
  */
-export interface UsageForType {
+export type UsageForType = {
     /**
      * Name of storage type.
      */
@@ -27,7 +27,7 @@ export interface UsageForType {
  * Pair of issuer origin and number of available (signed, but not used) Trust
  * Tokens from that issuer.
  */
-export interface TrustTokens {
+export type TrustTokens = {
     issuerOrigin: string;
     count: number;
 }
@@ -40,7 +40,7 @@ export type InterestGroupAccessType = ("join" | "leave" | "update" | "bid" | "wi
 /**
  * Ad advertising element inside an interest group.
  */
-export interface InterestGroupAd {
+export type InterestGroupAd = {
     renderUrl: string;
     metadata?: string;
 }
@@ -48,7 +48,7 @@ export interface InterestGroupAd {
 /**
  * The full details of an interest group.
  */
-export interface InterestGroupDetails {
+export type InterestGroupDetails = {
     ownerOrigin: string;
     name: string;
     expirationTime: Network.TimeSinceEpoch;
@@ -63,7 +63,7 @@ export interface InterestGroupDetails {
     adComponents: InterestGroupAd[];
 }
 
-export interface ClearDataForOriginRequest {
+export type ClearDataForOriginRequest = {
     /**
      * Security origin.
      */
@@ -74,21 +74,21 @@ export interface ClearDataForOriginRequest {
     storageTypes: string;
 }
 
-export interface GetCookiesRequest {
+export type GetCookiesRequest = {
     /**
      * Browser context to use when called on the browser endpoint.
      */
     browserContextId?: Browser.BrowserContextID;
 }
 
-export interface GetCookiesResponse {
+export type GetCookiesResponse = {
     /**
      * Array of cookie objects.
      */
     cookies: Network.Cookie[];
 }
 
-export interface SetCookiesRequest {
+export type SetCookiesRequest = {
     /**
      * Cookies to be set.
      */
@@ -99,21 +99,21 @@ export interface SetCookiesRequest {
     browserContextId?: Browser.BrowserContextID;
 }
 
-export interface ClearCookiesRequest {
+export type ClearCookiesRequest = {
     /**
      * Browser context to use when called on the browser endpoint.
      */
     browserContextId?: Browser.BrowserContextID;
 }
 
-export interface GetUsageAndQuotaRequest {
+export type GetUsageAndQuotaRequest = {
     /**
      * Security origin.
      */
     origin: string;
 }
 
-export interface GetUsageAndQuotaResponse {
+export type GetUsageAndQuotaResponse = {
     /**
      * Storage usage (bytes).
      */
@@ -132,7 +132,7 @@ export interface GetUsageAndQuotaResponse {
     usageBreakdown: UsageForType[];
 }
 
-export interface OverrideQuotaForOriginRequest {
+export type OverrideQuotaForOriginRequest = {
     /**
      * Security origin.
      */
@@ -149,66 +149,66 @@ export interface OverrideQuotaForOriginRequest {
     quotaSize?: number;
 }
 
-export interface TrackCacheStorageForOriginRequest {
+export type TrackCacheStorageForOriginRequest = {
     /**
      * Security origin.
      */
     origin: string;
 }
 
-export interface TrackIndexedDBForOriginRequest {
+export type TrackIndexedDBForOriginRequest = {
     /**
      * Security origin.
      */
     origin: string;
 }
 
-export interface UntrackCacheStorageForOriginRequest {
+export type UntrackCacheStorageForOriginRequest = {
     /**
      * Security origin.
      */
     origin: string;
 }
 
-export interface UntrackIndexedDBForOriginRequest {
+export type UntrackIndexedDBForOriginRequest = {
     /**
      * Security origin.
      */
     origin: string;
 }
 
-export interface GetTrustTokensResponse {
+export type GetTrustTokensResponse = {
     tokens: TrustTokens[];
 }
 
-export interface ClearTrustTokensRequest {
+export type ClearTrustTokensRequest = {
     issuerOrigin: string;
 }
 
-export interface ClearTrustTokensResponse {
+export type ClearTrustTokensResponse = {
     /**
      * True if any tokens were deleted, false otherwise.
      */
     didDeleteTokens: boolean;
 }
 
-export interface GetInterestGroupDetailsRequest {
+export type GetInterestGroupDetailsRequest = {
     ownerOrigin: string;
     name: string;
 }
 
-export interface GetInterestGroupDetailsResponse {
+export type GetInterestGroupDetailsResponse = {
     details: InterestGroupDetails;
 }
 
-export interface SetInterestGroupTrackingRequest {
+export type SetInterestGroupTrackingRequest = {
     enable: boolean;
 }
 
 /**
  * A cache's contents have been modified.
  */
-export interface CacheStorageContentUpdatedEvent {
+export type CacheStorageContentUpdatedEvent = {
     /**
      * Origin to update.
      */
@@ -222,7 +222,7 @@ export interface CacheStorageContentUpdatedEvent {
 /**
  * A cache has been added/deleted.
  */
-export interface CacheStorageListUpdatedEvent {
+export type CacheStorageListUpdatedEvent = {
     /**
      * Origin to update.
      */
@@ -232,7 +232,7 @@ export interface CacheStorageListUpdatedEvent {
 /**
  * The origin's IndexedDB object store has been modified.
  */
-export interface IndexedDBContentUpdatedEvent {
+export type IndexedDBContentUpdatedEvent = {
     /**
      * Origin to update.
      */
@@ -250,7 +250,7 @@ export interface IndexedDBContentUpdatedEvent {
 /**
  * The origin's IndexedDB database list has been modified.
  */
-export interface IndexedDBListUpdatedEvent {
+export type IndexedDBListUpdatedEvent = {
     /**
      * Origin to update.
      */
@@ -260,7 +260,7 @@ export interface IndexedDBListUpdatedEvent {
 /**
  * One of the interest groups was accessed by the associated page.
  */
-export interface InterestGroupAccessedEvent {
+export type InterestGroupAccessedEvent = {
     accessTime: Network.TimeSinceEpoch;
     type: InterestGroupAccessType;
     ownerOrigin: string;

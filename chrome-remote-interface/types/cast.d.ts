@@ -6,7 +6,7 @@ export type integer = number;
  * functionalities.
  */
 
-export interface Sink {
+export type Sink = {
     name: string;
     id: string;
     /**
@@ -16,23 +16,23 @@ export interface Sink {
     session?: string;
 }
 
-export interface EnableRequest {
+export type EnableRequest = {
     presentationUrl?: string;
 }
 
-export interface SetSinkToUseRequest {
+export type SetSinkToUseRequest = {
     sinkName: string;
 }
 
-export interface StartDesktopMirroringRequest {
+export type StartDesktopMirroringRequest = {
     sinkName: string;
 }
 
-export interface StartTabMirroringRequest {
+export type StartTabMirroringRequest = {
     sinkName: string;
 }
 
-export interface StopCastingRequest {
+export type StopCastingRequest = {
     sinkName: string;
 }
 
@@ -40,7 +40,7 @@ export interface StopCastingRequest {
  * This is fired whenever the list of available sinks changes. A sink is a
  * device or a software surface that you can cast to.
  */
-export interface SinksUpdatedEvent {
+export type SinksUpdatedEvent = {
     sinks: Sink[];
 }
 
@@ -48,7 +48,7 @@ export interface SinksUpdatedEvent {
  * This is fired whenever the outstanding issue/error message changes.
  * |issueMessage| is empty if there is no issue.
  */
-export interface IssueUpdatedEvent {
+export type IssueUpdatedEvent = {
     issueMessage: string;
 }
 

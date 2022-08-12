@@ -19,7 +19,7 @@ export type WindowState = ("normal" | "minimized" | "maximized" | "fullscreen");
 /**
  * Browser window bounds information
  */
-export interface Bounds {
+export type Bounds = {
     /**
      * The offset from the left edge of the screen to the window in pixels.
      */
@@ -50,7 +50,7 @@ export type PermissionSetting = ("granted" | "denied" | "prompt");
  * Definition of PermissionDescriptor defined in the Permissions API:
  * https://w3c.github.io/permissions/#dictdef-permissiondescriptor.
  */
-export interface PermissionDescriptor {
+export type PermissionDescriptor = {
     /**
      * Name of permission.
      * See https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl for valid permission names.
@@ -83,7 +83,7 @@ export type BrowserCommandId = ("openTabSearch" | "closeTabSearch");
 /**
  * Chrome histogram bucket.
  */
-export interface Bucket {
+export type Bucket = {
     /**
      * Minimum value (inclusive).
      */
@@ -101,7 +101,7 @@ export interface Bucket {
 /**
  * Chrome histogram.
  */
-export interface Histogram {
+export type Histogram = {
     /**
      * Name.
      */
@@ -120,7 +120,7 @@ export interface Histogram {
     buckets: Bucket[];
 }
 
-export interface SetPermissionRequest {
+export type SetPermissionRequest = {
     /**
      * Descriptor of permission to override.
      */
@@ -139,7 +139,7 @@ export interface SetPermissionRequest {
     browserContextId?: BrowserContextID;
 }
 
-export interface GrantPermissionsRequest {
+export type GrantPermissionsRequest = {
     permissions: PermissionType[];
     /**
      * Origin the permission applies to, all origins if not specified.
@@ -151,7 +151,7 @@ export interface GrantPermissionsRequest {
     browserContextId?: BrowserContextID;
 }
 
-export interface ResetPermissionsRequest {
+export type ResetPermissionsRequest = {
     /**
      * BrowserContext to reset permissions. When omitted, default browser context is used.
      */
@@ -165,7 +165,7 @@ export const enum SetDownloadBehaviorRequestBehavior {
     Default = "default",
 }
 
-export interface SetDownloadBehaviorRequest {
+export type SetDownloadBehaviorRequest = {
     /**
      * Whether to allow all or deny all download requests, or use default Chrome behavior if
      * available (otherwise deny). |allowAndName| allows download and names files according to
@@ -187,7 +187,7 @@ export interface SetDownloadBehaviorRequest {
     eventsEnabled?: boolean;
 }
 
-export interface CancelDownloadRequest {
+export type CancelDownloadRequest = {
     /**
      * Global unique identifier of the download.
      */
@@ -198,7 +198,7 @@ export interface CancelDownloadRequest {
     browserContextId?: BrowserContextID;
 }
 
-export interface GetVersionResponse {
+export type GetVersionResponse = {
     /**
      * Protocol version.
      */
@@ -221,14 +221,14 @@ export interface GetVersionResponse {
     jsVersion: string;
 }
 
-export interface GetBrowserCommandLineResponse {
+export type GetBrowserCommandLineResponse = {
     /**
      * Commandline parameters
      */
     arguments: string[];
 }
 
-export interface GetHistogramsRequest {
+export type GetHistogramsRequest = {
     /**
      * Requested substring in name. Only histograms which have query as a
      * substring in their name are extracted. An empty or absent query returns
@@ -241,14 +241,14 @@ export interface GetHistogramsRequest {
     delta?: boolean;
 }
 
-export interface GetHistogramsResponse {
+export type GetHistogramsResponse = {
     /**
      * Histograms.
      */
     histograms: Histogram[];
 }
 
-export interface GetHistogramRequest {
+export type GetHistogramRequest = {
     /**
      * Requested histogram name.
      */
@@ -259,21 +259,21 @@ export interface GetHistogramRequest {
     delta?: boolean;
 }
 
-export interface GetHistogramResponse {
+export type GetHistogramResponse = {
     /**
      * Histogram.
      */
     histogram: Histogram;
 }
 
-export interface GetWindowBoundsRequest {
+export type GetWindowBoundsRequest = {
     /**
      * Browser window id.
      */
     windowId: WindowID;
 }
 
-export interface GetWindowBoundsResponse {
+export type GetWindowBoundsResponse = {
     /**
      * Bounds information of the window. When window state is 'minimized', the restored window
      * position and size are returned.
@@ -281,14 +281,14 @@ export interface GetWindowBoundsResponse {
     bounds: Bounds;
 }
 
-export interface GetWindowForTargetRequest {
+export type GetWindowForTargetRequest = {
     /**
      * Devtools agent host id. If called as a part of the session, associated targetId is used.
      */
     targetId?: Target.TargetID;
 }
 
-export interface GetWindowForTargetResponse {
+export type GetWindowForTargetResponse = {
     /**
      * Browser window id.
      */
@@ -300,7 +300,7 @@ export interface GetWindowForTargetResponse {
     bounds: Bounds;
 }
 
-export interface SetWindowBoundsRequest {
+export type SetWindowBoundsRequest = {
     /**
      * Browser window id.
      */
@@ -312,7 +312,7 @@ export interface SetWindowBoundsRequest {
     bounds: Bounds;
 }
 
-export interface SetDockTileRequest {
+export type SetDockTileRequest = {
     badgeLabel?: string;
     /**
      * Png encoded image. (Encoded as a base64 string when passed over JSON)
@@ -320,14 +320,14 @@ export interface SetDockTileRequest {
     image?: string;
 }
 
-export interface ExecuteBrowserCommandRequest {
+export type ExecuteBrowserCommandRequest = {
     commandId: BrowserCommandId;
 }
 
 /**
  * Fired when page is about to start a download.
  */
-export interface DownloadWillBeginEvent {
+export type DownloadWillBeginEvent = {
     /**
      * Id of the frame that caused the download to begin.
      */
@@ -355,7 +355,7 @@ export const enum DownloadProgressEventState {
 /**
  * Fired when download makes progress. Last call has |done| == true.
  */
-export interface DownloadProgressEvent {
+export type DownloadProgressEvent = {
     /**
      * Global unique identifier of the download.
      */

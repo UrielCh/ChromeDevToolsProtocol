@@ -12,7 +12,7 @@ export type integer = number;
 /**
  * See https://github.com/WICG/LargestContentfulPaint and largest_contentful_paint.idl
  */
-export interface LargestContentfulPaint {
+export type LargestContentfulPaint = {
     renderTime: Network.TimeSinceEpoch;
     loadTime: Network.TimeSinceEpoch;
     /**
@@ -30,7 +30,7 @@ export interface LargestContentfulPaint {
     nodeId?: DOM.BackendNodeId;
 }
 
-export interface LayoutShiftAttribution {
+export type LayoutShiftAttribution = {
     previousRect: DOM.Rect;
     currentRect: DOM.Rect;
     nodeId?: DOM.BackendNodeId;
@@ -39,7 +39,7 @@ export interface LayoutShiftAttribution {
 /**
  * See https://wicg.github.io/layout-instability/#sec-layout-shift and layout_shift.idl
  */
-export interface LayoutShift {
+export type LayoutShift = {
     /**
      * Score increment produced by this event.
      */
@@ -49,7 +49,7 @@ export interface LayoutShift {
     sources: LayoutShiftAttribution[];
 }
 
-export interface TimelineEvent {
+export type TimelineEvent = {
     /**
      * Identifies the frame that this event is related to. Empty for non-frame targets.
      */
@@ -75,7 +75,7 @@ export interface TimelineEvent {
     layoutShiftDetails?: LayoutShift;
 }
 
-export interface EnableRequest {
+export type EnableRequest = {
     /**
      * The types of event to report, as specified in
      * https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype
@@ -89,7 +89,7 @@ export interface EnableRequest {
 /**
  * Sent when a performance timeline event is added. See reportPerformanceTimeline method.
  */
-export interface TimelineEventAddedEvent {
+export type TimelineEventAddedEvent = {
     event: TimelineEvent;
 }
 

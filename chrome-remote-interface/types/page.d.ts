@@ -26,7 +26,7 @@ export type AdFrameExplanation = ("ParentIsAd" | "CreatedByAdScript" | "MatchedB
 /**
  * Indicates whether a frame has been identified as an ad and why.
  */
-export interface AdFrameStatus {
+export type AdFrameStatus = {
     adFrameType: AdFrameType;
     explanations?: AdFrameExplanation[];
 }
@@ -54,12 +54,12 @@ export type PermissionsPolicyFeature = ("accelerometer" | "ambient-light-sensor"
  */
 export type PermissionsPolicyBlockReason = ("Header" | "IframeAttribute" | "InFencedFrameTree");
 
-export interface PermissionsPolicyBlockLocator {
+export type PermissionsPolicyBlockLocator = {
     frameId: FrameId;
     blockReason: PermissionsPolicyBlockReason;
 }
 
-export interface PermissionsPolicyFeatureState {
+export type PermissionsPolicyFeatureState = {
     feature: PermissionsPolicyFeature;
     allowed: boolean;
     locator?: PermissionsPolicyBlockLocator;
@@ -78,7 +78,7 @@ export type OriginTrialStatus = ("Enabled" | "ValidTokenNotProvided" | "OSNotSup
 
 export type OriginTrialUsageRestriction = ("None" | "Subset");
 
-export interface OriginTrialToken {
+export type OriginTrialToken = {
     origin: string;
     matchSubDomains: boolean;
     trialName: string;
@@ -87,7 +87,7 @@ export interface OriginTrialToken {
     usageRestriction: OriginTrialUsageRestriction;
 }
 
-export interface OriginTrialTokenWithStatus {
+export type OriginTrialTokenWithStatus = {
     rawTokenText: string;
     /**
      * `parsedToken` is present only when the token is extractable and
@@ -97,7 +97,7 @@ export interface OriginTrialTokenWithStatus {
     status: OriginTrialTokenStatus;
 }
 
-export interface OriginTrial {
+export type OriginTrial = {
     trialName: string;
     status: OriginTrialStatus;
     tokensWithStatus: OriginTrialTokenWithStatus[];
@@ -106,7 +106,7 @@ export interface OriginTrial {
 /**
  * Information about the Frame on the page.
  */
-export interface Frame {
+export type Frame = {
     /**
      * Frame unique identifier.
      */
@@ -171,7 +171,7 @@ export interface Frame {
 /**
  * Information about the Resource on the page.
  */
-export interface FrameResource {
+export type FrameResource = {
     /**
      * Resource URL.
      */
@@ -205,7 +205,7 @@ export interface FrameResource {
 /**
  * Information about the Frame hierarchy along with their cached resources.
  */
-export interface FrameResourceTree {
+export type FrameResourceTree = {
     /**
      * Frame information for this tree item.
      */
@@ -223,7 +223,7 @@ export interface FrameResourceTree {
 /**
  * Information about the Frame hierarchy.
  */
-export interface FrameTree {
+export type FrameTree = {
     /**
      * Frame information for this tree item.
      */
@@ -247,7 +247,7 @@ export type TransitionType = ("link" | "typed" | "address_bar" | "auto_bookmark"
 /**
  * Navigation history entry.
  */
-export interface NavigationEntry {
+export type NavigationEntry = {
     /**
      * Unique id of the navigation history entry.
      */
@@ -273,7 +273,7 @@ export interface NavigationEntry {
 /**
  * Screencast frame metadata.
  */
-export interface ScreencastFrameMetadata {
+export type ScreencastFrameMetadata = {
     /**
      * Top offset in DIP.
      */
@@ -312,7 +312,7 @@ export type DialogType = ("alert" | "confirm" | "prompt" | "beforeunload");
 /**
  * Error while paring app manifest.
  */
-export interface AppManifestError {
+export type AppManifestError = {
     /**
      * Error message.
      */
@@ -334,7 +334,7 @@ export interface AppManifestError {
 /**
  * Parsed app manifest properties.
  */
-export interface AppManifestParsedProperties {
+export type AppManifestParsedProperties = {
     /**
      * Computed scope value
      */
@@ -344,7 +344,7 @@ export interface AppManifestParsedProperties {
 /**
  * Layout viewport position and dimensions.
  */
-export interface LayoutViewport {
+export type LayoutViewport = {
     /**
      * Horizontal offset relative to the document (CSS pixels).
      */
@@ -366,7 +366,7 @@ export interface LayoutViewport {
 /**
  * Visual viewport position, dimensions, and scale.
  */
-export interface VisualViewport {
+export type VisualViewport = {
     /**
      * Horizontal offset relative to the layout viewport (CSS pixels).
      */
@@ -404,7 +404,7 @@ export interface VisualViewport {
 /**
  * Viewport for capturing screenshot.
  */
-export interface Viewport {
+export type Viewport = {
     /**
      * X offset in device independent pixels (dip).
      */
@@ -430,7 +430,7 @@ export interface Viewport {
 /**
  * Generic font families collection.
  */
-export interface FontFamilies {
+export type FontFamilies = {
     /**
      * The standard font-family.
      */
@@ -464,7 +464,7 @@ export interface FontFamilies {
 /**
  * Font families collection for a script.
  */
-export interface ScriptFontFamilies {
+export type ScriptFontFamilies = {
     /**
      * Name of the script which these font families are defined for.
      */
@@ -478,7 +478,7 @@ export interface ScriptFontFamilies {
 /**
  * Default font sizes.
  */
-export interface FontSizes {
+export type FontSizes = {
     /**
      * Default standard font size.
      */
@@ -493,7 +493,7 @@ export type ClientNavigationReason = ("formSubmissionGet" | "formSubmissionPost"
 
 export type ClientNavigationDisposition = ("currentTab" | "newTab" | "newWindow" | "download");
 
-export interface InstallabilityErrorArgument {
+export type InstallabilityErrorArgument = {
     /**
      * Argument name (e.g. name:'minimum-icon-size-in-pixels').
      */
@@ -507,7 +507,7 @@ export interface InstallabilityErrorArgument {
 /**
  * The installability error
  */
-export interface InstallabilityError {
+export type InstallabilityError = {
     /**
      * The error id (e.g. 'manifest-missing-suitable-icon').
      */
@@ -526,7 +526,7 @@ export type ReferrerPolicy = ("noReferrer" | "noReferrerWhenDowngrade" | "origin
 /**
  * Per-script compilation cache parameters for `Page.produceCompilationCache`
  */
-export interface CompilationCacheParams {
+export type CompilationCacheParams = {
     /**
      * The URL of the script to produce a compilation cache entry for.
      */
@@ -553,7 +553,7 @@ export type BackForwardCacheNotRestoredReason = ("NotPrimaryMainFrame" | "BackFo
  */
 export type BackForwardCacheNotRestoredReasonType = ("SupportPending" | "PageSupportNeeded" | "Circumstantial");
 
-export interface BackForwardCacheNotRestoredExplanation {
+export type BackForwardCacheNotRestoredExplanation = {
     /**
      * Type of the reason
      */
@@ -564,7 +564,7 @@ export interface BackForwardCacheNotRestoredExplanation {
     reason: BackForwardCacheNotRestoredReason;
 }
 
-export interface BackForwardCacheNotRestoredExplanationTree {
+export type BackForwardCacheNotRestoredExplanationTree = {
     /**
      * URL of each frame
      */
@@ -579,18 +579,18 @@ export interface BackForwardCacheNotRestoredExplanationTree {
     children: BackForwardCacheNotRestoredExplanationTree[];
 }
 
-export interface AddScriptToEvaluateOnLoadRequest {
+export type AddScriptToEvaluateOnLoadRequest = {
     scriptSource: string;
 }
 
-export interface AddScriptToEvaluateOnLoadResponse {
+export type AddScriptToEvaluateOnLoadResponse = {
     /**
      * Identifier of the added script.
      */
     identifier: ScriptIdentifier;
 }
 
-export interface AddScriptToEvaluateOnNewDocumentRequest {
+export type AddScriptToEvaluateOnNewDocumentRequest = {
     source: string;
     /**
      * If specified, creates an isolated world with the given name and evaluates given script in it.
@@ -605,7 +605,7 @@ export interface AddScriptToEvaluateOnNewDocumentRequest {
     includeCommandLineAPI?: boolean;
 }
 
-export interface AddScriptToEvaluateOnNewDocumentResponse {
+export type AddScriptToEvaluateOnNewDocumentResponse = {
     /**
      * Identifier of the added script.
      */
@@ -618,7 +618,7 @@ export const enum CaptureScreenshotRequestFormat {
     Webp = "webp",
 }
 
-export interface CaptureScreenshotRequest {
+export type CaptureScreenshotRequest = {
     /**
      * Image compression format (defaults to png). (CaptureScreenshotRequestFormat enum)
      */
@@ -641,7 +641,7 @@ export interface CaptureScreenshotRequest {
     captureBeyondViewport?: boolean;
 }
 
-export interface CaptureScreenshotResponse {
+export type CaptureScreenshotResponse = {
     /**
      * Base64-encoded image data. (Encoded as a base64 string when passed over JSON)
      */
@@ -652,21 +652,21 @@ export const enum CaptureSnapshotRequestFormat {
     MHTML = "mhtml",
 }
 
-export interface CaptureSnapshotRequest {
+export type CaptureSnapshotRequest = {
     /**
      * Format (defaults to mhtml). (CaptureSnapshotRequestFormat enum)
      */
     format?: ("mhtml");
 }
 
-export interface CaptureSnapshotResponse {
+export type CaptureSnapshotResponse = {
     /**
      * Serialized page data.
      */
     data: string;
 }
 
-export interface CreateIsolatedWorldRequest {
+export type CreateIsolatedWorldRequest = {
     /**
      * Id of the frame in which the isolated world should be created.
      */
@@ -682,14 +682,14 @@ export interface CreateIsolatedWorldRequest {
     grantUniveralAccess?: boolean;
 }
 
-export interface CreateIsolatedWorldResponse {
+export type CreateIsolatedWorldResponse = {
     /**
      * Execution context of the isolated world.
      */
     executionContextId: Runtime.ExecutionContextId;
 }
 
-export interface DeleteCookieRequest {
+export type DeleteCookieRequest = {
     /**
      * Name of the cookie to remove.
      */
@@ -700,7 +700,7 @@ export interface DeleteCookieRequest {
     url: string;
 }
 
-export interface GetAppManifestResponse {
+export type GetAppManifestResponse = {
     /**
      * Manifest location.
      */
@@ -716,15 +716,15 @@ export interface GetAppManifestResponse {
     parsed?: AppManifestParsedProperties;
 }
 
-export interface GetInstallabilityErrorsResponse {
+export type GetInstallabilityErrorsResponse = {
     installabilityErrors: InstallabilityError[];
 }
 
-export interface GetManifestIconsResponse {
+export type GetManifestIconsResponse = {
     primaryIcon?: string;
 }
 
-export interface GetAppIdResponse {
+export type GetAppIdResponse = {
     /**
      * App id, either from manifest's id attribute or computed from start_url
      */
@@ -735,21 +735,21 @@ export interface GetAppIdResponse {
     recommendedId?: string;
 }
 
-export interface GetCookiesResponse {
+export type GetCookiesResponse = {
     /**
      * Array of cookie objects.
      */
     cookies: Network.Cookie[];
 }
 
-export interface GetFrameTreeResponse {
+export type GetFrameTreeResponse = {
     /**
      * Present frame tree structure.
      */
     frameTree: FrameTree;
 }
 
-export interface GetLayoutMetricsResponse {
+export type GetLayoutMetricsResponse = {
     /**
      * Deprecated metrics relating to the layout viewport. Can be in DP or in CSS pixels depending on the `enable-use-zoom-for-dsf` flag. Use `cssLayoutViewport` instead.
      */
@@ -776,7 +776,7 @@ export interface GetLayoutMetricsResponse {
     cssContentSize: DOM.Rect;
 }
 
-export interface GetNavigationHistoryResponse {
+export type GetNavigationHistoryResponse = {
     /**
      * Index of the current navigation history entry.
      */
@@ -787,7 +787,7 @@ export interface GetNavigationHistoryResponse {
     entries: NavigationEntry[];
 }
 
-export interface GetResourceContentRequest {
+export type GetResourceContentRequest = {
     /**
      * Frame id to get resource for.
      */
@@ -798,7 +798,7 @@ export interface GetResourceContentRequest {
     url: string;
 }
 
-export interface GetResourceContentResponse {
+export type GetResourceContentResponse = {
     /**
      * Resource content.
      */
@@ -809,14 +809,14 @@ export interface GetResourceContentResponse {
     base64Encoded: boolean;
 }
 
-export interface GetResourceTreeResponse {
+export type GetResourceTreeResponse = {
     /**
      * Present frame / resource tree structure.
      */
     frameTree: FrameResourceTree;
 }
 
-export interface HandleJavaScriptDialogRequest {
+export type HandleJavaScriptDialogRequest = {
     /**
      * Whether to accept or dismiss the dialog.
      */
@@ -828,7 +828,7 @@ export interface HandleJavaScriptDialogRequest {
     promptText?: string;
 }
 
-export interface NavigateRequest {
+export type NavigateRequest = {
     /**
      * URL to navigate the page to.
      */
@@ -851,7 +851,7 @@ export interface NavigateRequest {
     referrerPolicy?: ReferrerPolicy;
 }
 
-export interface NavigateResponse {
+export type NavigateResponse = {
     /**
      * Frame id that has navigated (or failed to navigate)
      */
@@ -866,7 +866,7 @@ export interface NavigateResponse {
     errorText?: string;
 }
 
-export interface NavigateToHistoryEntryRequest {
+export type NavigateToHistoryEntryRequest = {
     /**
      * Unique id of the entry to navigate to.
      */
@@ -878,7 +878,7 @@ export const enum PrintToPDFRequestTransferMode {
     ReturnAsStream = "ReturnAsStream",
 }
 
-export interface PrintToPDFRequest {
+export type PrintToPDFRequest = {
     /**
      * Paper orientation. Defaults to false.
      */
@@ -956,7 +956,7 @@ export interface PrintToPDFRequest {
     transferMode?: ("ReturnAsBase64" | "ReturnAsStream");
 }
 
-export interface PrintToPDFResponse {
+export type PrintToPDFResponse = {
     /**
      * Base64-encoded pdf data. Empty if |returnAsStream| is specified. (Encoded as a base64 string when passed over JSON)
      */
@@ -967,7 +967,7 @@ export interface PrintToPDFResponse {
     stream?: IO.StreamHandle;
 }
 
-export interface ReloadRequest {
+export type ReloadRequest = {
     /**
      * If true, browser cache is ignored (as if the user pressed Shift+refresh).
      */
@@ -979,22 +979,22 @@ export interface ReloadRequest {
     scriptToEvaluateOnLoad?: string;
 }
 
-export interface RemoveScriptToEvaluateOnLoadRequest {
+export type RemoveScriptToEvaluateOnLoadRequest = {
     identifier: ScriptIdentifier;
 }
 
-export interface RemoveScriptToEvaluateOnNewDocumentRequest {
+export type RemoveScriptToEvaluateOnNewDocumentRequest = {
     identifier: ScriptIdentifier;
 }
 
-export interface ScreencastFrameAckRequest {
+export type ScreencastFrameAckRequest = {
     /**
      * Frame number.
      */
     sessionId: integer;
 }
 
-export interface SearchInResourceRequest {
+export type SearchInResourceRequest = {
     /**
      * Frame id for resource to search in.
      */
@@ -1017,44 +1017,44 @@ export interface SearchInResourceRequest {
     isRegex?: boolean;
 }
 
-export interface SearchInResourceResponse {
+export type SearchInResourceResponse = {
     /**
      * List of search matches.
      */
     result: Debugger.SearchMatch[];
 }
 
-export interface SetAdBlockingEnabledRequest {
+export type SetAdBlockingEnabledRequest = {
     /**
      * Whether to block ads.
      */
     enabled: boolean;
 }
 
-export interface SetBypassCSPRequest {
+export type SetBypassCSPRequest = {
     /**
      * Whether to bypass page CSP.
      */
     enabled: boolean;
 }
 
-export interface GetPermissionsPolicyStateRequest {
+export type GetPermissionsPolicyStateRequest = {
     frameId: FrameId;
 }
 
-export interface GetPermissionsPolicyStateResponse {
+export type GetPermissionsPolicyStateResponse = {
     states: PermissionsPolicyFeatureState[];
 }
 
-export interface GetOriginTrialsRequest {
+export type GetOriginTrialsRequest = {
     frameId: FrameId;
 }
 
-export interface GetOriginTrialsResponse {
+export type GetOriginTrialsResponse = {
     originTrials: OriginTrial[];
 }
 
-export interface SetDeviceMetricsOverrideRequest {
+export type SetDeviceMetricsOverrideRequest = {
     /**
      * Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      */
@@ -1106,7 +1106,7 @@ export interface SetDeviceMetricsOverrideRequest {
     viewport?: Viewport;
 }
 
-export interface SetDeviceOrientationOverrideRequest {
+export type SetDeviceOrientationOverrideRequest = {
     /**
      * Mock alpha
      */
@@ -1121,7 +1121,7 @@ export interface SetDeviceOrientationOverrideRequest {
     gamma: number;
 }
 
-export interface SetFontFamiliesRequest {
+export type SetFontFamiliesRequest = {
     /**
      * Specifies font families to set. If a font family is not specified, it won't be changed.
      */
@@ -1132,14 +1132,14 @@ export interface SetFontFamiliesRequest {
     forScripts?: ScriptFontFamilies[];
 }
 
-export interface SetFontSizesRequest {
+export type SetFontSizesRequest = {
     /**
      * Specifies font sizes to set. If a font size is not specified, it won't be changed.
      */
     fontSizes: FontSizes;
 }
 
-export interface SetDocumentContentRequest {
+export type SetDocumentContentRequest = {
     /**
      * Frame id to set HTML for.
      */
@@ -1156,7 +1156,7 @@ export const enum SetDownloadBehaviorRequestBehavior {
     Default = "default",
 }
 
-export interface SetDownloadBehaviorRequest {
+export type SetDownloadBehaviorRequest = {
     /**
      * Whether to allow all or deny all download requests, or use default Chrome behavior if
      * available (otherwise deny). (SetDownloadBehaviorRequestBehavior enum)
@@ -1168,7 +1168,7 @@ export interface SetDownloadBehaviorRequest {
     downloadPath?: string;
 }
 
-export interface SetGeolocationOverrideRequest {
+export type SetGeolocationOverrideRequest = {
     /**
      * Mock latitude
      */
@@ -1183,7 +1183,7 @@ export interface SetGeolocationOverrideRequest {
     accuracy?: number;
 }
 
-export interface SetLifecycleEventsEnabledRequest {
+export type SetLifecycleEventsEnabledRequest = {
     /**
      * If true, starts emitting lifecycle events.
      */
@@ -1195,7 +1195,7 @@ export const enum SetTouchEmulationEnabledRequestConfiguration {
     Desktop = "desktop",
 }
 
-export interface SetTouchEmulationEnabledRequest {
+export type SetTouchEmulationEnabledRequest = {
     /**
      * Whether the touch event emulation should be enabled.
      */
@@ -1211,7 +1211,7 @@ export const enum StartScreencastRequestFormat {
     Png = "png",
 }
 
-export interface StartScreencastRequest {
+export type StartScreencastRequest = {
     /**
      * Image compression format. (StartScreencastRequestFormat enum)
      */
@@ -1239,18 +1239,18 @@ export const enum SetWebLifecycleStateRequestState {
     Active = "active",
 }
 
-export interface SetWebLifecycleStateRequest {
+export type SetWebLifecycleStateRequest = {
     /**
      * Target lifecycle state (SetWebLifecycleStateRequestState enum)
      */
     state: ("frozen" | "active");
 }
 
-export interface ProduceCompilationCacheRequest {
+export type ProduceCompilationCacheRequest = {
     scripts: CompilationCacheParams[];
 }
 
-export interface AddCompilationCacheRequest {
+export type AddCompilationCacheRequest = {
     url: string;
     /**
      * Base64-encoded data (Encoded as a base64 string when passed over JSON)
@@ -1264,14 +1264,14 @@ export const enum SetSPCTransactionModeRequestMode {
     Autoreject = "autoreject",
 }
 
-export interface SetSPCTransactionModeRequest {
+export type SetSPCTransactionModeRequest = {
     /**
      *  (SetSPCTransactionModeRequestMode enum)
      */
     mode: ("none" | "autoaccept" | "autoreject");
 }
 
-export interface GenerateTestReportRequest {
+export type GenerateTestReportRequest = {
     /**
      * Message to be displayed in the report.
      */
@@ -1282,11 +1282,11 @@ export interface GenerateTestReportRequest {
     group?: string;
 }
 
-export interface SetInterceptFileChooserDialogRequest {
+export type SetInterceptFileChooserDialogRequest = {
     enabled: boolean;
 }
 
-export interface DomContentEventFiredEvent {
+export type DomContentEventFiredEvent = {
     timestamp: Network.MonotonicTime;
 }
 
@@ -1298,7 +1298,7 @@ export const enum FileChooserOpenedEventMode {
 /**
  * Emitted only when `page.interceptFileChooser` is enabled.
  */
-export interface FileChooserOpenedEvent {
+export type FileChooserOpenedEvent = {
     /**
      * Id of the frame containing input node.
      */
@@ -1316,7 +1316,7 @@ export interface FileChooserOpenedEvent {
 /**
  * Fired when frame has been attached to its parent.
  */
-export interface FrameAttachedEvent {
+export type FrameAttachedEvent = {
     /**
      * Id of the frame that has been attached.
      */
@@ -1334,7 +1334,7 @@ export interface FrameAttachedEvent {
 /**
  * Fired when frame no longer has a scheduled navigation.
  */
-export interface FrameClearedScheduledNavigationEvent {
+export type FrameClearedScheduledNavigationEvent = {
     /**
      * Id of the frame that has cleared its scheduled navigation.
      */
@@ -1349,7 +1349,7 @@ export const enum FrameDetachedEventReason {
 /**
  * Fired when frame has been detached from its parent.
  */
-export interface FrameDetachedEvent {
+export type FrameDetachedEvent = {
     /**
      * Id of the frame that has been detached.
      */
@@ -1363,7 +1363,7 @@ export interface FrameDetachedEvent {
 /**
  * Fired once navigation of the frame has completed. Frame is now associated with the new loader.
  */
-export interface FrameNavigatedEvent {
+export type FrameNavigatedEvent = {
     /**
      * Frame object.
      */
@@ -1374,7 +1374,7 @@ export interface FrameNavigatedEvent {
 /**
  * Fired when opening document to write to.
  */
-export interface DocumentOpenedEvent {
+export type DocumentOpenedEvent = {
     /**
      * Frame object.
      */
@@ -1385,7 +1385,7 @@ export interface DocumentOpenedEvent {
  * Fired when a renderer-initiated navigation is requested.
  * Navigation may still be cancelled after the event is issued.
  */
-export interface FrameRequestedNavigationEvent {
+export type FrameRequestedNavigationEvent = {
     /**
      * Id of the frame that is being navigated.
      */
@@ -1407,7 +1407,7 @@ export interface FrameRequestedNavigationEvent {
 /**
  * Fired when frame schedules a potential navigation.
  */
-export interface FrameScheduledNavigationEvent {
+export type FrameScheduledNavigationEvent = {
     /**
      * Id of the frame that has scheduled a navigation.
      */
@@ -1430,7 +1430,7 @@ export interface FrameScheduledNavigationEvent {
 /**
  * Fired when frame has started loading.
  */
-export interface FrameStartedLoadingEvent {
+export type FrameStartedLoadingEvent = {
     /**
      * Id of the frame that has started loading.
      */
@@ -1440,7 +1440,7 @@ export interface FrameStartedLoadingEvent {
 /**
  * Fired when frame has stopped loading.
  */
-export interface FrameStoppedLoadingEvent {
+export type FrameStoppedLoadingEvent = {
     /**
      * Id of the frame that has stopped loading.
      */
@@ -1451,7 +1451,7 @@ export interface FrameStoppedLoadingEvent {
  * Fired when page is about to start a download.
  * Deprecated. Use Browser.downloadWillBegin instead.
  */
-export interface DownloadWillBeginEvent {
+export type DownloadWillBeginEvent = {
     /**
      * Id of the frame that caused download to begin.
      */
@@ -1480,7 +1480,7 @@ export const enum DownloadProgressEventState {
  * Fired when download makes progress. Last call has |done| == true.
  * Deprecated. Use Browser.downloadProgress instead.
  */
-export interface DownloadProgressEvent {
+export type DownloadProgressEvent = {
     /**
      * Global unique identifier of the download.
      */
@@ -1503,7 +1503,7 @@ export interface DownloadProgressEvent {
  * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
  * closed.
  */
-export interface JavascriptDialogClosedEvent {
+export type JavascriptDialogClosedEvent = {
     /**
      * Whether dialog was confirmed.
      */
@@ -1518,7 +1518,7 @@ export interface JavascriptDialogClosedEvent {
  * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
  * open.
  */
-export interface JavascriptDialogOpeningEvent {
+export type JavascriptDialogOpeningEvent = {
     /**
      * Frame url.
      */
@@ -1546,7 +1546,7 @@ export interface JavascriptDialogOpeningEvent {
 /**
  * Fired for top level page lifecycle events such as navigation, load, paint, etc.
  */
-export interface LifecycleEventEvent {
+export type LifecycleEventEvent = {
     /**
      * Id of the frame.
      */
@@ -1565,7 +1565,7 @@ export interface LifecycleEventEvent {
  * main-frame history navigation where the document changes (non-same-document navigations),
  * when bfcache navigation fails.
  */
-export interface BackForwardCacheNotUsedEvent {
+export type BackForwardCacheNotUsedEvent = {
     /**
      * The loader id for the associated navgation.
      */
@@ -1584,14 +1584,14 @@ export interface BackForwardCacheNotUsedEvent {
     notRestoredExplanationsTree?: BackForwardCacheNotRestoredExplanationTree;
 }
 
-export interface LoadEventFiredEvent {
+export type LoadEventFiredEvent = {
     timestamp: Network.MonotonicTime;
 }
 
 /**
  * Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation.
  */
-export interface NavigatedWithinDocumentEvent {
+export type NavigatedWithinDocumentEvent = {
     /**
      * Id of the frame.
      */
@@ -1605,7 +1605,7 @@ export interface NavigatedWithinDocumentEvent {
 /**
  * Compressed image data requested by the `startScreencast`.
  */
-export interface ScreencastFrameEvent {
+export type ScreencastFrameEvent = {
     /**
      * Base64-encoded compressed image. (Encoded as a base64 string when passed over JSON)
      */
@@ -1623,7 +1623,7 @@ export interface ScreencastFrameEvent {
 /**
  * Fired when the page with currently enabled screencast was shown or hidden `.
  */
-export interface ScreencastVisibilityChangedEvent {
+export type ScreencastVisibilityChangedEvent = {
     /**
      * True if the page is visible.
      */
@@ -1634,7 +1634,7 @@ export interface ScreencastVisibilityChangedEvent {
  * Fired when a new window is going to be opened, via window.open(), link click, form submission,
  * etc.
  */
-export interface WindowOpenEvent {
+export type WindowOpenEvent = {
     /**
      * The URL for the new window.
      */
@@ -1657,7 +1657,7 @@ export interface WindowOpenEvent {
  * Issued for every compilation cache generated. Is only available
  * if Page.setGenerateCompilationCache is enabled.
  */
-export interface CompilationCacheProducedEvent {
+export type CompilationCacheProducedEvent = {
     url: string;
     /**
      * Base64-encoded data (Encoded as a base64 string when passed over JSON)

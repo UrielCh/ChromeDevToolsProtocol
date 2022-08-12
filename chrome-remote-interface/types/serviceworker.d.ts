@@ -8,7 +8,7 @@ export type RegistrationID = string;
 /**
  * ServiceWorker registration.
  */
-export interface ServiceWorkerRegistration {
+export type ServiceWorkerRegistration = {
     registrationId: RegistrationID;
     scopeURL: string;
     isDeleted: boolean;
@@ -21,7 +21,7 @@ export type ServiceWorkerVersionStatus = ("new" | "installing" | "installed" | "
 /**
  * ServiceWorker version.
  */
-export interface ServiceWorkerVersion {
+export type ServiceWorkerVersion = {
     versionId: string;
     registrationId: RegistrationID;
     scriptURL: string;
@@ -43,7 +43,7 @@ export interface ServiceWorkerVersion {
 /**
  * ServiceWorker error message.
  */
-export interface ServiceWorkerErrorMessage {
+export type ServiceWorkerErrorMessage = {
     errorMessage: string;
     registrationId: RegistrationID;
     versionId: string;
@@ -52,62 +52,62 @@ export interface ServiceWorkerErrorMessage {
     columnNumber: integer;
 }
 
-export interface DeliverPushMessageRequest {
+export type DeliverPushMessageRequest = {
     origin: string;
     registrationId: RegistrationID;
     data: string;
 }
 
-export interface DispatchSyncEventRequest {
+export type DispatchSyncEventRequest = {
     origin: string;
     registrationId: RegistrationID;
     tag: string;
     lastChance: boolean;
 }
 
-export interface DispatchPeriodicSyncEventRequest {
+export type DispatchPeriodicSyncEventRequest = {
     origin: string;
     registrationId: RegistrationID;
     tag: string;
 }
 
-export interface InspectWorkerRequest {
+export type InspectWorkerRequest = {
     versionId: string;
 }
 
-export interface SetForceUpdateOnPageLoadRequest {
+export type SetForceUpdateOnPageLoadRequest = {
     forceUpdateOnPageLoad: boolean;
 }
 
-export interface SkipWaitingRequest {
+export type SkipWaitingRequest = {
     scopeURL: string;
 }
 
-export interface StartWorkerRequest {
+export type StartWorkerRequest = {
     scopeURL: string;
 }
 
-export interface StopWorkerRequest {
+export type StopWorkerRequest = {
     versionId: string;
 }
 
-export interface UnregisterRequest {
+export type UnregisterRequest = {
     scopeURL: string;
 }
 
-export interface UpdateRegistrationRequest {
+export type UpdateRegistrationRequest = {
     scopeURL: string;
 }
 
-export interface WorkerErrorReportedEvent {
+export type WorkerErrorReportedEvent = {
     errorMessage: ServiceWorkerErrorMessage;
 }
 
-export interface WorkerRegistrationUpdatedEvent {
+export type WorkerRegistrationUpdatedEvent = {
     registrations: ServiceWorkerRegistration[];
 }
 
-export interface WorkerVersionUpdatedEvent {
+export type WorkerVersionUpdatedEvent = {
     versions: ServiceWorkerVersion[];
 }
 

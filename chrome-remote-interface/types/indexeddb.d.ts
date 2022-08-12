@@ -6,7 +6,7 @@ export type integer = number;
 /**
  * Database with an array of object stores.
  */
-export interface DatabaseWithObjectStores {
+export type DatabaseWithObjectStores = {
     /**
      * Database name.
      */
@@ -25,7 +25,7 @@ export interface DatabaseWithObjectStores {
 /**
  * Object store.
  */
-export interface ObjectStore {
+export type ObjectStore = {
     /**
      * Object store name.
      */
@@ -47,7 +47,7 @@ export interface ObjectStore {
 /**
  * Object store index.
  */
-export interface ObjectStoreIndex {
+export type ObjectStoreIndex = {
     /**
      * Index name.
      */
@@ -76,7 +76,7 @@ export const enum KeyType {
 /**
  * Key.
  */
-export interface Key {
+export type Key = {
     /**
      * Key type. (KeyType enum)
      */
@@ -102,7 +102,7 @@ export interface Key {
 /**
  * Key range.
  */
-export interface KeyRange {
+export type KeyRange = {
     /**
      * Lower bound.
      */
@@ -124,7 +124,7 @@ export interface KeyRange {
 /**
  * Data entry.
  */
-export interface DataEntry {
+export type DataEntry = {
     /**
      * Key object.
      */
@@ -148,7 +148,7 @@ export const enum KeyPathType {
 /**
  * Key path.
  */
-export interface KeyPath {
+export type KeyPath = {
     /**
      * Key path type. (KeyPathType enum)
      */
@@ -163,7 +163,7 @@ export interface KeyPath {
     array?: string[];
 }
 
-export interface ClearObjectStoreRequest {
+export type ClearObjectStoreRequest = {
     /**
      * Security origin.
      */
@@ -178,7 +178,7 @@ export interface ClearObjectStoreRequest {
     objectStoreName: string;
 }
 
-export interface DeleteDatabaseRequest {
+export type DeleteDatabaseRequest = {
     /**
      * Security origin.
      */
@@ -189,7 +189,7 @@ export interface DeleteDatabaseRequest {
     databaseName: string;
 }
 
-export interface DeleteObjectStoreEntriesRequest {
+export type DeleteObjectStoreEntriesRequest = {
     securityOrigin: string;
     databaseName: string;
     objectStoreName: string;
@@ -199,7 +199,7 @@ export interface DeleteObjectStoreEntriesRequest {
     keyRange: KeyRange;
 }
 
-export interface RequestDataRequest {
+export type RequestDataRequest = {
     /**
      * Security origin.
      */
@@ -230,7 +230,7 @@ export interface RequestDataRequest {
     keyRange?: KeyRange;
 }
 
-export interface RequestDataResponse {
+export type RequestDataResponse = {
     /**
      * Array of object store data entries.
      */
@@ -241,7 +241,7 @@ export interface RequestDataResponse {
     hasMore: boolean;
 }
 
-export interface GetMetadataRequest {
+export type GetMetadataRequest = {
     /**
      * Security origin.
      */
@@ -256,7 +256,7 @@ export interface GetMetadataRequest {
     objectStoreName: string;
 }
 
-export interface GetMetadataResponse {
+export type GetMetadataResponse = {
     /**
      * the entries count
      */
@@ -269,7 +269,7 @@ export interface GetMetadataResponse {
     keyGeneratorValue: number;
 }
 
-export interface RequestDatabaseRequest {
+export type RequestDatabaseRequest = {
     /**
      * Security origin.
      */
@@ -280,21 +280,21 @@ export interface RequestDatabaseRequest {
     databaseName: string;
 }
 
-export interface RequestDatabaseResponse {
+export type RequestDatabaseResponse = {
     /**
      * Database with an array of object stores.
      */
     databaseWithObjectStores: DatabaseWithObjectStores;
 }
 
-export interface RequestDatabaseNamesRequest {
+export type RequestDatabaseNamesRequest = {
     /**
      * Security origin.
      */
     securityOrigin: string;
 }
 
-export interface RequestDatabaseNamesResponse {
+export type RequestDatabaseNamesResponse = {
     /**
      * Database names for origin.
      */

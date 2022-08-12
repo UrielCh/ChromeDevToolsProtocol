@@ -8,7 +8,7 @@ export type integer = number;
 /**
  * Description of the protocol domain.
  */
-export interface Domain {
+export type Domain = {
     /**
      * Domain name.
      */
@@ -19,7 +19,7 @@ export interface Domain {
     version: string;
 }
 
-export interface GetDomainsResponse {
+export type GetDomainsResponse = {
     /**
      * List of supported domains.
      */

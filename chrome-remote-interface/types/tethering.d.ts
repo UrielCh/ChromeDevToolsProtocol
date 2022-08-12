@@ -5,14 +5,14 @@ export type integer = number;
  * The Tethering domain defines methods and events for browser port binding.
  */
 
-export interface BindRequest {
+export type BindRequest = {
     /**
      * Port number to bind.
      */
     port: integer;
 }
 
-export interface UnbindRequest {
+export type UnbindRequest = {
     /**
      * Port number to unbind.
      */
@@ -22,7 +22,7 @@ export interface UnbindRequest {
 /**
  * Informs that port was successfully bound and got a specified connection id.
  */
-export interface AcceptedEvent {
+export type AcceptedEvent = {
     /**
      * Port number that was successfully bound.
      */

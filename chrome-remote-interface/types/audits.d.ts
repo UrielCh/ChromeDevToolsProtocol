@@ -12,7 +12,7 @@ export type integer = number;
 /**
  * Information about a cookie that is affected by an inspector issue.
  */
-export interface AffectedCookie {
+export type AffectedCookie = {
     /**
      * The following three properties uniquely identify a cookie
      */
@@ -24,7 +24,7 @@ export interface AffectedCookie {
 /**
  * Information about a request that is affected by an inspector issue.
  */
-export interface AffectedRequest {
+export type AffectedRequest = {
     /**
      * The unique request id.
      */
@@ -35,7 +35,7 @@ export interface AffectedRequest {
 /**
  * Information about the frame affected by an inspector issue.
  */
-export interface AffectedFrame {
+export type AffectedFrame = {
     frameId: Page.FrameId;
 }
 
@@ -50,7 +50,7 @@ export type SameSiteCookieOperation = ("SetCookie" | "ReadCookie");
  * time finding a specific cookie. With this, we can convey specific error
  * information without the cookie.
  */
-export interface SameSiteCookieIssueDetails {
+export type SameSiteCookieIssueDetails = {
     /**
      * If AffectedCookie is not set then rawCookieLine contains the raw
      * Set-Cookie header string. This hints at a problem where the
@@ -75,7 +75,7 @@ export type MixedContentResolutionStatus = ("MixedContentBlocked" | "MixedConten
 
 export type MixedContentResourceType = ("Audio" | "Beacon" | "CSPReport" | "Download" | "EventSource" | "Favicon" | "Font" | "Form" | "Frame" | "Image" | "Import" | "Manifest" | "Ping" | "PluginData" | "PluginResource" | "Prefetch" | "Resource" | "Script" | "ServiceWorker" | "SharedWorker" | "Stylesheet" | "Track" | "Video" | "Worker" | "XMLHttpRequest" | "XSLT");
 
-export interface MixedContentIssueDetails {
+export type MixedContentIssueDetails = {
     /**
      * The type of resource causing the mixed content issue (css, js, iframe,
      * form,...). Marked as optional because it is mapped to from
@@ -117,7 +117,7 @@ export type BlockedByResponseReason = ("CoepFrameResourceNeedsCoepHeader" | "Coo
  * code. Currently only used for COEP/COOP, but may be extended to include
  * some CSP errors in the future.
  */
-export interface BlockedByResponseIssueDetails {
+export type BlockedByResponseIssueDetails = {
     request: AffectedRequest;
     parentFrame?: AffectedFrame;
     blockedFrame?: AffectedFrame;
@@ -128,7 +128,7 @@ export type HeavyAdResolutionStatus = ("HeavyAdBlocked" | "HeavyAdWarning");
 
 export type HeavyAdReason = ("NetworkTotalLimit" | "CpuTotalLimit" | "CpuPeakLimit");
 
-export interface HeavyAdIssueDetails {
+export type HeavyAdIssueDetails = {
     /**
      * The resolution status, either blocking the content or warning.
      */
@@ -145,14 +145,14 @@ export interface HeavyAdIssueDetails {
 
 export type ContentSecurityPolicyViolationType = ("kInlineViolation" | "kEvalViolation" | "kURLViolation" | "kTrustedTypesSinkViolation" | "kTrustedTypesPolicyViolation" | "kWasmEvalViolation");
 
-export interface SourceCodeLocation {
+export type SourceCodeLocation = {
     scriptId?: Runtime.ScriptId;
     url: string;
     lineNumber: integer;
     columnNumber: integer;
 }
 
-export interface ContentSecurityPolicyIssueDetails {
+export type ContentSecurityPolicyIssueDetails = {
     /**
      * The url not included in allowed sources.
      */
@@ -174,7 +174,7 @@ export type SharedArrayBufferIssueType = ("TransferIssue" | "CreationIssue");
  * Details for a issue arising from an SAB being instantiated in, or
  * transferred to a context that is not cross-origin isolated.
  */
-export interface SharedArrayBufferIssueDetails {
+export type SharedArrayBufferIssueDetails = {
     sourceCodeLocation: SourceCodeLocation;
     isWarning: boolean;
     type: SharedArrayBufferIssueType;
@@ -182,7 +182,7 @@ export interface SharedArrayBufferIssueDetails {
 
 export type TwaQualityEnforcementViolationType = ("kHttpError" | "kUnavailableOffline" | "kDigitalAssetLinks");
 
-export interface TrustedWebActivityIssueDetails {
+export type TrustedWebActivityIssueDetails = {
     /**
      * The url that triggers the violation.
      */
@@ -201,7 +201,7 @@ export interface TrustedWebActivityIssueDetails {
     signature?: string;
 }
 
-export interface LowTextContrastIssueDetails {
+export type LowTextContrastIssueDetails = {
     violatingNodeId: DOM.BackendNodeId;
     violatingNodeSelector: string;
     contrastRatio: number;
@@ -215,7 +215,7 @@ export interface LowTextContrastIssueDetails {
  * Details for a CORS related issue, e.g. a warning or error related to
  * CORS RFC1918 enforcement.
  */
-export interface CorsIssueDetails {
+export type CorsIssueDetails = {
     corsErrorStatus: Network.CorsErrorStatus;
     isWarning: boolean;
     request: AffectedRequest;
@@ -231,7 +231,7 @@ export type AttributionReportingIssueType = ("PermissionPolicyDisabled" | "Inval
  * Details for issues around "Attribution Reporting API" usage.
  * Explainer: https://github.com/WICG/conversion-measurement-api
  */
-export interface AttributionReportingIssueDetails {
+export type AttributionReportingIssueDetails = {
     violationType: AttributionReportingIssueType;
     frame?: AffectedFrame;
     request?: AffectedRequest;
@@ -243,7 +243,7 @@ export interface AttributionReportingIssueDetails {
  * Details for issues about documents in Quirks Mode
  * or Limited Quirks Mode that affects page layouting.
  */
-export interface QuirksModeIssueDetails {
+export type QuirksModeIssueDetails = {
     /**
      * If false, it means the document's mode is "quirks"
      * instead of "limited-quirks".
@@ -255,7 +255,7 @@ export interface QuirksModeIssueDetails {
     loaderId: Network.LoaderId;
 }
 
-export interface NavigatorUserAgentIssueDetails {
+export type NavigatorUserAgentIssueDetails = {
     url: string;
     location?: SourceCodeLocation;
 }
@@ -265,7 +265,7 @@ export type GenericIssueErrorType = ("CrossOriginPortalPostMessageError");
 /**
  * Depending on the concrete errorType, different properties are set.
  */
-export interface GenericIssueDetails {
+export type GenericIssueDetails = {
     /**
      * Issues with the same errorType are aggregated in the frontend.
      */
@@ -280,7 +280,7 @@ export interface GenericIssueDetails {
  * TODO(crbug.com/1264960): Re-work format to add i18n support per:
  * https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/public/devtools_protocol/README.md
  */
-export interface DeprecationIssueDetails {
+export type DeprecationIssueDetails = {
     affectedFrame?: AffectedFrame;
     sourceCodeLocation: SourceCodeLocation;
     /**
@@ -296,7 +296,7 @@ export interface DeprecationIssueDetails {
 
 export type ClientHintIssueReason = ("MetaTagAllowListInvalidOrigin" | "MetaTagModifiedHTML");
 
-export interface FederatedAuthRequestIssueDetails {
+export type FederatedAuthRequestIssueDetails = {
     federatedAuthRequestIssueReason: FederatedAuthRequestIssueReason;
 }
 
@@ -312,7 +312,7 @@ export type FederatedAuthRequestIssueReason = ("ApprovalDeclined" | "TooManyRequ
  * This issue tracks client hints related issues. It's used to deprecate old
  * features, encourage the use of new ones, and provide general guidance.
  */
-export interface ClientHintIssueDetails {
+export type ClientHintIssueDetails = {
     sourceCodeLocation: SourceCodeLocation;
     clientHintIssueReason: ClientHintIssueReason;
 }
@@ -329,7 +329,7 @@ export type InspectorIssueCode = ("SameSiteCookieIssue" | "MixedContentIssue" | 
  * specific to the kind of issue. When adding a new issue code, please also
  * add a new optional field to this type.
  */
-export interface InspectorIssueDetails {
+export type InspectorIssueDetails = {
     sameSiteCookieIssueDetails?: SameSiteCookieIssueDetails;
     mixedContentIssueDetails?: MixedContentIssueDetails;
     blockedByResponseIssueDetails?: BlockedByResponseIssueDetails;
@@ -357,7 +357,7 @@ export type IssueId = string;
 /**
  * An inspector issue reported from the back-end.
  */
-export interface InspectorIssue {
+export type InspectorIssue = {
     code: InspectorIssueCode;
     details: InspectorIssueDetails;
     /**
@@ -373,7 +373,7 @@ export const enum GetEncodedResponseRequestEncoding {
     Png = "png",
 }
 
-export interface GetEncodedResponseRequest {
+export type GetEncodedResponseRequest = {
     /**
      * Identifier of the network request to get content for.
      */
@@ -392,7 +392,7 @@ export interface GetEncodedResponseRequest {
     sizeOnly?: boolean;
 }
 
-export interface GetEncodedResponseResponse {
+export type GetEncodedResponseResponse = {
     /**
      * The encoded body as a base64 string. Omitted if sizeOnly is true. (Encoded as a base64 string when passed over JSON)
      */
@@ -407,14 +407,14 @@ export interface GetEncodedResponseResponse {
     encodedSize: integer;
 }
 
-export interface CheckContrastRequest {
+export type CheckContrastRequest = {
     /**
      * Whether to report WCAG AAA level issues. Default is false.
      */
     reportAAA?: boolean;
 }
 
-export interface IssueAddedEvent {
+export type IssueAddedEvent = {
     issue: InspectorIssue;
 }
 

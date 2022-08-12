@@ -20,7 +20,7 @@ export type RequestId = string;
  */
 export type RequestStage = ("Request" | "Response");
 
-export interface RequestPattern {
+export type RequestPattern = {
     /**
      * Wildcards (`'*'` -> zero or more, `'?'` -> exactly one) are allowed. Escape character is
      * backslash. Omitting is equivalent to `"*"`.
@@ -39,7 +39,7 @@ export interface RequestPattern {
 /**
  * Response HTTP header entry
  */
-export interface HeaderEntry {
+export type HeaderEntry = {
     name: string;
     value: string;
 }
@@ -52,7 +52,7 @@ export const enum AuthChallengeSource {
 /**
  * Authorization challenge for HTTP status code 401 or 407.
  */
-export interface AuthChallenge {
+export type AuthChallenge = {
     /**
      * Source of the authentication challenge. (AuthChallengeSource enum)
      */
@@ -80,7 +80,7 @@ export const enum AuthChallengeResponseResponse {
 /**
  * Response to an AuthChallenge.
  */
-export interface AuthChallengeResponse {
+export type AuthChallengeResponse = {
     /**
      * The decision on what to do in response to the authorization challenge.  Default means
      * deferring to the default behavior of the net stack, which will likely either the Cancel
@@ -99,7 +99,7 @@ export interface AuthChallengeResponse {
     password?: string;
 }
 
-export interface EnableRequest {
+export type EnableRequest = {
     /**
      * If specified, only requests matching any of these patterns will produce
      * fetchRequested event and will be paused until clients response. If not set,
@@ -113,7 +113,7 @@ export interface EnableRequest {
     handleAuthRequests?: boolean;
 }
 
-export interface FailRequestRequest {
+export type FailRequestRequest = {
     /**
      * An id the client received in requestPaused event.
      */
@@ -124,7 +124,7 @@ export interface FailRequestRequest {
     errorReason: Network.ErrorReason;
 }
 
-export interface FulfillRequestRequest {
+export type FulfillRequestRequest = {
     /**
      * An id the client received in requestPaused event.
      */
@@ -157,7 +157,7 @@ export interface FulfillRequestRequest {
     responsePhrase?: string;
 }
 
-export interface ContinueRequestRequest {
+export type ContinueRequestRequest = {
     /**
      * An id the client received in requestPaused event.
      */
@@ -184,7 +184,7 @@ export interface ContinueRequestRequest {
     interceptResponse?: boolean;
 }
 
-export interface ContinueWithAuthRequest {
+export type ContinueWithAuthRequest = {
     /**
      * An id the client received in authRequired event.
      */
@@ -195,7 +195,7 @@ export interface ContinueWithAuthRequest {
     authChallengeResponse: AuthChallengeResponse;
 }
 
-export interface ContinueResponseRequest {
+export type ContinueResponseRequest = {
     /**
      * An id the client received in requestPaused event.
      */
@@ -222,14 +222,14 @@ export interface ContinueResponseRequest {
     binaryResponseHeaders?: string;
 }
 
-export interface GetResponseBodyRequest {
+export type GetResponseBodyRequest = {
     /**
      * Identifier for the intercepted request to get body for.
      */
     requestId: RequestId;
 }
 
-export interface GetResponseBodyResponse {
+export type GetResponseBodyResponse = {
     /**
      * Response body.
      */
@@ -240,11 +240,11 @@ export interface GetResponseBodyResponse {
     base64Encoded: boolean;
 }
 
-export interface TakeResponseBodyAsStreamRequest {
+export type TakeResponseBodyAsStreamRequest = {
     requestId: RequestId;
 }
 
-export interface TakeResponseBodyAsStreamResponse {
+export type TakeResponseBodyAsStreamResponse = {
     stream: IO.StreamHandle;
 }
 
@@ -256,7 +256,7 @@ export interface TakeResponseBodyAsStreamResponse {
  * and responseStatusCode -- the request is at the response stage if either
  * of these fields is present and in the request stage otherwise.
  */
-export interface RequestPausedEvent {
+export type RequestPausedEvent = {
     /**
      * Each request the page makes will have a unique id.
      */
@@ -300,7 +300,7 @@ export interface RequestPausedEvent {
  * Issued when the domain is enabled with handleAuthRequests set to true.
  * The request is paused until client responds with continueWithAuth.
  */
-export interface AuthRequiredEvent {
+export type AuthRequiredEvent = {
     /**
      * Each request the page makes will have a unique id.
      */

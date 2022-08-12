@@ -61,7 +61,7 @@ export const enum RemoteObjectSubtype {
 /**
  * Mirror object referencing original JavaScript object.
  */
-export interface RemoteObject {
+export type RemoteObject = {
     /**
      * Object type. (RemoteObjectType enum)
      */
@@ -100,7 +100,7 @@ export interface RemoteObject {
     customPreview?: CustomPreview;
 }
 
-export interface CustomPreview {
+export type CustomPreview = {
     /**
      * The JSON-stringified result of formatter.header(object, config) call.
      * It contains json ML array that represents RemoteObject.
@@ -150,7 +150,7 @@ export const enum ObjectPreviewSubtype {
 /**
  * Object containing abbreviated remote object value.
  */
-export interface ObjectPreview {
+export type ObjectPreview = {
     /**
      * Object type. (ObjectPreviewType enum)
      */
@@ -211,7 +211,7 @@ export const enum PropertyPreviewSubtype {
     Wasmvalue = "wasmvalue",
 }
 
-export interface PropertyPreview {
+export type PropertyPreview = {
     /**
      * Property name.
      */
@@ -234,7 +234,7 @@ export interface PropertyPreview {
     subtype?: ("array" | "null" | "node" | "regexp" | "date" | "map" | "set" | "weakmap" | "weakset" | "iterator" | "generator" | "error" | "proxy" | "promise" | "typedarray" | "arraybuffer" | "dataview" | "webassemblymemory" | "wasmvalue");
 }
 
-export interface EntryPreview {
+export type EntryPreview = {
     /**
      * Preview of the key. Specified for map-like collection entries.
      */
@@ -248,7 +248,7 @@ export interface EntryPreview {
 /**
  * Object property descriptor.
  */
-export interface PropertyDescriptor {
+export type PropertyDescriptor = {
     /**
      * Property name or symbol description.
      */
@@ -298,7 +298,7 @@ export interface PropertyDescriptor {
 /**
  * Object internal property descriptor. This property isn't normally visible in JavaScript code.
  */
-export interface InternalPropertyDescriptor {
+export type InternalPropertyDescriptor = {
     /**
      * Conventional property name.
      */
@@ -312,7 +312,7 @@ export interface InternalPropertyDescriptor {
 /**
  * Object private field descriptor.
  */
-export interface PrivatePropertyDescriptor {
+export type PrivatePropertyDescriptor = {
     /**
      * Private property name.
      */
@@ -337,7 +337,7 @@ export interface PrivatePropertyDescriptor {
  * Represents function call argument. Either remote object id `objectId`, primitive `value`,
  * unserializable primitive value or neither of (for undefined) them should be specified.
  */
-export interface CallArgument {
+export type CallArgument = {
     /**
      * Primitive value or serializable javascript object.
      */
@@ -360,7 +360,7 @@ export type ExecutionContextId = integer;
 /**
  * Description of an isolated world.
  */
-export interface ExecutionContextDescription {
+export type ExecutionContextDescription = {
     /**
      * Unique id of the execution context. It can be used to specify in which execution context
      * script evaluation should be performed.
@@ -390,7 +390,7 @@ export interface ExecutionContextDescription {
  * Detailed information about exception (or error) that was thrown during script compilation or
  * execution.
  */
-export interface ExceptionDetails {
+export type ExceptionDetails = {
     /**
      * Exception id.
      */
@@ -448,7 +448,7 @@ export type TimeDelta = number;
 /**
  * Stack entry for runtime errors and assertions.
  */
-export interface CallFrame {
+export type CallFrame = {
     /**
      * JavaScript function name.
      */
@@ -474,7 +474,7 @@ export interface CallFrame {
 /**
  * Call frames for assertions or error messages.
  */
-export interface StackTrace {
+export type StackTrace = {
     /**
      * String label of this stack trace. For async traces this may be a name of the function that
      * initiated the async call.
@@ -503,12 +503,12 @@ export type UniqueDebuggerId = string;
  * If `debuggerId` is set stack trace comes from another debugger and can be resolved there. This
  * allows to track cross-debugger calls. See `Runtime.StackTrace` and `Debugger.paused` for usages.
  */
-export interface StackTraceId {
+export type StackTraceId = {
     id: string;
     debuggerId?: UniqueDebuggerId;
 }
 
-export interface AwaitPromiseRequest {
+export type AwaitPromiseRequest = {
     /**
      * Identifier of the promise.
      */
@@ -523,7 +523,7 @@ export interface AwaitPromiseRequest {
     generatePreview?: boolean;
 }
 
-export interface AwaitPromiseResponse {
+export type AwaitPromiseResponse = {
     /**
      * Promise result. Will contain rejected value if promise was rejected.
      */
@@ -534,7 +534,7 @@ export interface AwaitPromiseResponse {
     exceptionDetails?: ExceptionDetails;
 }
 
-export interface CallFunctionOnRequest {
+export type CallFunctionOnRequest = {
     /**
      * Declaration of the function to call.
      */
@@ -587,7 +587,7 @@ export interface CallFunctionOnRequest {
     throwOnSideEffect?: boolean;
 }
 
-export interface CallFunctionOnResponse {
+export type CallFunctionOnResponse = {
     /**
      * Call result.
      */
@@ -598,7 +598,7 @@ export interface CallFunctionOnResponse {
     exceptionDetails?: ExceptionDetails;
 }
 
-export interface CompileScriptRequest {
+export type CompileScriptRequest = {
     /**
      * Expression to compile.
      */
@@ -618,7 +618,7 @@ export interface CompileScriptRequest {
     executionContextId?: ExecutionContextId;
 }
 
-export interface CompileScriptResponse {
+export type CompileScriptResponse = {
     /**
      * Id of the script.
      */
@@ -629,7 +629,7 @@ export interface CompileScriptResponse {
     exceptionDetails?: ExceptionDetails;
 }
 
-export interface EvaluateRequest {
+export type EvaluateRequest = {
     /**
      * Expression to evaluate.
      */
@@ -709,7 +709,7 @@ export interface EvaluateRequest {
     uniqueContextId?: string;
 }
 
-export interface EvaluateResponse {
+export type EvaluateResponse = {
     /**
      * Evaluation result.
      */
@@ -720,14 +720,14 @@ export interface EvaluateResponse {
     exceptionDetails?: ExceptionDetails;
 }
 
-export interface GetIsolateIdResponse {
+export type GetIsolateIdResponse = {
     /**
      * The isolate id.
      */
     id: string;
 }
 
-export interface GetHeapUsageResponse {
+export type GetHeapUsageResponse = {
     /**
      * Used heap size in bytes.
      */
@@ -738,7 +738,7 @@ export interface GetHeapUsageResponse {
     totalSize: number;
 }
 
-export interface GetPropertiesRequest {
+export type GetPropertiesRequest = {
     /**
      * Identifier of the object to return properties for.
      */
@@ -763,7 +763,7 @@ export interface GetPropertiesRequest {
     nonIndexedPropertiesOnly?: boolean;
 }
 
-export interface GetPropertiesResponse {
+export type GetPropertiesResponse = {
     /**
      * Object properties.
      */
@@ -782,18 +782,18 @@ export interface GetPropertiesResponse {
     exceptionDetails?: ExceptionDetails;
 }
 
-export interface GlobalLexicalScopeNamesRequest {
+export type GlobalLexicalScopeNamesRequest = {
     /**
      * Specifies in which execution context to lookup global scope variables.
      */
     executionContextId?: ExecutionContextId;
 }
 
-export interface GlobalLexicalScopeNamesResponse {
+export type GlobalLexicalScopeNamesResponse = {
     names: string[];
 }
 
-export interface QueryObjectsRequest {
+export type QueryObjectsRequest = {
     /**
      * Identifier of the prototype to return objects for.
      */
@@ -804,28 +804,28 @@ export interface QueryObjectsRequest {
     objectGroup?: string;
 }
 
-export interface QueryObjectsResponse {
+export type QueryObjectsResponse = {
     /**
      * Array with objects.
      */
     objects: RemoteObject;
 }
 
-export interface ReleaseObjectRequest {
+export type ReleaseObjectRequest = {
     /**
      * Identifier of the object to release.
      */
     objectId: RemoteObjectId;
 }
 
-export interface ReleaseObjectGroupRequest {
+export type ReleaseObjectGroupRequest = {
     /**
      * Symbolic object group name.
      */
     objectGroup: string;
 }
 
-export interface RunScriptRequest {
+export type RunScriptRequest = {
     /**
      * Id of the script to run.
      */
@@ -863,7 +863,7 @@ export interface RunScriptRequest {
     awaitPromise?: boolean;
 }
 
-export interface RunScriptResponse {
+export type RunScriptResponse = {
     /**
      * Run result.
      */
@@ -874,7 +874,7 @@ export interface RunScriptResponse {
     exceptionDetails?: ExceptionDetails;
 }
 
-export interface SetAsyncCallStackDepthRequest {
+export type SetAsyncCallStackDepthRequest = {
     /**
      * Maximum depth of async call stacks. Setting to `0` will effectively disable collecting async
      * call stacks (default).
@@ -882,15 +882,15 @@ export interface SetAsyncCallStackDepthRequest {
     maxDepth: integer;
 }
 
-export interface SetCustomObjectFormatterEnabledRequest {
+export type SetCustomObjectFormatterEnabledRequest = {
     enabled: boolean;
 }
 
-export interface SetMaxCallStackSizeToCaptureRequest {
+export type SetMaxCallStackSizeToCaptureRequest = {
     size: integer;
 }
 
-export interface AddBindingRequest {
+export type AddBindingRequest = {
     name: string;
     /**
      * If specified, the binding would only be exposed to the specified
@@ -912,14 +912,14 @@ export interface AddBindingRequest {
     executionContextName?: string;
 }
 
-export interface RemoveBindingRequest {
+export type RemoveBindingRequest = {
     name: string;
 }
 
 /**
  * Notification is issued every time when binding is called.
  */
-export interface BindingCalledEvent {
+export type BindingCalledEvent = {
     name: string;
     payload: string;
     /**
@@ -952,7 +952,7 @@ export const enum ConsoleAPICalledEventType {
 /**
  * Issued when console API was called.
  */
-export interface ConsoleAPICalledEvent {
+export type ConsoleAPICalledEvent = {
     /**
      * Type of the call. (ConsoleAPICalledEventType enum)
      */
@@ -986,7 +986,7 @@ export interface ConsoleAPICalledEvent {
 /**
  * Issued when unhandled exception was revoked.
  */
-export interface ExceptionRevokedEvent {
+export type ExceptionRevokedEvent = {
     /**
      * Reason describing why exception was revoked.
      */
@@ -1000,7 +1000,7 @@ export interface ExceptionRevokedEvent {
 /**
  * Issued when exception was thrown and unhandled.
  */
-export interface ExceptionThrownEvent {
+export type ExceptionThrownEvent = {
     /**
      * Timestamp of the exception.
      */
@@ -1011,7 +1011,7 @@ export interface ExceptionThrownEvent {
 /**
  * Issued when new execution context is created.
  */
-export interface ExecutionContextCreatedEvent {
+export type ExecutionContextCreatedEvent = {
     /**
      * A newly created execution context.
      */
@@ -1021,7 +1021,7 @@ export interface ExecutionContextCreatedEvent {
 /**
  * Issued when execution context is destroyed.
  */
-export interface ExecutionContextDestroyedEvent {
+export type ExecutionContextDestroyedEvent = {
     /**
      * Id of the destroyed context
      */
@@ -1032,7 +1032,7 @@ export interface ExecutionContextDestroyedEvent {
  * Issued when object should be inspected (for example, as a result of inspect() command line API
  * call).
  */
-export interface InspectRequestedEvent {
+export type InspectRequestedEvent = {
     object: RemoteObject;
     hints: any;
     /**

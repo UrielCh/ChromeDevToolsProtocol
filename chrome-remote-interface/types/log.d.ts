@@ -37,7 +37,7 @@ export const enum LogEntryCategory {
 /**
  * Log entry.
  */
-export interface LogEntry {
+export type LogEntry = {
     /**
      * Log entry source. (LogEntrySource enum)
      */
@@ -97,7 +97,7 @@ export const enum ViolationSettingName {
 /**
  * Violation configuration setting.
  */
-export interface ViolationSetting {
+export type ViolationSetting = {
     /**
      * Violation type. (ViolationSettingName enum)
      */
@@ -108,7 +108,7 @@ export interface ViolationSetting {
     threshold: number;
 }
 
-export interface StartViolationsReportRequest {
+export type StartViolationsReportRequest = {
     /**
      * Configuration for violations.
      */
@@ -118,7 +118,7 @@ export interface StartViolationsReportRequest {
 /**
  * Issued when new message was logged.
  */
-export interface EntryAddedEvent {
+export type EntryAddedEvent = {
     /**
      * The entry.
      */

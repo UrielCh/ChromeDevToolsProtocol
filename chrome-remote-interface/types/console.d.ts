@@ -30,7 +30,7 @@ export const enum ConsoleMessageLevel {
 /**
  * Console message.
  */
-export interface ConsoleMessage {
+export type ConsoleMessage = {
     /**
      * Message source. (ConsoleMessageSource enum)
      */
@@ -60,7 +60,7 @@ export interface ConsoleMessage {
 /**
  * Issued when new console message is added.
  */
-export interface MessageAddedEvent {
+export type MessageAddedEvent = {
     /**
      * Console message that has been added.
      */

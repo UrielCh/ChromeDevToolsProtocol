@@ -13,7 +13,7 @@ export const enum ScreenshotParamsFormat {
 /**
  * Encoding options for a screenshot.
  */
-export interface ScreenshotParams {
+export type ScreenshotParams = {
     /**
      * Image compression format (defaults to png). (ScreenshotParamsFormat enum)
      */
@@ -24,7 +24,7 @@ export interface ScreenshotParams {
     quality?: integer;
 }
 
-export interface BeginFrameRequest {
+export type BeginFrameRequest = {
     /**
      * Timestamp of this BeginFrame in Renderer TimeTicks (milliseconds of uptime). If not set,
      * the current time will be used.
@@ -49,7 +49,7 @@ export interface BeginFrameRequest {
     screenshot?: ScreenshotParams;
 }
 
-export interface BeginFrameResponse {
+export type BeginFrameResponse = {
     /**
      * Whether the BeginFrame resulted in damage and, thus, a new frame was committed to the
      * display. Reported for diagnostic uses, may be removed in the future.
@@ -66,7 +66,7 @@ export interface BeginFrameResponse {
  * Deprecated. Issue beginFrame unconditionally instead and use result from
  * beginFrame to detect whether the frames were suppressed.
  */
-export interface NeedsBeginFramesChangedEvent {
+export type NeedsBeginFramesChangedEvent = {
     /**
      * True if BeginFrames are needed, false otherwise.
      */

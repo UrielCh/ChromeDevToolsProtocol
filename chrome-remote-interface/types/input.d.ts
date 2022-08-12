@@ -2,7 +2,7 @@
 export type integer = number;
 
 
-export interface TouchPoint {
+export type TouchPoint = {
     /**
      * X coordinate of the event relative to the main frame's viewport in CSS pixels.
      */
@@ -59,7 +59,7 @@ export type MouseButton = ("none" | "left" | "middle" | "right" | "back" | "forw
  */
 export type TimeSinceEpoch = number;
 
-export interface DragDataItem {
+export type DragDataItem = {
     /**
      * Mime type of the dragged data.
      */
@@ -80,7 +80,7 @@ export interface DragDataItem {
     baseURL?: string;
 }
 
-export interface DragData {
+export type DragData = {
     items: DragDataItem[];
     /**
      * List of filenames that should be included when dropping
@@ -99,7 +99,7 @@ export const enum DispatchDragEventRequestType {
     DragCancel = "dragCancel",
 }
 
-export interface DispatchDragEventRequest {
+export type DispatchDragEventRequest = {
     /**
      * Type of the drag event. (DispatchDragEventRequestType enum)
      */
@@ -128,7 +128,7 @@ export const enum DispatchKeyEventRequestType {
     Char = "char",
 }
 
-export interface DispatchKeyEventRequest {
+export type DispatchKeyEventRequest = {
     /**
      * Type of the key event. (DispatchKeyEventRequestType enum)
      */
@@ -198,14 +198,14 @@ export interface DispatchKeyEventRequest {
     commands?: string[];
 }
 
-export interface InsertTextRequest {
+export type InsertTextRequest = {
     /**
      * The text to insert.
      */
     text: string;
 }
 
-export interface ImeSetCompositionRequest {
+export type ImeSetCompositionRequest = {
     /**
      * The text to insert
      */
@@ -240,7 +240,7 @@ export const enum DispatchMouseEventRequestPointerType {
     Pen = "pen",
 }
 
-export interface DispatchMouseEventRequest {
+export type DispatchMouseEventRequest = {
     /**
      * Type of the mouse event. (DispatchMouseEventRequestType enum)
      */
@@ -317,7 +317,7 @@ export const enum DispatchTouchEventRequestType {
     TouchCancel = "touchCancel",
 }
 
-export interface DispatchTouchEventRequest {
+export type DispatchTouchEventRequest = {
     /**
      * Type of the touch event. TouchEnd and TouchCancel must not contain any touch points, while
      * TouchStart and TouchMove must contains at least one. (DispatchTouchEventRequestType enum)
@@ -347,7 +347,7 @@ export const enum EmulateTouchFromMouseEventRequestType {
     MouseWheel = "mouseWheel",
 }
 
-export interface EmulateTouchFromMouseEventRequest {
+export type EmulateTouchFromMouseEventRequest = {
     /**
      * Type of the mouse event. (EmulateTouchFromMouseEventRequestType enum)
      */
@@ -387,18 +387,18 @@ export interface EmulateTouchFromMouseEventRequest {
     clickCount?: integer;
 }
 
-export interface SetIgnoreInputEventsRequest {
+export type SetIgnoreInputEventsRequest = {
     /**
      * Ignores input events processing when set to true.
      */
     ignore: boolean;
 }
 
-export interface SetInterceptDragsRequest {
+export type SetInterceptDragsRequest = {
     enabled: boolean;
 }
 
-export interface SynthesizePinchGestureRequest {
+export type SynthesizePinchGestureRequest = {
     /**
      * X coordinate of the start of the gesture in CSS pixels.
      */
@@ -422,7 +422,7 @@ export interface SynthesizePinchGestureRequest {
     gestureSourceType?: GestureSourceType;
 }
 
-export interface SynthesizeScrollGestureRequest {
+export type SynthesizeScrollGestureRequest = {
     /**
      * X coordinate of the start of the gesture in CSS pixels.
      */
@@ -476,7 +476,7 @@ export interface SynthesizeScrollGestureRequest {
     interactionMarkerName?: string;
 }
 
-export interface SynthesizeTapGestureRequest {
+export type SynthesizeTapGestureRequest = {
     /**
      * X coordinate of the start of the gesture in CSS pixels.
      */
@@ -504,7 +504,7 @@ export interface SynthesizeTapGestureRequest {
  * Emitted only when `Input.setInterceptDrags` is enabled. Use this data with `Input.dispatchDragEvent` to
  * restore normal drag and drop behavior.
  */
-export interface DragInterceptedEvent {
+export type DragInterceptedEvent = {
     data: DragData;
 }
 

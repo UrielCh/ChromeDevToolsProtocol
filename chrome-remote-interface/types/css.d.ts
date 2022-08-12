@@ -24,7 +24,7 @@ export type StyleSheetOrigin = ("injected" | "user-agent" | "inspector" | "regul
 /**
  * CSS rule collection for a single pseudo style.
  */
-export interface PseudoElementMatches {
+export type PseudoElementMatches = {
     /**
      * Pseudo element type.
      */
@@ -38,7 +38,7 @@ export interface PseudoElementMatches {
 /**
  * Inherited CSS rule collection from ancestor node.
  */
-export interface InheritedStyleEntry {
+export type InheritedStyleEntry = {
     /**
      * The ancestor node's inline style, if any, in the style inheritance chain.
      */
@@ -52,7 +52,7 @@ export interface InheritedStyleEntry {
 /**
  * Match data for a CSS rule.
  */
-export interface RuleMatch {
+export type RuleMatch = {
     /**
      * CSS rule in the match.
      */
@@ -66,7 +66,7 @@ export interface RuleMatch {
 /**
  * Data for a simple selector (these are delimited by commas in a selector list).
  */
-export interface Value {
+export type Value = {
     /**
      * Value text.
      */
@@ -80,7 +80,7 @@ export interface Value {
 /**
  * Selector list data.
  */
-export interface SelectorList {
+export type SelectorList = {
     /**
      * Selectors in the list.
      */
@@ -94,7 +94,7 @@ export interface SelectorList {
 /**
  * CSS stylesheet metainformation.
  */
-export interface CSSStyleSheetHeader {
+export type CSSStyleSheetHeader = {
     /**
      * The stylesheet identifier.
      */
@@ -175,7 +175,7 @@ export interface CSSStyleSheetHeader {
 /**
  * CSS rule representation.
  */
-export interface CSSRule {
+export type CSSRule = {
     /**
      * The css style sheet identifier (absent for user agent stylesheet and user-specified
      * stylesheet rules) this rule came from.
@@ -213,7 +213,7 @@ export interface CSSRule {
 /**
  * CSS coverage information.
  */
-export interface RuleUsage {
+export type RuleUsage = {
     /**
      * The css style sheet identifier (absent for user agent stylesheet and user-specified
      * stylesheet rules) this rule came from.
@@ -236,7 +236,7 @@ export interface RuleUsage {
 /**
  * Text range within a resource. All numbers are zero-based.
  */
-export interface SourceRange {
+export type SourceRange = {
     /**
      * Start line of range.
      */
@@ -255,7 +255,7 @@ export interface SourceRange {
     endColumn: integer;
 }
 
-export interface ShorthandEntry {
+export type ShorthandEntry = {
     /**
      * Shorthand name.
      */
@@ -270,7 +270,7 @@ export interface ShorthandEntry {
     important?: boolean;
 }
 
-export interface CSSComputedStyleProperty {
+export type CSSComputedStyleProperty = {
     /**
      * Computed style property name.
      */
@@ -284,7 +284,7 @@ export interface CSSComputedStyleProperty {
 /**
  * CSS style representation.
  */
-export interface CSSStyle {
+export type CSSStyle = {
     /**
      * The css style sheet identifier (absent for user agent stylesheet and user-specified
      * stylesheet rules) this rule came from.
@@ -311,7 +311,7 @@ export interface CSSStyle {
 /**
  * CSS property declaration data.
  */
-export interface CSSProperty {
+export type CSSProperty = {
     /**
      * The property name.
      */
@@ -356,7 +356,7 @@ export const enum CSSMediaSource {
 /**
  * CSS media rule descriptor.
  */
-export interface CSSMedia {
+export type CSSMedia = {
     /**
      * Media query text.
      */
@@ -390,7 +390,7 @@ export interface CSSMedia {
 /**
  * Media query descriptor.
  */
-export interface MediaQuery {
+export type MediaQuery = {
     /**
      * Array of media query expressions.
      */
@@ -404,7 +404,7 @@ export interface MediaQuery {
 /**
  * Media query expression descriptor.
  */
-export interface MediaQueryExpression {
+export type MediaQueryExpression = {
     /**
      * Media query expression value.
      */
@@ -430,7 +430,7 @@ export interface MediaQueryExpression {
 /**
  * CSS container query rule descriptor.
  */
-export interface CSSContainerQuery {
+export type CSSContainerQuery = {
     /**
      * Container query text.
      */
@@ -453,7 +453,7 @@ export interface CSSContainerQuery {
 /**
  * CSS Supports at-rule descriptor.
  */
-export interface CSSSupports {
+export type CSSSupports = {
     /**
      * Supports rule text.
      */
@@ -472,7 +472,7 @@ export interface CSSSupports {
 /**
  * Information about amount of glyphs that were rendered with given font.
  */
-export interface PlatformFontUsage {
+export type PlatformFontUsage = {
     /**
      * Font's family name reported by platform.
      */
@@ -490,7 +490,7 @@ export interface PlatformFontUsage {
 /**
  * Information about font variation axes for variable fonts
  */
-export interface FontVariationAxis {
+export type FontVariationAxis = {
     /**
      * The font-variation-setting tag (a.k.a. "axis tag").
      */
@@ -517,7 +517,7 @@ export interface FontVariationAxis {
  * Properties of a web font: https://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-descriptions
  * and additional information such as platformFontFamily and fontVariationAxes.
  */
-export interface FontFace {
+export type FontFace = {
     /**
      * The font-family.
      */
@@ -559,7 +559,7 @@ export interface FontFace {
 /**
  * CSS keyframes rule representation.
  */
-export interface CSSKeyframesRule {
+export type CSSKeyframesRule = {
     /**
      * Animation name.
      */
@@ -573,7 +573,7 @@ export interface CSSKeyframesRule {
 /**
  * CSS keyframe rule representation.
  */
-export interface CSSKeyframeRule {
+export type CSSKeyframeRule = {
     /**
      * The css style sheet identifier (absent for user agent stylesheet and user-specified
      * stylesheet rules) this rule came from.
@@ -596,7 +596,7 @@ export interface CSSKeyframeRule {
 /**
  * A descriptor of operation to mutate style declaration text.
  */
-export interface StyleDeclarationEdit {
+export type StyleDeclarationEdit = {
     /**
      * The css style sheet identifier.
      */
@@ -611,7 +611,7 @@ export interface StyleDeclarationEdit {
     text: string;
 }
 
-export interface AddRuleRequest {
+export type AddRuleRequest = {
     /**
      * The css style sheet identifier where a new rule should be inserted.
      */
@@ -626,39 +626,39 @@ export interface AddRuleRequest {
     location: SourceRange;
 }
 
-export interface AddRuleResponse {
+export type AddRuleResponse = {
     /**
      * The newly created rule.
      */
     rule: CSSRule;
 }
 
-export interface CollectClassNamesRequest {
+export type CollectClassNamesRequest = {
     styleSheetId: StyleSheetId;
 }
 
-export interface CollectClassNamesResponse {
+export type CollectClassNamesResponse = {
     /**
      * Class name list.
      */
     classNames: string[];
 }
 
-export interface CreateStyleSheetRequest {
+export type CreateStyleSheetRequest = {
     /**
      * Identifier of the frame where "via-inspector" stylesheet should be created.
      */
     frameId: Page.FrameId;
 }
 
-export interface CreateStyleSheetResponse {
+export type CreateStyleSheetResponse = {
     /**
      * Identifier of the created "via-inspector" stylesheet.
      */
     styleSheetId: StyleSheetId;
 }
 
-export interface ForcePseudoStateRequest {
+export type ForcePseudoStateRequest = {
     /**
      * The element id for which to force the pseudo state.
      */
@@ -669,14 +669,14 @@ export interface ForcePseudoStateRequest {
     forcedPseudoClasses: string[];
 }
 
-export interface GetBackgroundColorsRequest {
+export type GetBackgroundColorsRequest = {
     /**
      * Id of the node to get background colors for.
      */
     nodeId: DOM.NodeId;
 }
 
-export interface GetBackgroundColorsResponse {
+export type GetBackgroundColorsResponse = {
     /**
      * The range of background colors behind this element, if it contains any visible text. If no
      * visible text is present, this will be undefined. In the case of a flat background color,
@@ -696,22 +696,22 @@ export interface GetBackgroundColorsResponse {
     computedFontWeight?: string;
 }
 
-export interface GetComputedStyleForNodeRequest {
+export type GetComputedStyleForNodeRequest = {
     nodeId: DOM.NodeId;
 }
 
-export interface GetComputedStyleForNodeResponse {
+export type GetComputedStyleForNodeResponse = {
     /**
      * Computed style for the specified DOM node.
      */
     computedStyle: CSSComputedStyleProperty[];
 }
 
-export interface GetInlineStylesForNodeRequest {
+export type GetInlineStylesForNodeRequest = {
     nodeId: DOM.NodeId;
 }
 
-export interface GetInlineStylesForNodeResponse {
+export type GetInlineStylesForNodeResponse = {
     /**
      * Inline style for the specified DOM node.
      */
@@ -722,11 +722,11 @@ export interface GetInlineStylesForNodeResponse {
     attributesStyle?: CSSStyle;
 }
 
-export interface GetMatchedStylesForNodeRequest {
+export type GetMatchedStylesForNodeRequest = {
     nodeId: DOM.NodeId;
 }
 
-export interface GetMatchedStylesForNodeResponse {
+export type GetMatchedStylesForNodeResponse = {
     /**
      * Inline style for the specified DOM node.
      */
@@ -753,44 +753,44 @@ export interface GetMatchedStylesForNodeResponse {
     cssKeyframesRules?: CSSKeyframesRule[];
 }
 
-export interface GetMediaQueriesResponse {
+export type GetMediaQueriesResponse = {
     medias: CSSMedia[];
 }
 
-export interface GetPlatformFontsForNodeRequest {
+export type GetPlatformFontsForNodeRequest = {
     nodeId: DOM.NodeId;
 }
 
-export interface GetPlatformFontsForNodeResponse {
+export type GetPlatformFontsForNodeResponse = {
     /**
      * Usage statistics for every employed platform font.
      */
     fonts: PlatformFontUsage[];
 }
 
-export interface GetStyleSheetTextRequest {
+export type GetStyleSheetTextRequest = {
     styleSheetId: StyleSheetId;
 }
 
-export interface GetStyleSheetTextResponse {
+export type GetStyleSheetTextResponse = {
     /**
      * The stylesheet text.
      */
     text: string;
 }
 
-export interface TrackComputedStyleUpdatesRequest {
+export type TrackComputedStyleUpdatesRequest = {
     propertiesToTrack: CSSComputedStyleProperty[];
 }
 
-export interface TakeComputedStyleUpdatesResponse {
+export type TakeComputedStyleUpdatesResponse = {
     /**
      * The list of node Ids that have their tracked computed styles updated
      */
     nodeIds: DOM.NodeId[];
 }
 
-export interface SetEffectivePropertyValueForNodeRequest {
+export type SetEffectivePropertyValueForNodeRequest = {
     /**
      * The element id for which to set property.
      */
@@ -799,86 +799,86 @@ export interface SetEffectivePropertyValueForNodeRequest {
     value: string;
 }
 
-export interface SetKeyframeKeyRequest {
+export type SetKeyframeKeyRequest = {
     styleSheetId: StyleSheetId;
     range: SourceRange;
     keyText: string;
 }
 
-export interface SetKeyframeKeyResponse {
+export type SetKeyframeKeyResponse = {
     /**
      * The resulting key text after modification.
      */
     keyText: Value;
 }
 
-export interface SetMediaTextRequest {
+export type SetMediaTextRequest = {
     styleSheetId: StyleSheetId;
     range: SourceRange;
     text: string;
 }
 
-export interface SetMediaTextResponse {
+export type SetMediaTextResponse = {
     /**
      * The resulting CSS media rule after modification.
      */
     media: CSSMedia;
 }
 
-export interface SetContainerQueryTextRequest {
+export type SetContainerQueryTextRequest = {
     styleSheetId: StyleSheetId;
     range: SourceRange;
     text: string;
 }
 
-export interface SetContainerQueryTextResponse {
+export type SetContainerQueryTextResponse = {
     /**
      * The resulting CSS container query rule after modification.
      */
     containerQuery: CSSContainerQuery;
 }
 
-export interface SetRuleSelectorRequest {
+export type SetRuleSelectorRequest = {
     styleSheetId: StyleSheetId;
     range: SourceRange;
     selector: string;
 }
 
-export interface SetRuleSelectorResponse {
+export type SetRuleSelectorResponse = {
     /**
      * The resulting selector list after modification.
      */
     selectorList: SelectorList;
 }
 
-export interface SetStyleSheetTextRequest {
+export type SetStyleSheetTextRequest = {
     styleSheetId: StyleSheetId;
     text: string;
 }
 
-export interface SetStyleSheetTextResponse {
+export type SetStyleSheetTextResponse = {
     /**
      * URL of source map associated with script (if any).
      */
     sourceMapURL?: string;
 }
 
-export interface SetStyleTextsRequest {
+export type SetStyleTextsRequest = {
     edits: StyleDeclarationEdit[];
 }
 
-export interface SetStyleTextsResponse {
+export type SetStyleTextsResponse = {
     /**
      * The resulting styles after modification.
      */
     styles: CSSStyle[];
 }
 
-export interface StopRuleUsageTrackingResponse {
+export type StopRuleUsageTrackingResponse = {
     ruleUsage: RuleUsage[];
 }
 
-export interface TakeCoverageDeltaResponse {
+export type TakeCoverageDeltaResponse = {
     coverage: RuleUsage[];
     /**
      * Monotonically increasing time, in seconds.
@@ -886,7 +886,7 @@ export interface TakeCoverageDeltaResponse {
     timestamp: number;
 }
 
-export interface SetLocalFontsEnabledRequest {
+export type SetLocalFontsEnabledRequest = {
     /**
      * Whether rendering of local fonts is enabled.
      */
@@ -897,7 +897,7 @@ export interface SetLocalFontsEnabledRequest {
  * Fires whenever a web font is updated.  A non-empty font parameter indicates a successfully loaded
  * web font
  */
-export interface FontsUpdatedEvent {
+export type FontsUpdatedEvent = {
     /**
      * The web font that has loaded.
      */
@@ -907,7 +907,7 @@ export interface FontsUpdatedEvent {
 /**
  * Fired whenever an active document stylesheet is added.
  */
-export interface StyleSheetAddedEvent {
+export type StyleSheetAddedEvent = {
     /**
      * Added stylesheet metainfo.
      */
@@ -917,14 +917,14 @@ export interface StyleSheetAddedEvent {
 /**
  * Fired whenever a stylesheet is changed as a result of the client operation.
  */
-export interface StyleSheetChangedEvent {
+export type StyleSheetChangedEvent = {
     styleSheetId: StyleSheetId;
 }
 
 /**
  * Fired whenever an active document stylesheet is removed.
  */
-export interface StyleSheetRemovedEvent {
+export type StyleSheetRemovedEvent = {
     /**
      * Identifier of the removed stylesheet.
      */

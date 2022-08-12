@@ -22,7 +22,7 @@ export const enum ScrollRectType {
 /**
  * Rectangle where scrolling happens on the main thread.
  */
-export interface ScrollRect {
+export type ScrollRect = {
     /**
      * Rectangle itself.
      */
@@ -36,7 +36,7 @@ export interface ScrollRect {
 /**
  * Sticky position constraints.
  */
-export interface StickyPositionConstraint {
+export type StickyPositionConstraint = {
     /**
      * Layout rectangle of the sticky element before being shifted
      */
@@ -58,7 +58,7 @@ export interface StickyPositionConstraint {
 /**
  * Serialized fragment of layer picture along with its offset within the layer.
  */
-export interface PictureTile {
+export type PictureTile = {
     /**
      * Offset from owning layer left boundary
      */
@@ -76,7 +76,7 @@ export interface PictureTile {
 /**
  * Information about a compositing layer.
  */
-export interface Layer {
+export type Layer = {
     /**
      * The unique id for this layer.
      */
@@ -149,14 +149,14 @@ export interface Layer {
  */
 export type PaintProfile = number[];
 
-export interface CompositingReasonsRequest {
+export type CompositingReasonsRequest = {
     /**
      * The id of the layer for which we want to get the reasons it was composited.
      */
     layerId: LayerId;
 }
 
-export interface CompositingReasonsResponse {
+export type CompositingReasonsResponse = {
     /**
      * A list of strings specifying reasons for the given layer to become composited.
      */
@@ -167,35 +167,35 @@ export interface CompositingReasonsResponse {
     compositingReasonIds: string[];
 }
 
-export interface LoadSnapshotRequest {
+export type LoadSnapshotRequest = {
     /**
      * An array of tiles composing the snapshot.
      */
     tiles: PictureTile[];
 }
 
-export interface LoadSnapshotResponse {
+export type LoadSnapshotResponse = {
     /**
      * The id of the snapshot.
      */
     snapshotId: SnapshotId;
 }
 
-export interface MakeSnapshotRequest {
+export type MakeSnapshotRequest = {
     /**
      * The id of the layer.
      */
     layerId: LayerId;
 }
 
-export interface MakeSnapshotResponse {
+export type MakeSnapshotResponse = {
     /**
      * The id of the layer snapshot.
      */
     snapshotId: SnapshotId;
 }
 
-export interface ProfileSnapshotRequest {
+export type ProfileSnapshotRequest = {
     /**
      * The id of the layer snapshot.
      */
@@ -214,21 +214,21 @@ export interface ProfileSnapshotRequest {
     clipRect?: DOM.Rect;
 }
 
-export interface ProfileSnapshotResponse {
+export type ProfileSnapshotResponse = {
     /**
      * The array of paint profiles, one per run.
      */
     timings: PaintProfile[];
 }
 
-export interface ReleaseSnapshotRequest {
+export type ReleaseSnapshotRequest = {
     /**
      * The id of the layer snapshot.
      */
     snapshotId: SnapshotId;
 }
 
-export interface ReplaySnapshotRequest {
+export type ReplaySnapshotRequest = {
     /**
      * The id of the layer snapshot.
      */
@@ -247,28 +247,28 @@ export interface ReplaySnapshotRequest {
     scale?: number;
 }
 
-export interface ReplaySnapshotResponse {
+export type ReplaySnapshotResponse = {
     /**
      * A data: URL for resulting image.
      */
     dataURL: string;
 }
 
-export interface SnapshotCommandLogRequest {
+export type SnapshotCommandLogRequest = {
     /**
      * The id of the layer snapshot.
      */
     snapshotId: SnapshotId;
 }
 
-export interface SnapshotCommandLogResponse {
+export type SnapshotCommandLogResponse = {
     /**
      * The array of canvas function calls.
      */
     commandLog: any[];
 }
 
-export interface LayerPaintedEvent {
+export type LayerPaintedEvent = {
     /**
      * The id of the painted layer.
      */
@@ -279,7 +279,7 @@ export interface LayerPaintedEvent {
     clip: DOM.Rect;
 }
 
-export interface LayerTreeDidChangeEvent {
+export type LayerTreeDidChangeEvent = {
     /**
      * Layer tree, absent if not in the comspositing mode.
      */

@@ -10,7 +10,7 @@ export type DatabaseId = string;
 /**
  * Database object.
  */
-export interface Database {
+export type Database = {
     /**
      * Database ID.
      */
@@ -32,7 +32,7 @@ export interface Database {
 /**
  * Database error.
  */
-export interface Error {
+export type Error = {
     /**
      * Error message.
      */
@@ -43,26 +43,26 @@ export interface Error {
     code: integer;
 }
 
-export interface ExecuteSQLRequest {
+export type ExecuteSQLRequest = {
     databaseId: DatabaseId;
     query: string;
 }
 
-export interface ExecuteSQLResponse {
+export type ExecuteSQLResponse = {
     columnNames?: string[];
     values?: any[];
     sqlError?: Error;
 }
 
-export interface GetDatabaseTableNamesRequest {
+export type GetDatabaseTableNamesRequest = {
     databaseId: DatabaseId;
 }
 
-export interface GetDatabaseTableNamesResponse {
+export type GetDatabaseTableNamesResponse = {
     tableNames: string[];
 }
 
-export interface AddDatabaseEvent {
+export type AddDatabaseEvent = {
     database: Database;
 }
 

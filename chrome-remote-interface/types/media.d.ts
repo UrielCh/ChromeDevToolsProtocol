@@ -23,7 +23,7 @@ export const enum PlayerMessageLevel {
  * Have one type per entry in MediaLogRecord::Type
  * Corresponds to kMessage
  */
-export interface PlayerMessage {
+export type PlayerMessage = {
     /**
      * Keep in sync with MediaLogMessageLevel
      * We are currently keeping the message level 'error' separate from the
@@ -42,7 +42,7 @@ export interface PlayerMessage {
 /**
  * Corresponds to kMediaPropertyChange
  */
-export interface PlayerProperty {
+export type PlayerProperty = {
     name: string;
     value: string;
 }
@@ -50,7 +50,7 @@ export interface PlayerProperty {
 /**
  * Corresponds to kMediaEventTriggered
  */
-export interface PlayerEvent {
+export type PlayerEvent = {
     timestamp: Timestamp;
     value: string;
 }
@@ -63,7 +63,7 @@ export const enum PlayerErrorType {
 /**
  * Corresponds to kMediaError
  */
-export interface PlayerError {
+export type PlayerError = {
     /**
      *  (PlayerErrorType enum)
      */
@@ -82,7 +82,7 @@ export interface PlayerError {
  * This can be called multiple times, and can be used to set / override /
  * remove player properties. A null propValue indicates removal.
  */
-export interface PlayerPropertiesChangedEvent {
+export type PlayerPropertiesChangedEvent = {
     playerId: PlayerId;
     properties: PlayerProperty[];
 }
@@ -91,7 +91,7 @@ export interface PlayerPropertiesChangedEvent {
  * Send events as a list, allowing them to be batched on the browser for less
  * congestion. If batched, events must ALWAYS be in chronological order.
  */
-export interface PlayerEventsAddedEvent {
+export type PlayerEventsAddedEvent = {
     playerId: PlayerId;
     events: PlayerEvent[];
 }
@@ -99,7 +99,7 @@ export interface PlayerEventsAddedEvent {
 /**
  * Send a list of any messages that need to be delivered.
  */
-export interface PlayerMessagesLoggedEvent {
+export type PlayerMessagesLoggedEvent = {
     playerId: PlayerId;
     messages: PlayerMessage[];
 }
@@ -107,7 +107,7 @@ export interface PlayerMessagesLoggedEvent {
 /**
  * Send a list of any errors that need to be delivered.
  */
-export interface PlayerErrorsRaisedEvent {
+export type PlayerErrorsRaisedEvent = {
     playerId: PlayerId;
     errors: PlayerError[];
 }
@@ -117,7 +117,7 @@ export interface PlayerErrorsRaisedEvent {
  * a list of active players. If an agent is restored, it will receive the full
  * list of player ids and all events again.
  */
-export interface PlayersCreatedEvent {
+export type PlayersCreatedEvent = {
     players: PlayerId[];
 }
 

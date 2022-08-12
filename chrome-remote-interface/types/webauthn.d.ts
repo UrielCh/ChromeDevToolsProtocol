@@ -14,7 +14,7 @@ export type Ctap2Version = ("ctap2_0" | "ctap2_1");
 
 export type AuthenticatorTransport = ("usb" | "nfc" | "ble" | "cable" | "internal");
 
-export interface VirtualAuthenticatorOptions {
+export type VirtualAuthenticatorOptions = {
     protocol: AuthenticatorProtocol;
     /**
      * Defaults to ctap2_0. Ignored if |protocol| == u2f.
@@ -59,7 +59,7 @@ export interface VirtualAuthenticatorOptions {
     isUserVerified?: boolean;
 }
 
-export interface Credential {
+export type Credential = {
     credentialId: string;
     isResidentCredential: boolean;
     /**
@@ -89,55 +89,55 @@ export interface Credential {
     largeBlob?: string;
 }
 
-export interface AddVirtualAuthenticatorRequest {
+export type AddVirtualAuthenticatorRequest = {
     options: VirtualAuthenticatorOptions;
 }
 
-export interface AddVirtualAuthenticatorResponse {
+export type AddVirtualAuthenticatorResponse = {
     authenticatorId: AuthenticatorId;
 }
 
-export interface RemoveVirtualAuthenticatorRequest {
+export type RemoveVirtualAuthenticatorRequest = {
     authenticatorId: AuthenticatorId;
 }
 
-export interface AddCredentialRequest {
+export type AddCredentialRequest = {
     authenticatorId: AuthenticatorId;
     credential: Credential;
 }
 
-export interface GetCredentialRequest {
+export type GetCredentialRequest = {
     authenticatorId: AuthenticatorId;
     credentialId: string;
 }
 
-export interface GetCredentialResponse {
+export type GetCredentialResponse = {
     credential: Credential;
 }
 
-export interface GetCredentialsRequest {
+export type GetCredentialsRequest = {
     authenticatorId: AuthenticatorId;
 }
 
-export interface GetCredentialsResponse {
+export type GetCredentialsResponse = {
     credentials: Credential[];
 }
 
-export interface RemoveCredentialRequest {
+export type RemoveCredentialRequest = {
     authenticatorId: AuthenticatorId;
     credentialId: string;
 }
 
-export interface ClearCredentialsRequest {
+export type ClearCredentialsRequest = {
     authenticatorId: AuthenticatorId;
 }
 
-export interface SetUserVerifiedRequest {
+export type SetUserVerifiedRequest = {
     authenticatorId: AuthenticatorId;
     isUserVerified: boolean;
 }
 
-export interface SetAutomaticPresenceSimulationRequest {
+export type SetAutomaticPresenceSimulationRequest = {
     authenticatorId: AuthenticatorId;
     enabled: boolean;
 }

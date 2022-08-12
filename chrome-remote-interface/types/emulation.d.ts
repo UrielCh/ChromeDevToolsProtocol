@@ -18,7 +18,7 @@ export const enum ScreenOrientationType {
 /**
  * Screen orientation.
  */
-export interface ScreenOrientation {
+export type ScreenOrientation = {
     /**
      * Orientation type. (ScreenOrientationType enum)
      */
@@ -34,7 +34,7 @@ export const enum DisplayFeatureOrientation {
     Horizontal = "horizontal",
 }
 
-export interface DisplayFeature {
+export type DisplayFeature = {
     /**
      * Orientation of a display feature in relation to screen (DisplayFeatureOrientation enum)
      */
@@ -52,7 +52,7 @@ export interface DisplayFeature {
     maskLength: integer;
 }
 
-export interface MediaFeature {
+export type MediaFeature = {
     name: string;
     value: string;
 }
@@ -68,7 +68,7 @@ export type VirtualTimePolicy = ("advance" | "pause" | "pauseIfNetworkFetchesPen
 /**
  * Used to specify User Agent Cient Hints to emulate. See https://wicg.github.io/ua-client-hints
  */
-export interface UserAgentBrandVersion {
+export type UserAgentBrandVersion = {
     brand: string;
     version: string;
 }
@@ -77,7 +77,7 @@ export interface UserAgentBrandVersion {
  * Used to specify User Agent Cient Hints to emulate. See https://wicg.github.io/ua-client-hints
  * Missing optional values will be filled in by the target with what it would normally use.
  */
-export interface UserAgentMetadata {
+export type UserAgentMetadata = {
     brands?: UserAgentBrandVersion[];
     fullVersionList?: UserAgentBrandVersion[];
     fullVersion?: string;
@@ -93,21 +93,21 @@ export interface UserAgentMetadata {
  */
 export type DisabledImageType = ("avif" | "jxl" | "webp");
 
-export interface CanEmulateResponse {
+export type CanEmulateResponse = {
     /**
      * True if emulation is supported.
      */
     result: boolean;
 }
 
-export interface SetFocusEmulationEnabledRequest {
+export type SetFocusEmulationEnabledRequest = {
     /**
      * Whether to enable to disable focus emulation.
      */
     enabled: boolean;
 }
 
-export interface SetAutoDarkModeOverrideRequest {
+export type SetAutoDarkModeOverrideRequest = {
     /**
      * Whether to enable or disable automatic dark mode.
      * If not specified, any existing override will be cleared.
@@ -115,14 +115,14 @@ export interface SetAutoDarkModeOverrideRequest {
     enabled?: boolean;
 }
 
-export interface SetCPUThrottlingRateRequest {
+export type SetCPUThrottlingRateRequest = {
     /**
      * Throttling rate as a slowdown factor (1 is no throttle, 2 is 2x slowdown, etc).
      */
     rate: number;
 }
 
-export interface SetDefaultBackgroundColorOverrideRequest {
+export type SetDefaultBackgroundColorOverrideRequest = {
     /**
      * RGBA of the default background color. If not specified, any existing override will be
      * cleared.
@@ -130,7 +130,7 @@ export interface SetDefaultBackgroundColorOverrideRequest {
     color?: DOM.RGBA;
 }
 
-export interface SetDeviceMetricsOverrideRequest {
+export type SetDeviceMetricsOverrideRequest = {
     /**
      * Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      */
@@ -188,14 +188,14 @@ export interface SetDeviceMetricsOverrideRequest {
     displayFeature?: DisplayFeature;
 }
 
-export interface SetScrollbarsHiddenRequest {
+export type SetScrollbarsHiddenRequest = {
     /**
      * Whether scrollbars should be always hidden.
      */
     hidden: boolean;
 }
 
-export interface SetDocumentCookieDisabledRequest {
+export type SetDocumentCookieDisabledRequest = {
     /**
      * Whether document.coookie API should be disabled.
      */
@@ -207,7 +207,7 @@ export const enum SetEmitTouchEventsForMouseRequestConfiguration {
     Desktop = "desktop",
 }
 
-export interface SetEmitTouchEventsForMouseRequest {
+export type SetEmitTouchEventsForMouseRequest = {
     /**
      * Whether touch emulation based on mouse input should be enabled.
      */
@@ -218,7 +218,7 @@ export interface SetEmitTouchEventsForMouseRequest {
     configuration?: ("mobile" | "desktop");
 }
 
-export interface SetEmulatedMediaRequest {
+export type SetEmulatedMediaRequest = {
     /**
      * Media type to emulate. Empty string disables the override.
      */
@@ -238,14 +238,14 @@ export const enum SetEmulatedVisionDeficiencyRequestType {
     Tritanopia = "tritanopia",
 }
 
-export interface SetEmulatedVisionDeficiencyRequest {
+export type SetEmulatedVisionDeficiencyRequest = {
     /**
      * Vision deficiency to emulate. (SetEmulatedVisionDeficiencyRequestType enum)
      */
     type: ("none" | "achromatopsia" | "blurredVision" | "deuteranopia" | "protanopia" | "tritanopia");
 }
 
-export interface SetGeolocationOverrideRequest {
+export type SetGeolocationOverrideRequest = {
     /**
      * Mock latitude
      */
@@ -260,7 +260,7 @@ export interface SetGeolocationOverrideRequest {
     accuracy?: number;
 }
 
-export interface SetIdleOverrideRequest {
+export type SetIdleOverrideRequest = {
     /**
      * Mock isUserActive
      */
@@ -271,28 +271,28 @@ export interface SetIdleOverrideRequest {
     isScreenUnlocked: boolean;
 }
 
-export interface SetNavigatorOverridesRequest {
+export type SetNavigatorOverridesRequest = {
     /**
      * The platform navigator.platform should return.
      */
     platform: string;
 }
 
-export interface SetPageScaleFactorRequest {
+export type SetPageScaleFactorRequest = {
     /**
      * Page scale factor.
      */
     pageScaleFactor: number;
 }
 
-export interface SetScriptExecutionDisabledRequest {
+export type SetScriptExecutionDisabledRequest = {
     /**
      * Whether script execution should be disabled in the page.
      */
     value: boolean;
 }
 
-export interface SetTouchEmulationEnabledRequest {
+export type SetTouchEmulationEnabledRequest = {
     /**
      * Whether the touch event emulation should be enabled.
      */
@@ -303,7 +303,7 @@ export interface SetTouchEmulationEnabledRequest {
     maxTouchPoints?: integer;
 }
 
-export interface SetVirtualTimePolicyRequest {
+export type SetVirtualTimePolicyRequest = {
     policy: VirtualTimePolicy;
     /**
      * If set, after this many virtual milliseconds have elapsed virtual time will be paused and a
@@ -321,14 +321,14 @@ export interface SetVirtualTimePolicyRequest {
     initialVirtualTime?: Network.TimeSinceEpoch;
 }
 
-export interface SetVirtualTimePolicyResponse {
+export type SetVirtualTimePolicyResponse = {
     /**
      * Absolute timestamp at which virtual time was first enabled (up time in milliseconds).
      */
     virtualTimeTicksBase: number;
 }
 
-export interface SetLocaleOverrideRequest {
+export type SetLocaleOverrideRequest = {
     /**
      * ICU style C locale (e.g. "en_US"). If not specified or empty, disables the override and
      * restores default host system locale.
@@ -336,7 +336,7 @@ export interface SetLocaleOverrideRequest {
     locale?: string;
 }
 
-export interface SetTimezoneOverrideRequest {
+export type SetTimezoneOverrideRequest = {
     /**
      * The timezone identifier. If empty, disables the override and
      * restores default host system timezone.
@@ -344,7 +344,7 @@ export interface SetTimezoneOverrideRequest {
     timezoneId: string;
 }
 
-export interface SetVisibleSizeRequest {
+export type SetVisibleSizeRequest = {
     /**
      * Frame width (DIP).
      */
@@ -355,14 +355,14 @@ export interface SetVisibleSizeRequest {
     height: integer;
 }
 
-export interface SetDisabledImageTypesRequest {
+export type SetDisabledImageTypesRequest = {
     /**
      * Image types to disable.
      */
     imageTypes: DisabledImageType[];
 }
 
-export interface SetUserAgentOverrideRequest {
+export type SetUserAgentOverrideRequest = {
     /**
      * User agent to use.
      */

@@ -8,7 +8,7 @@ export type integer = number;
 /**
  * Describes a single graphics processor (GPU).
  */
-export interface GPUDevice {
+export type GPUDevice = {
     /**
      * PCI ID of the GPU vendor, if available; 0 otherwise.
      */
@@ -46,7 +46,7 @@ export interface GPUDevice {
 /**
  * Describes the width and height dimensions of an entity.
  */
-export interface Size {
+export type Size = {
     /**
      * Width in pixels.
      */
@@ -61,7 +61,7 @@ export interface Size {
  * Describes a supported video decoding profile with its associated minimum and
  * maximum resolutions.
  */
-export interface VideoDecodeAcceleratorCapability {
+export type VideoDecodeAcceleratorCapability = {
     /**
      * Video codec profile that is supported, e.g. VP9 Profile 2.
      */
@@ -80,7 +80,7 @@ export interface VideoDecodeAcceleratorCapability {
  * Describes a supported video encoding profile with its associated maximum
  * resolution and maximum framerate.
  */
-export interface VideoEncodeAcceleratorCapability {
+export type VideoEncodeAcceleratorCapability = {
     /**
      * Video codec profile that is supported, e.g H264 Main.
      */
@@ -112,7 +112,7 @@ export type ImageType = ("jpeg" | "webp" | "unknown");
  * Describes a supported image decoding profile with its associated minimum and
  * maximum resolutions and subsampling.
  */
-export interface ImageDecodeAcceleratorCapability {
+export type ImageDecodeAcceleratorCapability = {
     /**
      * Image coded, e.g. Jpeg.
      */
@@ -134,7 +134,7 @@ export interface ImageDecodeAcceleratorCapability {
 /**
  * Provides information about the GPU(s) on the system.
  */
-export interface GPUInfo {
+export type GPUInfo = {
     /**
      * The graphics devices on the system. Element 0 is the primary GPU.
      */
@@ -168,7 +168,7 @@ export interface GPUInfo {
 /**
  * Represents process info.
  */
-export interface ProcessInfo {
+export type ProcessInfo = {
     /**
      * Specifies process type.
      */
@@ -184,7 +184,7 @@ export interface ProcessInfo {
     cpuTime: number;
 }
 
-export interface GetInfoResponse {
+export type GetInfoResponse = {
     /**
      * Information about the GPUs on the system.
      */
@@ -206,7 +206,7 @@ export interface GetInfoResponse {
     commandLine: string;
 }
 
-export interface GetProcessInfoResponse {
+export type GetProcessInfoResponse = {
     /**
      * An array of process info blocks.
      */

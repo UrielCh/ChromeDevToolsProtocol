@@ -8,7 +8,7 @@ export type integer = number;
 /**
  * DOM Storage identifier.
  */
-export interface StorageId {
+export type StorageId = {
     /**
      * Security origin for the storage.
      */
@@ -24,48 +24,48 @@ export interface StorageId {
  */
 export type Item = string[];
 
-export interface ClearRequest {
+export type ClearRequest = {
     storageId: StorageId;
 }
 
-export interface GetDOMStorageItemsRequest {
+export type GetDOMStorageItemsRequest = {
     storageId: StorageId;
 }
 
-export interface GetDOMStorageItemsResponse {
+export type GetDOMStorageItemsResponse = {
     entries: Item[];
 }
 
-export interface RemoveDOMStorageItemRequest {
+export type RemoveDOMStorageItemRequest = {
     storageId: StorageId;
     key: string;
 }
 
-export interface SetDOMStorageItemRequest {
+export type SetDOMStorageItemRequest = {
     storageId: StorageId;
     key: string;
     value: string;
 }
 
-export interface DomStorageItemAddedEvent {
+export type DomStorageItemAddedEvent = {
     storageId: StorageId;
     key: string;
     newValue: string;
 }
 
-export interface DomStorageItemRemovedEvent {
+export type DomStorageItemRemovedEvent = {
     storageId: StorageId;
     key: string;
 }
 
-export interface DomStorageItemUpdatedEvent {
+export type DomStorageItemUpdatedEvent = {
     storageId: StorageId;
     key: string;
     oldValue: string;
     newValue: string;
 }
 
-export interface DomStorageItemsClearedEvent {
+export type DomStorageItemsClearedEvent = {
     storageId: StorageId;
 }
 

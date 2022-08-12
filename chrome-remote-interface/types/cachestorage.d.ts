@@ -15,7 +15,7 @@ export type CachedResponseType = ("basic" | "cors" | "default" | "error" | "opaq
 /**
  * Data entry.
  */
-export interface DataEntry {
+export type DataEntry = {
     /**
      * Request URL.
      */
@@ -53,7 +53,7 @@ export interface DataEntry {
 /**
  * Cache identifier.
  */
-export interface Cache {
+export type Cache = {
     /**
      * An opaque unique id of the cache.
      */
@@ -68,7 +68,7 @@ export interface Cache {
     cacheName: string;
 }
 
-export interface Header {
+export type Header = {
     name: string;
     value: string;
 }
@@ -76,21 +76,21 @@ export interface Header {
 /**
  * Cached response
  */
-export interface CachedResponse {
+export type CachedResponse = {
     /**
      * Entry content, base64-encoded. (Encoded as a base64 string when passed over JSON)
      */
     body: string;
 }
 
-export interface DeleteCacheRequest {
+export type DeleteCacheRequest = {
     /**
      * Id of cache for deletion.
      */
     cacheId: CacheId;
 }
 
-export interface DeleteEntryRequest {
+export type DeleteEntryRequest = {
     /**
      * Id of cache where the entry will be deleted.
      */
@@ -101,21 +101,21 @@ export interface DeleteEntryRequest {
     request: string;
 }
 
-export interface RequestCacheNamesRequest {
+export type RequestCacheNamesRequest = {
     /**
      * Security origin.
      */
     securityOrigin: string;
 }
 
-export interface RequestCacheNamesResponse {
+export type RequestCacheNamesResponse = {
     /**
      * Caches for the security origin.
      */
     caches: Cache[];
 }
 
-export interface RequestCachedResponseRequest {
+export type RequestCachedResponseRequest = {
     /**
      * Id of cache that contains the entry.
      */
@@ -130,14 +130,14 @@ export interface RequestCachedResponseRequest {
     requestHeaders: Header[];
 }
 
-export interface RequestCachedResponseResponse {
+export type RequestCachedResponseResponse = {
     /**
      * Response read from the cache.
      */
     response: CachedResponse;
 }
 
-export interface RequestEntriesRequest {
+export type RequestEntriesRequest = {
     /**
      * ID of cache to get entries from.
      */
@@ -156,7 +156,7 @@ export interface RequestEntriesRequest {
     pathFilter?: string;
 }
 
-export interface RequestEntriesResponse {
+export type RequestEntriesResponse = {
     /**
      * Array of object store data entries.
      */

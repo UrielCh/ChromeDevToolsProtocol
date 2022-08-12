@@ -7,7 +7,7 @@ export type integer = number;
 /**
  * Profile node. Holds callsite information, execution statistics and child nodes.
  */
-export interface ProfileNode {
+export type ProfileNode = {
     /**
      * Unique id of the node.
      */
@@ -38,7 +38,7 @@ export interface ProfileNode {
 /**
  * Profile.
  */
-export interface Profile {
+export type Profile = {
     /**
      * The list of profile nodes. First item is the root node.
      */
@@ -65,7 +65,7 @@ export interface Profile {
 /**
  * Specifies a number of samples attributed to a certain source position.
  */
-export interface PositionTickInfo {
+export type PositionTickInfo = {
     /**
      * Source line number (1-based).
      */
@@ -79,7 +79,7 @@ export interface PositionTickInfo {
 /**
  * Coverage data for a source range.
  */
-export interface CoverageRange {
+export type CoverageRange = {
     /**
      * JavaScript script source offset for the range start.
      */
@@ -97,7 +97,7 @@ export interface CoverageRange {
 /**
  * Coverage data for a JavaScript function.
  */
-export interface FunctionCoverage {
+export type FunctionCoverage = {
     /**
      * JavaScript function name.
      */
@@ -115,7 +115,7 @@ export interface FunctionCoverage {
 /**
  * Coverage data for a JavaScript script.
  */
-export interface ScriptCoverage {
+export type ScriptCoverage = {
     /**
      * JavaScript script id.
      */
@@ -133,7 +133,7 @@ export interface ScriptCoverage {
 /**
  * Describes a type collected during runtime.
  */
-export interface TypeObject {
+export type TypeObject = {
     /**
      * Name of a type collected with type profiling.
      */
@@ -143,7 +143,7 @@ export interface TypeObject {
 /**
  * Source offset and types for a parameter or return value.
  */
-export interface TypeProfileEntry {
+export type TypeProfileEntry = {
     /**
      * Source offset of the parameter or end of function for return values.
      */
@@ -157,7 +157,7 @@ export interface TypeProfileEntry {
 /**
  * Type profile data collected during runtime for a JavaScript script.
  */
-export interface ScriptTypeProfile {
+export type ScriptTypeProfile = {
     /**
      * JavaScript script id.
      */
@@ -172,21 +172,21 @@ export interface ScriptTypeProfile {
     entries: TypeProfileEntry[];
 }
 
-export interface GetBestEffortCoverageResponse {
+export type GetBestEffortCoverageResponse = {
     /**
      * Coverage data for the current isolate.
      */
     result: ScriptCoverage[];
 }
 
-export interface SetSamplingIntervalRequest {
+export type SetSamplingIntervalRequest = {
     /**
      * New sampling interval in microseconds.
      */
     interval: integer;
 }
 
-export interface StartPreciseCoverageRequest {
+export type StartPreciseCoverageRequest = {
     /**
      * Collect accurate call counts beyond simple 'covered' or 'not covered'.
      */
@@ -201,21 +201,21 @@ export interface StartPreciseCoverageRequest {
     allowTriggeredUpdates?: boolean;
 }
 
-export interface StartPreciseCoverageResponse {
+export type StartPreciseCoverageResponse = {
     /**
      * Monotonically increasing time (in seconds) when the coverage update was taken in the backend.
      */
     timestamp: number;
 }
 
-export interface StopResponse {
+export type StopResponse = {
     /**
      * Recorded profile.
      */
     profile: Profile;
 }
 
-export interface TakePreciseCoverageResponse {
+export type TakePreciseCoverageResponse = {
     /**
      * Coverage data for the current isolate.
      */
@@ -226,14 +226,14 @@ export interface TakePreciseCoverageResponse {
     timestamp: number;
 }
 
-export interface TakeTypeProfileResponse {
+export type TakeTypeProfileResponse = {
     /**
      * Type profile for all scripts since startTypeProfile() was turned on.
      */
     result: ScriptTypeProfile[];
 }
 
-export interface ConsoleProfileFinishedEvent {
+export type ConsoleProfileFinishedEvent = {
     id: string;
     /**
      * Location of console.profileEnd().
@@ -249,7 +249,7 @@ export interface ConsoleProfileFinishedEvent {
 /**
  * Sent when new profile recording is started using console.profile() call.
  */
-export interface ConsoleProfileStartedEvent {
+export type ConsoleProfileStartedEvent = {
     id: string;
     /**
      * Location of console.profile().
@@ -267,7 +267,7 @@ export interface ConsoleProfileStartedEvent {
  * coverage has been started. This event can be trigged by the embedder to, for example,
  * trigger collection of coverage data immediately at a certain point in time.
  */
-export interface PreciseCoverageDeltaUpdateEvent {
+export type PreciseCoverageDeltaUpdateEvent = {
     /**
      * Monotonically increasing time (in seconds) when the coverage update was taken in the backend.
      */

@@ -17,12 +17,12 @@ export type ServiceName = ("backgroundFetch" | "backgroundSync" | "pushMessaging
 /**
  * A key-value pair for additional event information to pass along.
  */
-export interface EventMetadata {
+export type EventMetadata = {
     key: string;
     value: string;
 }
 
-export interface BackgroundServiceEvent {
+export type BackgroundServiceEvent = {
     /**
      * Timestamp of the event (in seconds).
      */
@@ -53,27 +53,27 @@ export interface BackgroundServiceEvent {
     eventMetadata: EventMetadata[];
 }
 
-export interface StartObservingRequest {
+export type StartObservingRequest = {
     service: ServiceName;
 }
 
-export interface StopObservingRequest {
+export type StopObservingRequest = {
     service: ServiceName;
 }
 
-export interface SetRecordingRequest {
+export type SetRecordingRequest = {
     shouldRecord: boolean;
     service: ServiceName;
 }
 
-export interface ClearEventsRequest {
+export type ClearEventsRequest = {
     service: ServiceName;
 }
 
 /**
  * Called when the recording state for the service has been updated.
  */
-export interface RecordingStateChangedEvent {
+export type RecordingStateChangedEvent = {
     isRecording: boolean;
     service: ServiceName;
 }
@@ -82,7 +82,7 @@ export interface RecordingStateChangedEvent {
  * Called with all existing backgroundServiceEvents when enabled, and all new
  * events afterwards if enabled and recording.
  */
-export interface BackgroundServiceEventReceivedEvent {
+export type BackgroundServiceEventReceivedEvent = {
     backgroundServiceEvent: BackgroundServiceEvent;
 }
 

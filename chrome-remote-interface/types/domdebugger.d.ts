@@ -21,7 +21,7 @@ export type CSPViolationType = ("trustedtype-sink-violation" | "trustedtype-poli
 /**
  * Object event listener.
  */
-export interface EventListener {
+export type EventListener = {
     /**
      * `EventListener`'s type.
      */
@@ -64,7 +64,7 @@ export interface EventListener {
     backendNodeId?: DOM.BackendNodeId;
 }
 
-export interface GetEventListenersRequest {
+export type GetEventListenersRequest = {
     /**
      * Identifier of the object to return listeners for.
      */
@@ -81,14 +81,14 @@ export interface GetEventListenersRequest {
     pierce?: boolean;
 }
 
-export interface GetEventListenersResponse {
+export type GetEventListenersResponse = {
     /**
      * Array of relevant listeners.
      */
     listeners: EventListener[];
 }
 
-export interface RemoveDOMBreakpointRequest {
+export type RemoveDOMBreakpointRequest = {
     /**
      * Identifier of the node to remove breakpoint from.
      */
@@ -99,7 +99,7 @@ export interface RemoveDOMBreakpointRequest {
     type: DOMBreakpointType;
 }
 
-export interface RemoveEventListenerBreakpointRequest {
+export type RemoveEventListenerBreakpointRequest = {
     /**
      * Event name.
      */
@@ -110,28 +110,28 @@ export interface RemoveEventListenerBreakpointRequest {
     targetName?: string;
 }
 
-export interface RemoveInstrumentationBreakpointRequest {
+export type RemoveInstrumentationBreakpointRequest = {
     /**
      * Instrumentation name to stop on.
      */
     eventName: string;
 }
 
-export interface RemoveXHRBreakpointRequest {
+export type RemoveXHRBreakpointRequest = {
     /**
      * Resource URL substring.
      */
     url: string;
 }
 
-export interface SetBreakOnCSPViolationRequest {
+export type SetBreakOnCSPViolationRequest = {
     /**
      * CSP Violations to stop upon.
      */
     violationTypes: CSPViolationType[];
 }
 
-export interface SetDOMBreakpointRequest {
+export type SetDOMBreakpointRequest = {
     /**
      * Identifier of the node to set breakpoint on.
      */
@@ -142,7 +142,7 @@ export interface SetDOMBreakpointRequest {
     type: DOMBreakpointType;
 }
 
-export interface SetEventListenerBreakpointRequest {
+export type SetEventListenerBreakpointRequest = {
     /**
      * DOM Event name to stop on (any DOM event will do).
      */
@@ -154,14 +154,14 @@ export interface SetEventListenerBreakpointRequest {
     targetName?: string;
 }
 
-export interface SetInstrumentationBreakpointRequest {
+export type SetInstrumentationBreakpointRequest = {
     /**
      * Instrumentation name to stop on.
      */
     eventName: string;
 }
 
-export interface SetXHRBreakpointRequest {
+export type SetXHRBreakpointRequest = {
     /**
      * Resource URL substring. All XHRs having this substring in the URL will get stopped upon.
      */

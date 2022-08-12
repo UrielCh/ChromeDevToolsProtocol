@@ -49,7 +49,7 @@ export type AutomationRate = ("a-rate" | "k-rate");
 /**
  * Fields in AudioContext that change in real-time.
  */
-export interface ContextRealtimeData {
+export type ContextRealtimeData = {
     /**
      * The current context time in second in BaseAudioContext.
      */
@@ -73,7 +73,7 @@ export interface ContextRealtimeData {
 /**
  * Protocol object for BaseAudioContext
  */
-export interface BaseAudioContext {
+export type BaseAudioContext = {
     contextId: GraphObjectId;
     contextType: ContextType;
     contextState: ContextState;
@@ -95,7 +95,7 @@ export interface BaseAudioContext {
 /**
  * Protocol object for AudioListener
  */
-export interface AudioListener {
+export type AudioListener = {
     listenerId: GraphObjectId;
     contextId: GraphObjectId;
 }
@@ -103,7 +103,7 @@ export interface AudioListener {
 /**
  * Protocol object for AudioNode
  */
-export interface AudioNode {
+export type AudioNode = {
     nodeId: GraphObjectId;
     contextId: GraphObjectId;
     nodeType: NodeType;
@@ -117,7 +117,7 @@ export interface AudioNode {
 /**
  * Protocol object for AudioParam
  */
-export interface AudioParam {
+export type AudioParam = {
     paramId: GraphObjectId;
     nodeId: GraphObjectId;
     contextId: GraphObjectId;
@@ -128,46 +128,46 @@ export interface AudioParam {
     maxValue: number;
 }
 
-export interface GetRealtimeDataRequest {
+export type GetRealtimeDataRequest = {
     contextId: GraphObjectId;
 }
 
-export interface GetRealtimeDataResponse {
+export type GetRealtimeDataResponse = {
     realtimeData: ContextRealtimeData;
 }
 
 /**
  * Notifies that a new BaseAudioContext has been created.
  */
-export interface ContextCreatedEvent {
+export type ContextCreatedEvent = {
     context: BaseAudioContext;
 }
 
 /**
  * Notifies that an existing BaseAudioContext will be destroyed.
  */
-export interface ContextWillBeDestroyedEvent {
+export type ContextWillBeDestroyedEvent = {
     contextId: GraphObjectId;
 }
 
 /**
  * Notifies that existing BaseAudioContext has changed some properties (id stays the same)..
  */
-export interface ContextChangedEvent {
+export type ContextChangedEvent = {
     context: BaseAudioContext;
 }
 
 /**
  * Notifies that the construction of an AudioListener has finished.
  */
-export interface AudioListenerCreatedEvent {
+export type AudioListenerCreatedEvent = {
     listener: AudioListener;
 }
 
 /**
  * Notifies that a new AudioListener has been created.
  */
-export interface AudioListenerWillBeDestroyedEvent {
+export type AudioListenerWillBeDestroyedEvent = {
     contextId: GraphObjectId;
     listenerId: GraphObjectId;
 }
@@ -175,14 +175,14 @@ export interface AudioListenerWillBeDestroyedEvent {
 /**
  * Notifies that a new AudioNode has been created.
  */
-export interface AudioNodeCreatedEvent {
+export type AudioNodeCreatedEvent = {
     node: AudioNode;
 }
 
 /**
  * Notifies that an existing AudioNode has been destroyed.
  */
-export interface AudioNodeWillBeDestroyedEvent {
+export type AudioNodeWillBeDestroyedEvent = {
     contextId: GraphObjectId;
     nodeId: GraphObjectId;
 }
@@ -190,14 +190,14 @@ export interface AudioNodeWillBeDestroyedEvent {
 /**
  * Notifies that a new AudioParam has been created.
  */
-export interface AudioParamCreatedEvent {
+export type AudioParamCreatedEvent = {
     param: AudioParam;
 }
 
 /**
  * Notifies that an existing AudioParam has been destroyed.
  */
-export interface AudioParamWillBeDestroyedEvent {
+export type AudioParamWillBeDestroyedEvent = {
     contextId: GraphObjectId;
     nodeId: GraphObjectId;
     paramId: GraphObjectId;
@@ -206,7 +206,7 @@ export interface AudioParamWillBeDestroyedEvent {
 /**
  * Notifies that two AudioNodes are connected.
  */
-export interface NodesConnectedEvent {
+export type NodesConnectedEvent = {
     contextId: GraphObjectId;
     sourceId: GraphObjectId;
     destinationId: GraphObjectId;
@@ -217,7 +217,7 @@ export interface NodesConnectedEvent {
 /**
  * Notifies that AudioNodes are disconnected. The destination can be null, and it means all the outgoing connections from the source are disconnected.
  */
-export interface NodesDisconnectedEvent {
+export type NodesDisconnectedEvent = {
     contextId: GraphObjectId;
     sourceId: GraphObjectId;
     destinationId: GraphObjectId;
@@ -228,7 +228,7 @@ export interface NodesDisconnectedEvent {
 /**
  * Notifies that an AudioNode is connected to an AudioParam.
  */
-export interface NodeParamConnectedEvent {
+export type NodeParamConnectedEvent = {
     contextId: GraphObjectId;
     sourceId: GraphObjectId;
     destinationId: GraphObjectId;
@@ -238,7 +238,7 @@ export interface NodeParamConnectedEvent {
 /**
  * Notifies that an AudioNode is disconnected to an AudioParam.
  */
-export interface NodeParamDisconnectedEvent {
+export type NodeParamDisconnectedEvent = {
     contextId: GraphObjectId;
     sourceId: GraphObjectId;
     destinationId: GraphObjectId;
