@@ -1,5 +1,9 @@
 import { build, emptyDir } from "https://deno.land/x/dnt@0.30.0/mod.ts";
-// deno run -A _build.ts
+// deno run -A _build.ts 0.4.0
+if (!Deno.args[0]) {
+  console.error('Missing version number')
+  Deno.exit(-1);
+}
 
 try {
   await emptyDir("./npm");
@@ -42,11 +46,13 @@ try {
       ],
       description: "Chrome Debugging Protocol interface",
       keywords: [
+        "Chrome DevTools Protocol",
         "chrome",
         "debug",
         "protocol",
         "remote",
-        "interface"
+        "interface",
+        "deno"
       ],
       homepage: "https://github.com/UrielCh/chrome-remote-interface",
       version: Deno.args[0],
