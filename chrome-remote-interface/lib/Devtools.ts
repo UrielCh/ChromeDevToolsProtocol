@@ -22,6 +22,7 @@ export class Devtools {
     useHostName: boolean;
   };
   public readonly alterUrl: (url: string) => string;
+  public readonly getHeaders: (url: string) => HeadersInit | undefined;
   public readonly timeout?: number;
   public readonly useHostName?: boolean;
   public readonly local?: boolean;
@@ -48,6 +49,7 @@ export class Devtools {
     };
     this.local = options.local;
     this.alterUrl = options.alterUrl || ((url: string) => url);
+    this.getHeaders = options.getHeaders || (() => undefined);
   }
 
   /**
@@ -71,8 +73,9 @@ export class Devtools {
     }
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), this.#opts.timeout);
+    const headers = this.getHeaders(url);
     try {
-      const response = await fetch(url, { signal: controller.signal });
+      const response = await fetch(url, { signal: controller.signal, headers });
       const text = await response.text();
       return text;
     } catch (err) {

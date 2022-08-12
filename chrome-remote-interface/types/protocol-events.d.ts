@@ -705,7 +705,7 @@ export type ProtocolEventsApi = {
 
 export type ProtocolEventsName = Exclude<keyof ProtocolEventsApi, "event" | "ready" >;
 
-export interface ProtocolEventParam {
+export type ProtocolEventParam = {
     /**
      * id of the message, empty if it's an event
      */

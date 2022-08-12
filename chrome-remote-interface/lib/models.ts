@@ -33,6 +33,10 @@ export interface DevtoolsCreateOptions {
    * Url modifiyer, used to transform url provided by Chrome.
    */
   alterUrl?: (url: string) => string;
+  /**
+   * Add extra header to chrome request sent to by Chrome.
+   */
+  getHeaders?: (url: string) => HeadersInit | undefined;
 }
 
 /**

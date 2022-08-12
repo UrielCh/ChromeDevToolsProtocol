@@ -9,7 +9,7 @@ import Protocol from "./protocol.d.ts";
  * Mappings from protocol event and command names to the types required for them.
  */
 export namespace ProtocolMapping {
-    export interface Events {
+    export type Events = {
         /**
          * The loadComplete event mirrors the load complete event sent by the browser to assistive
          * technology when the web page has finished loading.
@@ -692,7 +692,7 @@ export namespace ProtocolMapping {
         "Runtime.inspectRequested": [Protocol.Runtime.InspectRequestedEvent];
     }
 
-    export interface Commands {
+    export type Commands = {
         /**
          * Disables the accessibility domain.
          */
