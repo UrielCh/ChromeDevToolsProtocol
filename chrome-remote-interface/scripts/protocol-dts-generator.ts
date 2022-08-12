@@ -21,17 +21,17 @@ const se = new SourceEmiter("protocol");
 se.emitModule(localDescriptor.domains);
 se.flushEmitToFile();
 
-const se2 = new SourceEmiter("protocol-mapping", "ProtocolMapping");
+const se2 = new SourceEmiter("protocol-mapping");
 const mappingModuleName = "ProtocolMapping";
 se2.emitMapping(mappingModuleName, localDescriptor.domains);
 se2.flushEmitToFile();
 
-const se3 = new SourceEmiter("protocol-proxy-api", "ProtocolProxyApi");
+const se3 = new SourceEmiter("protocol-proxy-api");
 const apiModuleName = "ProtocolProxyApi";
 se3.emitApi(apiModuleName, localDescriptor.domains);
 se3.flushEmitToFile();
 
-const se4 = new SourceEmiter("protocol-events", "ProtocolEventsApi");
+const se4 = new SourceEmiter("protocol-events");
 const protocolEventsName = "ProtocolEventsApi";
 se4.emitEvents(protocolEventsName, localDescriptor.domains);
 se4.flushEmitToFile();
