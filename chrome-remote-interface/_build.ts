@@ -1,7 +1,6 @@
 import { build, emptyDir } from "https://deno.land/x/dnt@0.30.0/mod.ts";
 // deno run -A _build.ts
 
-
 try {
   await emptyDir("./npm");
 

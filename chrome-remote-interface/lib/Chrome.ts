@@ -97,9 +97,9 @@ export class Chrome extends EventEmitter<ProtocolEventsApi> {
   /**
    * @param events wait for at least one of each event.
    */
-  public waitForAllEvents(...events: ProtocolEventsName[]) {
-    return new Promise<void>((resolve) => {
-      const eventSet = new Set<ProtocolEventsName>(events);
+  public waitForAllEvents(...events: ProtocolEventsName[]): Promise<void> & { getMissing: () => ProtocolEventsName[] } {
+    const eventSet = new Set<ProtocolEventsName>(events);
+    const p = new Promise<void>((resolve) => {
       const onEvent = (param: ProtocolEventParam) => {
         const { method } = param;
         if (eventSet.delete(method)) {
@@ -110,7 +110,9 @@ export class Chrome extends EventEmitter<ProtocolEventsApi> {
         }
       };
       this.on("event", onEvent); // TODO fix me
-    });
+    }) as Promise<void> & { getMissing: () => ProtocolEventsName[] };
+    p.getMissing = () => [...eventSet]
+    return p;
   }
 
   /**

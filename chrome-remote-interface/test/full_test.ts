@@ -36,7 +36,7 @@ describe("visite github like puppeteer", () => {
       await cdp.Emulation.setDeviceMetricsOverride({ "mobile": false, "width": 800, "height": 600, "deviceScaleFactor": RuntimeexecutionContextCreated35.context.id, "screenOrientation": { "angle": 0, "type": "portraitPrimary" } }, sessionId); // 15
       await cdp.Emulation.setTouchEmulationEnabled({ "enabled": false }, sessionId); // 16
       await frameResized;
-      const pageOk = cdp.waitForAllEvents("Page.frameStoppedLoading", "Page.domContentEventFired", "Page.lifecycleEvent", "Network.requestWillBeSent", "Network.requestWillBeSentExtraInfo", "Network.responseReceivedExtraInfo", "Network.responseReceived", "Page.frameStartedLoading", "Runtime.executionContextsCleared", "Log.entryAdded", "Target.targetInfoChanged", "Page.frameNavigated", "Network.dataReceived", "Runtime.executionContextCreated", "Network.loadingFinished", "Network.resourceChangedPriority");
+      const pageOk = cdp.waitForAllEvents("Page.frameStoppedLoading", "Page.domContentEventFired", "Page.lifecycleEvent", "Network.requestWillBeSent", "Network.requestWillBeSentExtraInfo", "Network.responseReceivedExtraInfo", "Network.responseReceived", "Page.frameStartedLoading", "Runtime.executionContextsCleared", "Log.entryAdded", "Target.targetInfoChanged", "Page.frameNavigated", "Network.dataReceived", "Runtime.executionContextCreated", "Network.loadingFinished");
       await cdp.Page.navigate({ "url": "https://github.com/UrielCh/puppeteer-jquery/tree/master/puppeteer-jquery", "frameId": targetId }, sessionId); // 18
       await pageOk;
       await cdp.close();

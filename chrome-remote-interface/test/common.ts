@@ -10,3 +10,5 @@ export const devTools = new Devtools({ url, timeout: 1500 });
 //     echo 'Start Chrome with "--remote-debugging-port=9222"'
 //     false
 // fi
+
+export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
