@@ -39,6 +39,9 @@ export class Devtools {
       const url = new URL(options.url);
       url.protocol = url.protocol.replace(/^ws/, "http");
       url.pathname = "/";
+      let asString = url.toString();
+      if (!asString.endsWith('/'))
+        asString += '/';
       this.#url = url.toString();
     } else {
       this.#url = "http://127.0.0.1:9222/";

@@ -22,7 +22,8 @@ export interface DevtoolsCreateOptions {
    */
   useHostName?: boolean;
   /**
-   * the devtoold url, default is http://127.0.0.1:9222
+   * The devtoold url, using http: or ws: protocol to devtools root page.
+   * default is http://127.0.0.1:9222/
    */
   url?: string;
   /**
