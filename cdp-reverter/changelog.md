@@ -1,3 +1,5 @@
+## v 0.0.7 (2022-08-13)
+use deno base @u4/chrome-remote-interface
 ## v 0.0.5 (2022-07-26)
 show event count in generated ts
 ## v 0.0.4 (2022-07-26)

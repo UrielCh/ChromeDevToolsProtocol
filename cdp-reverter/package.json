@@ -1,6 +1,6 @@
 {
   "name": "cdp-reverter",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Generate a working CDP script from ws connexion",
   "keywords": [
     "chrome",
@@ -27,12 +27,12 @@
   "author": "Uriel Chemouni <uchemouni@gmail.com> (https://urielch.github.io/)",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^18.6.2",
+    "@types/node": "^18.7.2",
     "@types/ws": "^8.5.3",
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@u4/chrome-remote-interface": "^0.3.3",
+    "@u4/chrome-remote-interface": "^0.4.1",
     "commander": "^9.4.0",
     "picocolors": "^1.0.0",
     "ws": "^8.8.1"

@@ -321,8 +321,6 @@ export class ProtoRevertLink {
                 }
             }
 
-
-
             // counter use to names requests
             const cnt = this.incUsage(method);
             this.requests.set(id, { req, name: this.nameMessage(method, cnt) });
