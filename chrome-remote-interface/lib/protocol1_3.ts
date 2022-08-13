@@ -1,4 +1,4 @@
-import { Protocol } from "./Protocol";
+import { Protocol } from "./Protocol.ts";
 /**
  * imported form https://raw.githubusercontent.com/ChromeDevTools/devtools-protocol/master/json/browser_protocol.json
  */

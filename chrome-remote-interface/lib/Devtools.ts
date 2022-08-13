@@ -1,28 +1,15 @@
-import dns from "dns";
-import util from "util";
-import { fetch } from "undici";
-import { Protocol } from "./Protocol";
-import { localDescriptor } from "./protocol1_3";
-import { Chrome as ChromeBase } from "./Chrome";
-import ProtocolProxyApi from "../types/protocol-proxy-api";
+import { Protocol } from "./Protocol.ts";
+import { localDescriptor } from "./protocol1_3.ts";
+import { Chrome as ChromeBase } from "./Chrome.ts";
+import ProtocolProxyApi from "../types/protocol-proxy-api.d.ts";
 import {
   DevtoolsCreateOptions,
   DevToolTarget,
   DevToolVersion,
   TargetType,
-} from "./models";
+} from "./models.ts";
 
 export type Chrome = ChromeBase & ProtocolProxyApi.ProtocolApi;
-
-const lookup = util.promisify(dns.lookup);
-
-// XXX reset the default that has been changed in
-// (https://github.com/nodejs/node/pull/39987) to prefer IPv4. since
-// implementations alway bind on 127.0.0.1 this solution should be fairly safe
-// (see #467)
-if (dns.setDefaultResultOrder) {
-  dns.setDefaultResultOrder("ipv4first");
-}
 
 /**
  * main class of the project
@@ -35,6 +22,7 @@ export class Devtools {
     useHostName: boolean;
   };
   public readonly alterUrl: (url: string) => string;
+  public readonly getHeaders: (url: string) => HeadersInit | undefined;
   public readonly timeout?: number;
   public readonly useHostName?: boolean;
   public readonly local?: boolean;
@@ -61,6 +49,7 @@ export class Devtools {
     };
     this.local = options.local;
     this.alterUrl = options.alterUrl || ((url: string) => url);
+    this.getHeaders = options.getHeaders || (() => undefined);
   }
 
   /**
@@ -77,15 +66,16 @@ export class Devtools {
     if (!this.#opts.useHostName) {
       const u = new URL(url);
       if (!u.hostname.match(/^[0-9.]+$/)) {
-        const { address } = await lookup(u.hostname, { family: 4 });
+        const [address] = await Deno.resolveDns(u.hostname, "A");
         u.hostname = address;
         url = u.toString();
       }
     }
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), this.#opts.timeout);
+    const headers = this.getHeaders(url);
     try {
-      const response = await fetch(url, { signal: controller.signal });
+      const response = await fetch(url, { signal: controller.signal, headers });
       const text = await response.text();
       return text;
     } catch (err) {

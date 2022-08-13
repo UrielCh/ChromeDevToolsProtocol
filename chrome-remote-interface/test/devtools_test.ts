@@ -1,6 +1,7 @@
-import assert from "assert";
+import { devTools } from "./common.ts";
+import { assert, equal } from "https://deno.land/std@0.152.0/testing/asserts.ts";
+import { describe, it } from "https://deno.land/std@0.152.0/testing/bdd.ts";
 
-import { devTools } from "./common";
 
 describe("devtool interaction", () => {
   describe("List", () => {
@@ -17,7 +18,7 @@ describe("devtool interaction", () => {
       const targets = await devTools.list();
       assert(targets.some((t) => t.id === id));
       assert(Array.isArray(targets));
-      assert.equal(target.url, "chrome://newtab/");
+      equal(target.url, "chrome://newtab/");
       await devTools.close(id);
     });
     it("should spawn a new target", async () => {

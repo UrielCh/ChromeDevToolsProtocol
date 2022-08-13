@@ -5,9 +5,9 @@
 // this file will be removed, so do not fix it
 // Copyright (c) 2021 Andrea Cardaci <cyrus.and@gmail.com>
 
-import ProtocolEventsApi from "../types/protocol-events";
-import { Chrome } from "./Chrome";
-import { Protocol } from "./Protocol";
+import ProtocolEventsApi from "../types/protocol-events.d.ts";
+import { Chrome } from "./Chrome.ts";
+import { Protocol } from "./Protocol.ts";
 
 function arrayToObject(parameters: { name: string }[]): any {
   const keyValue = {} as { [key: string]: any };
@@ -90,11 +90,11 @@ function addEvent(
   domainName: string,
   event: Protocol.ProtocolEvent,
 ) {
-  const eventName = `${domainName}.${event.name}`;
+  const eventName = `${domainName}.${event.name}` as keyof ProtocolEventsApi;
   const handler = (sessionId?: string) => {
     const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
     // TODO add , reject + timeout
-    return new Promise((fulfill) => chrome.once(rawEventName, fulfill));
+    return new Promise<any>((fulfill) => chrome.once(rawEventName as keyof ProtocolEventsApi, fulfill as any));
   };
   decorate(handler, "event", event);
   (chrome as any)[eventName] = handler;
@@ -154,7 +154,7 @@ export function prepare(object: Chrome, protocol: Protocol.ProtocolShape) {
     ) => {
       object.once(
         `${domainName}.${eventName}` as keyof ProtocolEventsApi,
-        handler,
+        handler as any,
       );
       return domainStore;
     };
@@ -164,7 +164,7 @@ export function prepare(object: Chrome, protocol: Protocol.ProtocolShape) {
     ) => {
       object.off(
         `${domainName}.${eventName}` as keyof ProtocolEventsApi,
-        handler,
+        handler as any,
       );
       return domainStore;
     };

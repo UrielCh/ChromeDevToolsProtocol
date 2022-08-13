@@ -1,5 +1,5 @@
-import { Chrome as ChromeBase } from "./Chrome";
-import ProtocolProxyApi from "../types/protocol-proxy-api";
+import { Chrome as ChromeBase } from "./Chrome.ts";
+import ProtocolProxyApi from "../types/protocol-proxy-api.d.ts";
 export type Chrome = ChromeBase & ProtocolProxyApi.ProtocolApi;
 
 export type TargetType =
@@ -33,6 +33,10 @@ export interface DevtoolsCreateOptions {
    * Url modifiyer, used to transform url provided by Chrome.
    */
   alterUrl?: (url: string) => string;
+  /**
+   * Add extra header to chrome request sent to by Chrome.
+   */
+  getHeaders?: (url: string) => HeadersInit | undefined;
 }
 
 /**

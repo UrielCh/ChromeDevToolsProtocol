@@ -1,4 +1,5 @@
-import { devTools } from "./common";
+import { devTools } from "./common.ts";
+import { describe, it } from "https://deno.land/std@0.152.0/testing/bdd.ts";
 
 describe("visite github like puppeteer", () => {
   describe("without checking the result and without specifying parameters", () => {
@@ -14,7 +15,7 @@ describe("visite github like puppeteer", () => {
       const changes = cdp.waitForAllEvents("Target.targetInfoChanged");
       const { sessionId } = await cdp.Target.attachToTarget({ "targetId": targetId, "flatten": true }); // 4
       await changes;
-      await new Promise(r=>setTimeout(r, 1000));
+      await new Promise(r => setTimeout(r, 1000));
       await cdp.Page.enable({}, sessionId); // 5
       await cdp.Page.getFrameTree({}, sessionId); // 6
       await cdp.Target.setAutoAttach({ "autoAttach": true, "waitForDebuggerOnStart": false, "flatten": true }, sessionId); // 7
@@ -35,7 +36,7 @@ describe("visite github like puppeteer", () => {
       await cdp.Emulation.setDeviceMetricsOverride({ "mobile": false, "width": 800, "height": 600, "deviceScaleFactor": RuntimeexecutionContextCreated35.context.id, "screenOrientation": { "angle": 0, "type": "portraitPrimary" } }, sessionId); // 15
       await cdp.Emulation.setTouchEmulationEnabled({ "enabled": false }, sessionId); // 16
       await frameResized;
-      const pageOk = cdp.waitForAllEvents("Page.frameStoppedLoading", "Page.domContentEventFired", "Page.lifecycleEvent", "Network.requestWillBeSent", "Network.requestWillBeSentExtraInfo", "Network.responseReceivedExtraInfo", "Network.responseReceived", "Page.frameStartedLoading", "Runtime.executionContextsCleared", "Log.entryAdded", "Target.targetInfoChanged", "Page.frameNavigated", "Network.dataReceived", "Runtime.executionContextCreated", "Network.loadingFinished", "Network.resourceChangedPriority");
+      const pageOk = cdp.waitForAllEvents("Page.frameStoppedLoading", "Page.domContentEventFired", "Page.lifecycleEvent", "Network.requestWillBeSent", "Network.requestWillBeSentExtraInfo", "Network.responseReceivedExtraInfo", "Network.responseReceived", "Page.frameStartedLoading", "Runtime.executionContextsCleared", "Log.entryAdded", "Target.targetInfoChanged", "Page.frameNavigated", "Network.dataReceived", "Runtime.executionContextCreated", "Network.loadingFinished");
       await cdp.Page.navigate({ "url": "https://github.com/UrielCh/puppeteer-jquery/tree/master/puppeteer-jquery", "frameId": targetId }, sessionId); // 18
       await pageOk;
       await cdp.close();

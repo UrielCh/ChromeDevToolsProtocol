@@ -1,7 +1,12 @@
-import assert from "assert";
-import Devtools from "..";
-import { ProtocolError } from "../lib/Chrome";
-import { devTools, sampleUrl } from "./common";
+// import assert from "assert.ts";
+import Devtools from "../mod.ts";
+import { ProtocolError } from "../lib/ProtocolError.ts";
+import { devTools, sampleUrl } from "./common.ts";
+//import { assert, fail, equal } from "https://deno.land/std@0.152.0/testing/asserts.ts";
+import { assert, fail, equal } from "https://deno.land/std@0.152.0/testing/asserts.ts";
+import { describe, it } from "https://deno.land/std@0.152.0/testing/bdd.ts";
+
+// const it = Deno.test;
 
 describe("sending a command", () => {
   describe("without checking the result and without specifying parameters", () => {
@@ -60,7 +65,7 @@ describe("sending a command", () => {
     try {
       // const response =
       await chrome.Page.enable();
-      assert.fail();
+      fail();
     } catch (error) {
       assert(error instanceof Error);
     }
@@ -75,7 +80,7 @@ describe("sending a command", () => {
       const chrome = await devTools.connectFirst();
       try {
         await chrome.send("Network.getResponseBody");
-        assert.fail();
+        fail();
       } catch (err) {
         assert(err instanceof Error);
         const error = err as ProtocolError;
@@ -91,7 +96,7 @@ describe("sending a command", () => {
       await chrome.close();
       try {
         await chrome.Page.enable();
-        assert.fail();
+        fail();
       } catch (err) {
         assert(err instanceof Error);
         assert(!("request" in err)); // not protocol error
@@ -110,7 +115,7 @@ describe("sending a command", () => {
       try {
         // @ts-expect-error getResponseBody() is not valid without mandatory parameters
         await chrome.Network.getResponseBody();
-        assert.fail();
+        fail();
       } catch (error) {
         assert(error instanceof Error);
         assert("request" in error);
@@ -138,8 +143,8 @@ describe("sending a command", () => {
       const info = await chrome.Target.getTargetInfo({ targetId });
       assert(info);
       assert(info.targetInfo);
-      assert.equal(info.targetInfo.type, "page");
-      assert.equal(info.targetInfo.attached, true);
+      equal(info.targetInfo.type, "page");
+      equal(info.targetInfo.attached, true);
       return chrome.close();
     });
   });

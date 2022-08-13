@@ -18,3 +18,4 @@ sample/revert*
 sample/313970c8/
 sample/465abece/
 sample/src/logall.ts
+.DS_Store

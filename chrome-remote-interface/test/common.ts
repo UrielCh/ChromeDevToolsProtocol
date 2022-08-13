@@ -1,7 +1,7 @@
 let id = 0;
 export const sampleUrl = () =>
   "https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png?ts=" + id++; // chrome://newtab/
-import { Devtools } from "../lib/Devtools";
+import { Devtools } from "../lib/Devtools.ts";
 const url = "http://127.0.0.1:9222";
 // const url = "http://127.0.0.1:9555";
 export const devTools = new Devtools({ url, timeout: 1500 });
@@ -10,3 +10,5 @@ export const devTools = new Devtools({ url, timeout: 1500 });
 //     echo 'Start Chrome with "--remote-debugging-port=9222"'
 //     false
 // fi
+
+export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

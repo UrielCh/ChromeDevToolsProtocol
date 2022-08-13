@@ -1,13 +1,11 @@
-import EventEmitter from "events";
-import WebSocket, {MessageEvent} from "ws";
-import * as api from "./api";
-import { Protocol } from "./Protocol";
+import { EventEmitter } from "https://deno.land/x/event@2.0.0/mod.ts";
+import * as api from "./api.ts";
+import { Protocol } from "./Protocol.ts";
+import { ProtocolError } from "./ProtocolError.ts";
 import ProtocolEventsApi, {
   ProtocolEventParam,
   ProtocolEventsName,
-} from "../types/protocol-events";
-import { ProtocolError } from "./ProtocolError";
-
+} from "../types/protocol-events.d.ts";
 /**
  * used to link request to response
  */
@@ -23,7 +21,7 @@ interface CallbackData {
  * a Chrome Object is connected to a single target.
  * // implements ProtocolEventsApi
  */
-export class Chrome extends EventEmitter {
+export class Chrome extends EventEmitter<ProtocolEventsApi> {
   #callbacks = new Map<number, CallbackData>();
   #nextCommandId = 1;
   #ws?: WebSocket;
@@ -44,13 +42,13 @@ export class Chrome extends EventEmitter {
     api.prepare(this, this.protocol);
   }
 
-  on<K extends keyof ProtocolEventsApi>(
-    name: K,
-    callback: (...params: ProtocolEventsApi[K]) => void,
-  ): this {
-    super.on(name, callback as (...args: unknown[]) => void);
-    return this;
-  }
+  // on<K extends keyof ProtocolEventsApi>(
+  //   name: K,
+  //   callback: (...params: ProtocolEventsApi[K]) => void,
+  // ): this {
+  //   super.on(name, callback as (...args: unknown[]) => void);
+  //   return this;
+  // }
 
   async init(): Promise<this> {
     // finally connect to the WebSocket
@@ -99,9 +97,9 @@ export class Chrome extends EventEmitter {
   /**
    * @param events wait for at least one of each event.
    */
-  public waitForAllEvents(...events: ProtocolEventsName[]) {
-    return new Promise<void>((resolve) => {
-      const eventSet = new Set<ProtocolEventsName>(events);
+  public waitForAllEvents(...events: ProtocolEventsName[]): Promise<void> & { getMissing: () => ProtocolEventsName[] } {
+    const eventSet = new Set<ProtocolEventsName>(events);
+    const p = new Promise<void>((resolve) => {
       const onEvent = (param: ProtocolEventParam) => {
         const { method } = param;
         if (eventSet.delete(method)) {
@@ -112,7 +110,9 @@ export class Chrome extends EventEmitter {
         }
       };
       this.on("event", onEvent); // TODO fix me
-    });
+    }) as Promise<void> & { getMissing: () => ProtocolEventsName[] };
+    p.getMissing = () => [...eventSet]
+    return p;
   }
 
   /**
@@ -215,9 +215,11 @@ export class Chrome extends EventEmitter {
       // this is an event
       const { method, params, sessionId } = message;
       this.emit("event", message);
-      this.emit(method, params, sessionId);
+      // deno-lint-ignore no-explicit-any
+      this.emit(method, params as any, sessionId);
       if (sessionId) {
-        this.emit(`${method}.${sessionId}` as keyof ProtocolEventsApi, params, sessionId);
+        // deno-lint-ignore no-explicit-any
+        this.emit(`${method}.${sessionId}` as keyof ProtocolEventsApi, params as any, sessionId);
       }
     }
   }
