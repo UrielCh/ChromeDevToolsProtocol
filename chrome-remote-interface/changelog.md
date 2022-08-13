@@ -1,5 +1,10 @@
 # Changelog
 
+## version 0.4.1
+
+- fix dnt conversion
+- append tailling / in chrome devtools url
+
 ## version 0.4.0
 
 - deno version

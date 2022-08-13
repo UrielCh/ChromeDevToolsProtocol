@@ -70,8 +70,22 @@ try {
   });
 
   // post build steps
+  console.log('extra build steps');
+  console.log('cwd:', Deno.cwd());
+
   Deno.copyFileSync("LICENSE", "npm/LICENSE");
   Deno.copyFileSync("README.md", "npm/README.md");
+  Deno.mkdirSync("npm/types/types");
+  const files = Deno.readDirSync("types");
+  for (const file of files) {
+    if (!file.isFile)
+      continue;
+    let text = Deno.readTextFileSync(`types/${file.name}`)
+    text = text.replace(/.d.ts(["'])/g, "$1");
+    Deno.writeTextFileSync(`npm/types/types/${file.name}`, text);
+    console.log(`copy types/${file.name} to npm/types/types/${file.name}`)
+  }
+  //Deno.copyFileSync("types", "npm/types");
 } catch (e) {
   console.error(e);
 }
