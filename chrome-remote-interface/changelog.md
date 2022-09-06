@@ -1,5 +1,9 @@
 # Changelog
 
+## version 0.4.2
+
+- add a dirty debug for prod test
+
 ## version 0.4.1
 
 - fix dnt conversion

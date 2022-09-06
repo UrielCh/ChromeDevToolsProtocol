@@ -182,6 +182,10 @@ export class Devtools {
     const url = `${this.#url}json/list`;
     const text = await this.fetch(url);
     const tabs = JSON.parse(text) as DevToolTarget[];
+    if (!tabs.forEach) {
+      console.error(`ERROR parsing ${url} response, should be an array bu Get:${text}`);
+      throw Error(`Failed to list tab on devtools get: ${text}`);
+    }
     // add connect method
     tabs.forEach((tab) =>
       tab.connect = () => this.connectWebSoketUrl(tab.webSocketDebuggerUrl)
