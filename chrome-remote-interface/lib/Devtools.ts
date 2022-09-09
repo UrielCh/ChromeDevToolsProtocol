@@ -19,6 +19,7 @@ export class Devtools {
   #url: string;
   #opts: {
     timeout: number;
+    resolveDns?: (domain: string) => string;
     useHostName: boolean;
   };
   public readonly alterUrl: (url: string) => string;
@@ -49,6 +50,7 @@ export class Devtools {
     this.#opts = {
       timeout: options.timeout || 10000,
       useHostName: options.useHostName || false,
+      resolveDns: options.resolveDns,
     };
     this.local = options.local;
     this.alterUrl = options.alterUrl || ((url: string) => url);
@@ -66,11 +68,15 @@ export class Devtools {
     // http.get will contain the IP address, this is needed because since Chrome
     // 66 the host header cannot contain an host name different than localhost
     // (see https://github.com/cyrus-and/chrome-remote-interface/issues/340)
-    if (!this.#opts.useHostName) {
+    if (!this.#opts.useHostName || this.#opts.resolveDns) {
       const u = new URL(url);
       if (!u.hostname.match(/^[0-9.]+$/)) {
-        const [address] = await Deno.resolveDns(u.hostname, "A");
-        u.hostname = address;
+        if (this.#opts.resolveDns) {
+          u.hostname = this.#opts.resolveDns(u.hostname);
+        } else {
+          const [address] = await Deno.resolveDns(u.hostname, "A");
+          u.hostname = address;
+        }
         url = u.toString();
       }
     }
@@ -181,13 +187,21 @@ export class Devtools {
   async list(): Promise<DevToolTarget[]> {
     const url = `${this.#url}json/list`;
     const text = await this.fetch(url);
-    const tabs = JSON.parse(text) as DevToolTarget[];
+    const tabs = JSON.parse(text);
     if (!tabs.forEach) {
-      console.error(`ERROR parsing ${url} response, should be an array bu Get:${text}`);
-      throw Error(`Failed to list tab on devtools get: ${text}`);
+      // {"statusCode":503,"message":"other side closed","error":"Service Unavailable"}
+      const error = tabs as { statusCode: number, message: string, error: string }
+      if (error.statusCode && error.error && error.message) {
+        const err = Error(`Call ${url} return status:${error.statusCode} Error:${error.error}, message:${error.message}`);
+        // TMP custom error.
+        (err as any).statusCode = error.statusCode;
+        (err as any).error = error.error;
+        throw Error(`Call ${url} return status:${error.statusCode} Error:${error.error}, message:${error.message}`)
+      }
+      throw Error(`Call ${url} return unexpected: ${text}`);
     }
     // add connect method
-    tabs.forEach((tab) =>
+    (tabs as DevToolTarget[]).forEach((tab) =>
       tab.connect = () => this.connectWebSoketUrl(tab.webSocketDebuggerUrl)
     );
     return tabs;

@@ -1,5 +1,9 @@
 # Changelog
 
+## version 0.4.3
+- add resolveDns option to use custom DNS resolution.
+- improve GET /json/list error handling.
+
 ## version 0.4.2
 
 - add a dirty debug for prod test
