@@ -1,5 +1,8 @@
 # Changelog
 
+## version 0.4.4
+- resolveDns is now async
+
 ## version 0.4.3
 - add resolveDns option to use custom DNS resolution.
 - improve GET /json/list error handling.

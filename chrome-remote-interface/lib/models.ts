@@ -24,7 +24,7 @@ export interface DevtoolsCreateOptions {
   /**
    * provide a custrom domain resolver, can improve perf, and fix DNS resolution in K3S cluster
    */
-  resolveDns?: (domain: string) => string
+  resolveDns?: (domain: string) => Promise<string>;
   /**
    * The devtoold url, using http: or ws: protocol to devtools root page.
    * default is http://127.0.0.1:9222/

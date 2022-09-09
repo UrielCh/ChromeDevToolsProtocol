@@ -19,7 +19,7 @@ export class Devtools {
   #url: string;
   #opts: {
     timeout: number;
-    resolveDns?: (domain: string) => string;
+    resolveDns?: (domain: string) => Promise<string>;
     useHostName: boolean;
   };
   public readonly alterUrl: (url: string) => string;
@@ -72,7 +72,7 @@ export class Devtools {
       const u = new URL(url);
       if (!u.hostname.match(/^[0-9.]+$/)) {
         if (this.#opts.resolveDns) {
-          u.hostname = this.#opts.resolveDns(u.hostname);
+          u.hostname = await this.#opts.resolveDns(u.hostname);
         } else {
           const [address] = await Deno.resolveDns(u.hostname, "A");
           u.hostname = address;
