@@ -27,6 +27,7 @@ export class Devtools {
   public readonly timeout?: number;
   public readonly useHostName?: boolean;
   public readonly local?: boolean;
+  public readonly onWsOpen?: (url: string, ws: WebSocket) => Promise<unknown>;
 
   /** cached promise */
   #versionP?: Promise<DevToolVersion>;
@@ -55,6 +56,7 @@ export class Devtools {
     this.local = options.local;
     this.alterUrl = options.alterUrl || ((url: string) => url);
     this.getHeaders = options.getHeaders || (() => undefined);
+    this.onWsOpen = options.onWsOpen;
   }
 
   /**
@@ -279,7 +281,7 @@ export class Devtools {
 
   async connectWebSoketUrl(webSocketDebuggerUrl: string): Promise<Chrome> {
     const protocol = await this.protocol();
-    const chrome = new ChromeBase(this.alterUrl(webSocketDebuggerUrl), protocol) as Chrome;
+    const chrome = new ChromeBase(this.alterUrl(webSocketDebuggerUrl), protocol, this.onWsOpen) as Chrome;
     await chrome.init();
     return chrome;
   }

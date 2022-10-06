@@ -42,6 +42,11 @@ export interface DevtoolsCreateOptions {
    * Add extra header to chrome request sent to by Chrome.
    */
   getHeaders?: (url: string) => HeadersInit | undefined;
+  /**
+   * give acces to any web socket just after it get open.
+   * can be use for advanced routing / authentification process.
+   */
+  onWsOpen?: (url: string, ws: WebSocket) => Promise<unknown>;
 }
 
 /**

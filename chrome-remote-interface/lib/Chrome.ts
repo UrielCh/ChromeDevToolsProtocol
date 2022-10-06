@@ -29,6 +29,7 @@ export class Chrome extends EventEmitter<ProtocolEventsApi> {
   constructor(
     private webSocketDebuggerUrl: string,
     private protocol: Protocol.ProtocolShape,
+    private onWsOpen?: (url: string, ws: WebSocket) => Promise<unknown>,
   ) {
     super();
     // update the connection parameters using the debugging URL
@@ -166,7 +167,10 @@ export class Chrome extends EventEmitter<ProtocolEventsApi> {
     return new Promise<WebSocket>((accept, reject) => {
       // Promise can oget resolved once
       let resolved = false;
-      ws.onopen = () => {
+      ws.onopen = async () => {
+        if (this.onWsOpen) {
+          await this.onWsOpen(this.webSocketDebuggerUrl, ws);
+        }
         accept(ws);
         resolved = true;
       };

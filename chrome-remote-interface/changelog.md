@@ -1,5 +1,8 @@
 # Changelog
 
+## version 0.4.6
+- add onWsOpen(url, webSocket) option
+
 ## version 0.4.5
 - check if JSON.parse errors
 
