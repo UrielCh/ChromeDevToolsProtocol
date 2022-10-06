@@ -148,7 +148,14 @@ export class Chrome extends EventEmitter<ProtocolEventsApi> {
     const ws = new WebSocket(this.webSocketDebuggerUrl);
     ws.onmessage = (message: MessageEvent) => {
       if (typeof message.data === "string") {
-        const msg = JSON.parse(message.data);
+        let msg: ProtocolEventParam | null = null;
+        try {
+          msg = JSON.parse(message.data);
+        } catch (e) {
+          throw Error(`Fail to parse JSON message: "${message.data}" ${e}`);
+        }
+        if (!msg)
+          throw Error(`Parse JSON message: "${message.data}" from Chrome return null`);
         this.#handleMessage(msg);
       }
     };

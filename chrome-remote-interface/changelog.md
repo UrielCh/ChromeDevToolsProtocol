@@ -1,5 +1,8 @@
 # Changelog
 
+## version 0.4.5
+- check if JSON.parse errors
+
 ## version 0.4.4
 - resolveDns is now async
 

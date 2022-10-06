@@ -236,9 +236,13 @@ export class Devtools {
     let _url = `${this.#url}json/new`;
     if (url) _url += `?${encodeURI(url)}`;
     const text = await this.fetch(_url);
-    const tab = JSON.parse(text) as DevToolTarget;
-    tab.connect = () => this.connectWebSoketUrl(tab.webSocketDebuggerUrl);
-    return tab;
+    try {
+      const tab = JSON.parse(text) as DevToolTarget;
+      tab.connect = () => this.connectWebSoketUrl(tab.webSocketDebuggerUrl);
+      return tab;
+    } catch (e) {
+      throw Error(`chrome new failed with message: "${text}" should be type: DevToolTarget err: ${e}`)
+    }
   }
 
   /**
