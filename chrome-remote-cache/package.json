@@ -1,6 +1,6 @@
 {
   "name": "chrome-remote-cache",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Caching system for chrome devtools protocol",
   "keywords": [
     "chrome",

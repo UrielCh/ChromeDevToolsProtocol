@@ -2,13 +2,14 @@ import Devtools from "@u4/chrome-remote-interface";
 import Redis from "ioredis";
 import ChromeRemoteCache from "./ChromeRemoteCache";
 import CacheManager from "./CacheManager";
+import CacheManagerRedisTTL from "./CacheManagerRedisTTL";
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function testAll() {
     const devtools = new Devtools();
     const page = await devtools.connectNewPage();
-    const cm = new CacheManager(new Redis());
+    const cm = new CacheManagerRedisTTL(new Redis());
     const remoteCache = new ChromeRemoteCache(cm);
     remoteCache.cache('www.google.com/maps/dir///');
     remoteCache.cache('www.google.com/maps/vt/');
@@ -28,17 +29,17 @@ async function testAll() {
     remoteCache.ignore('www.google.com/gen_204');
     remoteCache.block('www.google.com/maps/preview/log204');
     remoteCache.ignore('www.google.com/maps/preview/log204');
-    
+
     await remoteCache.register(page);
-    await page.Page.navigate({ url: 'https://www.google.com/maps/'});
+    await page.Page.navigate({ url: 'https://www.google.com/maps/' });
     await delay(7000);
     console.log();
     // display cache usage
-    const {cache, pt} = remoteCache.getStats();
+    const { cache, pt } = remoteCache.getStats();
     console.log('cache:', cache.toString(true));
     console.log('passt:', pt.toString(true));
     console.log();
-    console.log(`cache efficency: ${(remoteCache.efficency*100).toFixed(1)}%`);
+    console.log(`cache efficency: ${(remoteCache.efficency * 100).toFixed(1)}%`);
 }
 
 testAll();

@@ -6,6 +6,7 @@ import { CacheStat } from './CacheStat';
 import { CacheModel } from './model';
 import { Protocol, Chrome } from "@u4/chrome-remote-interface";
 import CacheManagerRedisTTL from './CacheManagerRedisTTL';
+import CacheManager from './CacheManager';
 
 type ToKey = (url: string) => string;
 const dummy = (url: string) => url;
@@ -28,7 +29,7 @@ export class ChromeRemoteCache {
     private statPassthrough = new CacheStat();
     #logfnc: (message: string) => void = console.log;
 
-    constructor(private cm = new CacheManagerRedisTTL()) {
+    constructor(private cm = new CacheManagerRedisTTL() as CacheManager) {
     }
 
     public close() {
