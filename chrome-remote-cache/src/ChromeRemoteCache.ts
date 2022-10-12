@@ -2,10 +2,10 @@ import pc from 'picocolors'
 import { dropQueryParam, splitUrl } from './CacheUtils'
 
 import UrlSet from './UrlSet';
-import { CacheManager } from './CacheManager';
 import { CacheStat } from './CacheStat';
 import { CacheModel } from './model';
 import { Protocol, Chrome } from "@u4/chrome-remote-interface";
+import CacheManagerRedisTTL from './CacheManagerRedisTTL';
 
 type ToKey = (url: string) => string;
 const dummy = (url: string) => url;
@@ -28,7 +28,7 @@ export class ChromeRemoteCache {
     private statPassthrough = new CacheStat();
     #logfnc: (message: string) => void = console.log;
 
-    constructor(private cm = new CacheManager()) {
+    constructor(private cm = new CacheManagerRedisTTL()) {
     }
 
     public close() {

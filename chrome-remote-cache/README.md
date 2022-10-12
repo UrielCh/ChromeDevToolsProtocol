@@ -9,14 +9,14 @@ Act as an external cache for chrome
 ```ts
 import Devtools from "@u4/chrome-remote-interface";
 import ChromeRemoteCache from "./ChromeRemoteCache";
-import CacheManager from "./CacheManager";
+import CacheManagerRedisTTL from "./CacheManager";
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function testAll() {
     const devtools = new Devtools();
     const page = await devtools.connectNewPage();
-    const cm = new CacheManager(new Redis());
+    const cm = new CacheManagerRedisTTL(new Redis());
     const remoteCache = new ChromeRemoteCache(cm);
     remoteCache.cache('www.google.com/maps/dir///');
     remoteCache.cache('www.google.com/maps/vt/');

@@ -1,5 +1,9 @@
 # changelog
 
+## v0.1.0 (2022-10-12)
+* CacheManager is now an interface the old implementation is now named CacheManagerRedisLongTerm
+* add CacheManagerRedisTTL this implementation will expire data after 3 days by default.
+
 ## v0.0.4 (2022-07-28)
 * ChromeRemoteCache.getStats() return CacheStat objects
 * improve CacheStat
