@@ -1,4 +1,4 @@
-import { EventEmitter } from "https://deno.land/x/event@2.0.0/mod.ts";
+import { EventEmitter } from "https://deno.land/x/event@2.0.1/mod.ts";
 import * as api from "./api.ts";
 import { Protocol } from "./Protocol.ts";
 import { ProtocolError } from "./ProtocolError.ts";

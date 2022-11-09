@@ -1,5 +1,8 @@
 # Changelog
 
+## version 0.4.7
+- retry once on ECONNRESET Error
+
 ## version 0.4.6
 - add onWsOpen(url, webSocket) option
 

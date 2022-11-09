@@ -1,16 +1,14 @@
 import pc from 'picocolors'
 import { dropQueryParam, splitUrl } from './CacheUtils'
-
 import UrlSet from './UrlSet';
 import { CacheStat } from './CacheStat';
 import { CacheModel } from './model';
-import { Protocol, Chrome } from "@u4/chrome-remote-interface";
+import { Protocol, Chrome } from '@u4/chrome-remote-interface';
 import CacheManagerRedisTTL from './CacheManagerRedisTTL';
 import CacheManager from './CacheManager';
 
 type ToKey = (url: string) => string;
 const dummy = (url: string) => url;
-
 
 const PREFIXS = {
     'cached': pc.bold(pc.green('cached')),
@@ -74,7 +72,7 @@ export class ChromeRemoteCache {
     private log(type: 'addcache' | 'cached' | 'missing' | 'blocked' | 'pass', textUrl: string) {
         if (this.ignoreDomains.match(textUrl))
             return;
-        let prefix = PREFIXS[type];
+        const prefix = PREFIXS[type];
         this.#logfnc(`${prefix}: ${textUrl}`);
     }
 
@@ -96,7 +94,7 @@ export class ChromeRemoteCache {
             try {
                 await page.Fetch.continueRequest({ requestId });
             } catch (e) {
-                console.log(`failed to continueRequest ${requestId}`);
+                console.log(`failed to continueRequest ${requestId} err:${e}`);
             }
         }
 
@@ -104,7 +102,7 @@ export class ChromeRemoteCache {
             try {
                 await page.Fetch.failRequest({ requestId, errorReason: 'BlockedByClient' });
             } catch (e) {
-                console.log(`failed to failRequest ${requestId}`);
+                console.log(`failed to failRequest ${requestId} err:${e}`);
             }
         }
 
@@ -124,7 +122,7 @@ export class ChromeRemoteCache {
             responses[data.requestId] = data;
         });
 
-        page.Fetch.on("requestPaused", async (event) => {
+        page.Fetch.on("requestPaused", async (event: Protocol.Fetch.RequestPausedEvent) => {
             pausedRequests[event.requestId] = event;
             const textUrl = event.request.url;
             if (textUrl.startsWith('data:')) {
@@ -204,7 +202,9 @@ export class ChromeRemoteCache {
             let resp: Protocol.Network.GetResponseBodyResponse | null = null;
             try {
                 resp = await page.Network.getResponseBody({ requestId })
-            } catch (e) { }
+            } catch (_e) {
+                // ignore
+            }
             if (!resp) {
                 resp = { body: '', base64Encoded: false }
                 // console.log(`No body (${status}) for url: ${url}`, );

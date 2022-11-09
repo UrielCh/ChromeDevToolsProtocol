@@ -8,7 +8,7 @@ import {
   DevToolVersion,
   TargetType,
 } from "./models.ts";
-
+import { type ErrnoException } from "https://deno.land/std@0.126.0/node/internal/errors.ts";
 export type Chrome = ChromeBase & ProtocolProxyApi.ProtocolApi;
 
 /**
@@ -82,6 +82,13 @@ export class Devtools {
         url = u.toString();
       }
     }
+    return this.fetchInternal(url, 1);
+  }
+
+  /**
+   * fetch and retry once if get ECONNRESET Error;
+   */
+  private async fetchInternal(url: string, tries: number): Promise<string> {
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), this.#opts.timeout);
     const headers = this.getHeaders(url);
@@ -91,15 +98,17 @@ export class Devtools {
       return text;
     } catch (err) {
       if (err instanceof Error) {
-        if ("cause" in (err as Error && { cause: Error })) {
-          const cause = (err as Error && { cause: Error }).cause;
+        if ("cause" in err) {
+          const cause = err.cause;
           if (cause && (cause instanceof Error)) {
+            if ((cause as ErrnoException).code === 'ECONNRESET' && tries > 0) {
+              return this.fetchInternal(url, tries - 1);
+            }
             throw Error(`Getting ${url} failed: ${cause.message}`);
           }
         }
         throw Error(`Getting ${url} failed: ${err.message}`);
       }
-      console.error(err);
       throw Error(`Getting ${url} failed: ${err}`);
     } finally {
       clearTimeout(id);
