@@ -1,0 +1,11 @@
+{
+    "tasks": {
+        "dnt": "deno run -A _build.ts 0.4.8"
+    },
+    "importMap": "./import_map.json",
+    "compilerOptions": {},
+    "fmt": {
+        "files": {},
+        "options": {}
+    }
+}

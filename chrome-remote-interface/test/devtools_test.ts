@@ -1,6 +1,6 @@
 import { devTools } from "./common.ts";
-import { assert, equal } from "https://deno.land/std@0.163.0/testing/asserts.ts";
-import { describe, it } from "https://deno.land/std@0.163.0/testing/bdd.ts";
+import { assert, equal } from "@testing/asserts";
+import { describe, it } from "@testing/bdd";
 
 
 describe("devtool interaction", () => {

@@ -1,4 +1,4 @@
-import { build, emptyDir } from "https://deno.land/x/dnt@0.30.0/mod.ts";
+import { build, emptyDir } from "dnt";
 // check version here: https://www.npmjs.com/package/@u4/chrome-remote-interface
 // deno run -A _build.ts 0.4.8; 
 // cd npm; npm publish;
@@ -12,12 +12,14 @@ try {
 
   await build({
     entryPoints: ["./mod.ts"],
+    importMap: "./import_map.json",
     outDir: "./npm",
     shims: {
       // see JS docs for overview and more options
       deno: true,
       webSocket: true,
       undici: true,
+      timers: true,
       custom: [
         {
           package: {
