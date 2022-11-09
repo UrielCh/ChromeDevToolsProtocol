@@ -1,6 +1,6 @@
 {
     "tasks": {
-        "dnt": "deno run -A _build.ts 0.4.8"
+        "dnt": "deno run -A _build.ts 0.4.8 && echo 'All test passed, to publish this version to npmjs.com:' && echo 'cd npm; npm publish;'"
     },
     "importMap": "./import_map.json",
     "compilerOptions": {},

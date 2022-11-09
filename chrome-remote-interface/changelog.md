@@ -1,5 +1,9 @@
 # Changelog
 
+## version 0.4.8
+- refactor deno usage with importmap
+- add task in deno.json
+
 ## version 0.4.7
 - retry once on ECONNRESET Error
 
