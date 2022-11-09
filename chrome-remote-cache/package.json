@@ -1,6 +1,6 @@
 {
   "name": "chrome-remote-cache",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Caching system for chrome devtools protocol",
   "keywords": [
     "chrome",
@@ -26,7 +26,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@u4/chrome-remote-interface": "^0.4.7",
+    "@u4/chrome-remote-interface": "^0.4.8",
     "ioredis": "^5.2.4",
     "picocolors": "^1.0.0"
   },
