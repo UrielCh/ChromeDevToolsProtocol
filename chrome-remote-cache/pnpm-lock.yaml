@@ -1,25 +1,25 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@types/node': ^18.8.4
-  '@u4/chrome-remote-interface': ^0.4.6
+  '@types/node': ^18.11.9
+  '@u4/chrome-remote-interface': ^0.4.7
   ava: 3.15.0
-  ioredis: ^5.2.3
+  ioredis: ^5.2.4
   picocolors: ^1.0.0
   rimraf: ^3.0.2
   ts-node: ^10.9.1
   typescript: ^4.8.4
 
 dependencies:
-  '@u4/chrome-remote-interface': 0.4.6
-  ioredis: 5.2.3
+  '@u4/chrome-remote-interface': 0.4.7
+  ioredis: 5.2.4
   picocolors: 1.0.0
 
 devDependencies:
-  '@types/node': 18.8.4
+  '@types/node': 18.11.9
   ava: 3.15.0
   rimraf: 3.0.2
-  ts-node: 10.9.1_xkk4lltwku4cysulzbqoieownu
+  ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
   typescript: 4.8.4
 
 packages:
@@ -63,8 +63,8 @@ packages:
     resolution: {integrity: sha512-Ge0Tnl7zZY0VvEfgsyLhjid8DzI1d0La0dgm+3m0/A8gZXgp5xwlyIyue5e4SCUuVB/3AH/0lun9LcJhhTwmbg==}
     dev: false
 
-  /@deno/shim-deno/0.9.0:
-    resolution: {integrity: sha512-iP+qdI4Oy/Mw9yv40TqdjNKL+stpKDo8drki2cKisTXgZf+GoIdMhIuODxSypRyv6wxIuHNx7ZiKE3Sl3kAHuw==}
+  /@deno/shim-deno/0.10.0:
+    resolution: {integrity: sha512-E7rQ0Hk33V45xQXKEnCxizdSP5C+hhqw1H3xWXsct3kYFWgG93B5gN3LKlyvcxbckt8d67jVa6s+y5duRYawvg==}
     dependencies:
       '@deno/shim-deno-test': 0.3.3
       which: 2.0.2
@@ -142,11 +142,11 @@ packages:
   /@types/keyv/3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 18.8.4
+      '@types/node': 18.11.9
     dev: true
 
-  /@types/node/18.8.4:
-    resolution: {integrity: sha512-WdlVphvfR/GJCLEMbNA8lJ0lhFNBj4SW3O+O5/cEGw9oYrv0al9zTwuQsq+myDUXgNx2jgBynoVgZ2MMJ6pbow==}
+  /@types/node/18.11.9:
+    resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
     dev: true
 
   /@types/normalize-package-data/2.4.1:
@@ -156,13 +156,13 @@ packages:
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 18.8.4
+      '@types/node': 18.11.9
     dev: true
 
-  /@u4/chrome-remote-interface/0.4.6:
-    resolution: {integrity: sha512-Gg5GRVnxyF/d59DVO6GkS3UC8vYOJwj04BRGahs2U7O0IVtWpExA7viHk1HEPAtw/e6rEkUFIJuIpGw2JfH5ug==}
+  /@u4/chrome-remote-interface/0.4.7:
+    resolution: {integrity: sha512-DvzTnSR39Oa6bDzKM/qMIEz58+MFNFpQhZVOxLKOdGmzp9+YIOLbDo2Kri2azuwRrC35Ar9WeZzf6Klv4/R0hA==}
     dependencies:
-      '@deno/shim-deno': 0.9.0
+      '@deno/shim-deno': 0.10.0
       undici: 5.11.0
       ws: 8.9.0
     transitivePeerDependencies:
@@ -993,8 +993,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /ioredis/5.2.3:
-    resolution: {integrity: sha512-gQNcMF23/NpvjCaa1b5YycUyQJ9rBNH2xP94LWinNpodMWVUPP5Ai/xXANn/SM7gfIvI62B5CCvZxhg5pOgyMw==}
+  /ioredis/5.2.4:
+    resolution: {integrity: sha512-qIpuAEt32lZJQ0XyrloCRdlEdUUNGG9i0UOk6zgzK6igyudNWqEBxfH6OlbnOOoBBvr1WB02mm8fR55CnikRng==}
     engines: {node: '>=12.22.0'}
     dependencies:
       '@ioredis/commands': 1.2.0
@@ -1867,7 +1867,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /ts-node/10.9.1_xkk4lltwku4cysulzbqoieownu:
+  /ts-node/10.9.1_cbe7ovvae6zqfnmtgctpgpys54:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -1886,7 +1886,7 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
-      '@types/node': 18.8.4
+      '@types/node': 18.11.9
       acorn: 8.8.0
       acorn-walk: 8.2.0
       arg: 4.1.3

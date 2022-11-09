@@ -1,6 +1,6 @@
-import { ensureDirSync } from "https://deno.land/std@0.141.0/fs/ensure_dir.ts";
-import { join } from "https://deno.land/std@0.148.0/path/mod.ts";
-// import { basename } from "https://deno.land/std@0.126.0/node/path/posix.ts";
+import { ensureDirSync } from "https://deno.land/std@0.163.0/fs/ensure_dir.ts";
+import { join } from "https://deno.land/std@0.163.0/path/mod.ts";
+// import { basename } from "https://deno.land/std@0.163.0/node/path/posix.ts";
 import { Protocol as Proto } from "../lib/Protocol.ts";
 import * as utils from './genutils.ts';
 

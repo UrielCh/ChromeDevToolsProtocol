@@ -8,7 +8,7 @@ import {
   DevToolVersion,
   TargetType,
 } from "./models.ts";
-import { type ErrnoException } from "https://deno.land/std@0.126.0/node/internal/errors.ts";
+import { type ErrnoException } from "https://deno.land/std@0.163.0/node/internal/errors.ts";
 export type Chrome = ChromeBase & ProtocolProxyApi.ProtocolApi;
 
 /**

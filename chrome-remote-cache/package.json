@@ -26,12 +26,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@u4/chrome-remote-interface": "^0.4.6",
-    "ioredis": "^5.2.3",
+    "@u4/chrome-remote-interface": "^0.4.7",
+    "ioredis": "^5.2.4",
     "picocolors": "^1.0.0"
   },
   "devDependencies": {
-    "@types/node": "^18.8.4",
+    "@types/node": "^18.11.9",
     "ava": "3.15.0",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
