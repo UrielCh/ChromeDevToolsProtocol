@@ -147,6 +147,7 @@ export class ChromeRemoteCache {
                         delete headers['expires'];
                         delete headers['date'];
                         delete headers['connection'];
+                        delete headers['link'];
                         const responseHeaders = [] as Protocol.Fetch.HeaderEntry[];
                         for (const [name, value] of Object.entries(headers)) {
                             responseHeaders.push({ name, value })
