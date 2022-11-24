@@ -24,7 +24,7 @@ export class ProtoRevert {
     public sessions: ProtoRevertLink[] = [];
     logs = [] as Array<{ requestUrl: string, response: any }>;
 
-    private async requestListener(req: http.IncomingMessage, res: http.ServerResponse) {
+    private requestListener(req: http.IncomingMessage, res: http.ServerResponse) {
         const host = this.options.dstHost;
         const port = this.options.dstPort;
         const { headers } = req;
@@ -54,7 +54,7 @@ export class ProtoRevert {
         if (this.server)
             throw Error("already running");
         const wss = new WebSocketServer({ noServer: true });
-        const server = http.createServer((req, res) => this.requestListener(req, res));;
+        const server = http.createServer((req, res) => this.requestListener(req, res));
         this.server = server;
 
         wss.on('connection', (ws: WebSocket.WebSocket, request: http.IncomingMessage) => {
