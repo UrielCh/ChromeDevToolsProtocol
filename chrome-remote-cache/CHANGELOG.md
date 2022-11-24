@@ -1,6 +1,6 @@
 # changelog
 
-## v0.1.2 (2022-11-24)
+## v0.1.3 (2022-11-24)
 - drop link headers from cached pages.
 
 ## v0.1.1 (2022-10-12)
