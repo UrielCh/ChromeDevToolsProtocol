@@ -88,7 +88,8 @@ export class ChromeRemoteCache {
     }
 
     /**
-     * connect the module to a chrome page
+     * Connect the module to a chrome page
+     * listen to Events: responseReceived, requestPaused
      * @param page 
      */
     public async register(page: Chrome): Promise<void> {

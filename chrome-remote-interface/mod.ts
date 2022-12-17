@@ -9,4 +9,11 @@ export {
   type DevToolVersion,
   type TargetType,
 } from "./lib/models.ts";
+export {
+  // type ProtocolEventsApi
+  type ProtocolEventParam,
+  // type ProtocolEventsName,
+} from "./types/protocol-events.d.ts";
+
+
 export { Devtools as default } from "./lib/Devtools.ts";
