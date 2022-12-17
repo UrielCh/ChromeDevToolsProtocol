@@ -2,19 +2,11 @@ import { Devtools } from "https://deno.land/x/chrome_remote_interface@0.4.3/mod.
 import { ChromeRemoteCache, CacheManagerRedisTTL } from "../mod.ts";
 import Redis from "../src/RedisProvider.ts";
 
+const { test } = Deno;
+
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-async function getListFromFile(filename: string): Promise<string[]> {
-    try {
-        const list = await Deno.readTextFile(filename);
-        return list.split(/[\r\n]+/).filter(a => a);
-    } catch (e) {
-        console.log(`no ${filename} file to import ${e}`);
-    }
-    return [];
-}
-
-async function testAll() {
+test("load google maps and cache images", async () => {
     const hostname = '127.0.0.1';
     const redis = new Redis({ hostname });
 
@@ -27,7 +19,8 @@ async function testAll() {
     }
     console.log('Redis link is Ready, connecting to chrome.');
     const devtools = new Devtools();
-    const page = await devtools.connectNewPage();
+    const page = await devtools.new();
+    const chromePage = await page.connect()
     const cm = new CacheManagerRedisTTL(redis);
     const remoteCache = new ChromeRemoteCache(cm);
     remoteCache.cache('www.google.com/maps/dir///');
@@ -44,12 +37,12 @@ async function testAll() {
     remoteCache.ignore('www.google.com/gen_204');
     remoteCache.block('www.google.com/maps/preview/log204');
     remoteCache.ignore('www.google.com/maps/preview/log204');
-    remoteCache.ignore(...await getListFromFile('ignoreList.txt'));
-    remoteCache.cacheIgnore(...await getListFromFile('cacheIgnoreList.txt'));
-    remoteCache.cache(...await getListFromFile('cacheList.txt'));
-    await remoteCache.register(page);
-    await page.Page.navigate({ url: 'https://www.google.com/maps/' });
+    await remoteCache.register(chromePage);
+    await chromePage.Page.navigate({ url: 'https://www.google.com/maps/' });
     await delay(7000);
+    await chromePage.close();
+    await devtools.close(page.id);
+    await redis.close();
     console.log();
     // display cache usage
     const { cache, pt } = remoteCache.getStats();
@@ -57,6 +50,4 @@ async function testAll() {
     console.log('passt:', pt.toString(true));
     console.log();
     console.log(`cache efficency: ${(remoteCache.efficency * 100).toFixed(1)}%`);
-}
-
-testAll();
+})

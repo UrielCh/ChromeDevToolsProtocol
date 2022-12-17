@@ -22,22 +22,23 @@ test('e2e, require a local Redis and a local chrome', async () => {
     void server.start();
     await delay(200);
     const devtools = new Devtools();
-    const page = await devtools.connectNewPage();
+    const page = await devtools.new();
+    const chromePage = await page.connect();
     const cm = new CacheManagerRedisTTL(redis);
     await cm.flushDomain(`127.0.0.1:${port}`, '');
     await cm.flushDomain(`127.0.0.1:${port}`, 'p2');
     const remoteCache = new ChromeRemoteCache(cm);
     remoteCache.cache(`127.0.0.1:${port}`);
     assertEquals(server.nbRequest, 0, 'newly create server replay to 0 request');
-    await remoteCache.register(page);
-    await page.Page.navigate({ url: `http://127.0.0.1:${port}/` });
+    await remoteCache.register(chromePage);
+    await chromePage.Page.navigate({ url: `http://127.0.0.1:${port}/` });
     await delay(100);
     assertEquals(server.nbRequest, 1, 'first request newly create server replay to 1 request');
     await delay(100);
-    await page.Page.navigate({ url: `http://127.0.0.1:${port}/` });
+    await chromePage.Page.navigate({ url: `http://127.0.0.1:${port}/` });
     await delay(100);
     assertEquals(server.nbRequest, 1, 'first request newly create server replay to 1 request');
-    await page.Page.navigate({ url: `http://127.0.0.1:${port}/p2` });
+    await chromePage.Page.navigate({ url: `http://127.0.0.1:${port}/p2` });
     await delay(100);
     // display cache usage
     const { cache, pt } = remoteCache.getStats();
@@ -47,6 +48,7 @@ test('e2e, require a local Redis and a local chrome', async () => {
     console.log();
     console.log(`cache efficency: ${(remoteCache.efficency * 100).toFixed(1)}%`);
     await redis.close();
-    await server.stop();
-    await page.close();
+    server.stop();
+    await chromePage.close();
+    await devtools.close(page.id);
 })
