@@ -1,0 +1,8 @@
+{
+    "files.exclude": {
+        "src/*.d.ts": true,
+        "src/*.js": true
+    },
+    "deno.enable": true,
+    "deno.unstable": true
+}

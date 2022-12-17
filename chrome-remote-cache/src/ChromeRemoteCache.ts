@@ -1,16 +1,13 @@
 import { pc, Protocol, Chrome, b64Encode, b64Decode } from "../deps.ts";
-//import pc from 'picocolors'
 import { dropQueryParam, splitUrl } from './CacheUtils.ts'
 import UrlSet from './UrlSet.ts';
 import { CacheStat } from './CacheStat.ts';
 import { CacheModel } from './model.ts';
-//import { Protocol, Chrome } from '@u4/chrome-remote-interface';
 import CacheManagerRedisTTL from './CacheManagerRedisTTL.ts';
 import CacheManager from './CacheManager.ts';
 
-//import { Buffer } from "https://deno.land/std@0.168.0/io/buffer.ts";
-
 const EMPTY_ARRAY: Uint8Array = new Uint8Array(0);
+// const EMPTY_ARRAY = new Buffer();
 
 type ToKey = (url: string) => string;
 const dummy = (url: string) => url;
@@ -163,7 +160,8 @@ export class ChromeRemoteCache {
                                 requestId: event.requestId,
                                 responseCode: status,
                                 responseHeaders,
-                                body: b64Encode(data || EMPTY_ARRAY),//  data?.toString('base64') || '',
+                                body: b64Encode((data || EMPTY_ARRAY)),//  data?.toString('base64') || '',
+                                // body: b64Encode((data || EMPTY_ARRAY).bytes({ copy: false })),//  data?.toString('base64') || '',
                             });
                             // Uint8Array Vs ArrayBuffer
                         } catch (ee) {
@@ -241,10 +239,12 @@ export class ChromeRemoteCache {
             await this.cm.setCacheMeta(cacheKey, JSON.stringify(cacheData));
             if (resp.base64Encoded) {
                 const data = b64Decode(resp.body);
+                // new Buffer(data)
                 await this.cm.setCacheData(cacheKey, data); // Buffer.from(resp.body, 'base64')
             } else {
                 // Buffer.from(resp.body, 'utf-8')
                 const data = new TextEncoder().encode(resp.body);
+                // new Buffer(data)
                 await this.cm.setCacheData(cacheKey, data);
             }
         });

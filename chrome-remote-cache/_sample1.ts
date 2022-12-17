@@ -1,17 +1,29 @@
-// import Devtools from "@u4/chrome-remote-interface";
-import { Devtools } from "../deps.ts";
-import ChromeRemoteCache from "./ChromeRemoteCache.ts";
-// import CacheManager from "./CacheManager";
-import CacheManagerRedisTTL from "./CacheManagerRedisTTL.ts";
-import { newRedis } from "./RedisProvider.ts";
+import { Devtools } from "https://deno.land/x/chrome_remote_interface@0.4.3/mod.ts";
+import { ChromeRemoteCache, CacheManagerRedisTTL } from "./mod.ts";
+import { newRedis, openRedis, redisPing } from "./src/RedisProvider.ts";
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function testAll() {
+    const redisUrl = 'redis://:6379'
+    const redis = newRedis({ hostname: '127.0.0.1' });
+
+    try {
+        await openRedis(redis);
+        await redisPing(redis);
+        // if (!redis.isOpen)
+        //     await redis.connect();
+        // await redis.PING();
+    } catch (e) {
+        console.error(`Connection to Redis: ${redisUrl} failed with error: ${(e as Error).message}`);
+        console.error(e);
+        return;
+    }
+    console.log('Redis link is Ready, connecting to chrome.');
+
     const devtools = new Devtools();
     const page = await devtools.connectNewPage();
-    //    const cm = new CacheManagerRedisTTL(new Redis());
-    const cm = new CacheManagerRedisTTL(newRedis());
+    const cm = new CacheManagerRedisTTL(redis);
     const remoteCache = new ChromeRemoteCache(cm);
     remoteCache.cache('www.google.com/maps/dir///');
     remoteCache.cache('www.google.com/maps/vt/');
