@@ -22,6 +22,18 @@ export class CacheManagerRedisTTL implements CacheManager {
         closeRedis(this.redis);
     }
 
+    /**
+     * delete cache for a domain
+     */
+    async flushDomain(domain: string) {
+        const redis = await this.redis;
+        await Promise.all([
+            redis.hdel('meta', domain),
+            redis.hdel('usage', domain),
+            redis.hdel('data', domain),
+        ]);
+    }
+
     async getCacheMeta(cachekey?: [string, string] | null): Promise<string | null> {
         if (!cachekey)
             return null;
@@ -48,10 +60,10 @@ export class CacheManagerRedisTTL implements CacheManager {
         const key = KEY_DATA + domain + path;
         const redis = await this.getRedis();
         try {
-            console.log('setCacheData ', key, typeof (data));
+            // console.log('setCacheData ', key, typeof (data));
             await redisSetEx(redis, key, this.TTLSec, data);
         } catch (e) {
-            console.error(' FAILED:: setCacheData ', key, typeof (data));
+            console.error('FAILED:: setCacheData ', key, typeof (data));
             console.error(e);
             console.error(data instanceof Buffer);
         }
