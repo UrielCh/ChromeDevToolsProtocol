@@ -3,7 +3,7 @@ import { Devtools } from "../deps.ts";
 import ChromeRemoteCache from "./ChromeRemoteCache.ts";
 // import CacheManager from "./CacheManager";
 import CacheManagerRedisTTL from "./CacheManagerRedisTTL.ts";
-import { newRedis } from "./RedisProvider.ts";
+import Redis from "./RedisProvider.ts";
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -11,7 +11,7 @@ async function testAll() {
     const devtools = new Devtools();
     const page = await devtools.connectNewPage();
     //    const cm = new CacheManagerRedisTTL(new Redis());
-    const cm = new CacheManagerRedisTTL(newRedis());
+    const cm = new CacheManagerRedisTTL(new Redis());
     const remoteCache = new ChromeRemoteCache(cm);
     remoteCache.cache('www.google.com/maps/dir///');
     remoteCache.cache('www.google.com/maps/vt/');
