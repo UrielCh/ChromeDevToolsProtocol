@@ -1,15 +1,19 @@
-import pc from 'picocolors'
-import { dropQueryParam, splitUrl } from './CacheUtils'
+import { pc, Protocol, Chrome, b64Encode, b64Decode } from "../deps.ts";
+//import pc from 'picocolors'
+import { dropQueryParam, splitUrl } from './CacheUtils.ts'
+import UrlSet from './UrlSet.ts';
+import { CacheStat } from './CacheStat.ts';
+import { CacheModel } from './model.ts';
+//import { Protocol, Chrome } from '@u4/chrome-remote-interface';
+import CacheManagerRedisTTL from './CacheManagerRedisTTL.ts';
+import CacheManager from './CacheManager.ts';
 
-import UrlSet from './UrlSet';
-import { CacheManager } from './CacheManager';
-import { CacheStat } from './CacheStat';
-import { CacheModel } from './model';
-import { Protocol, Chrome } from "@u4/chrome-remote-interface";
+//import { Buffer } from "https://deno.land/std@0.168.0/io/buffer.ts";
+
+const EMPTY_ARRAY: Uint8Array = new Uint8Array(0);
 
 type ToKey = (url: string) => string;
 const dummy = (url: string) => url;
-
 
 const PREFIXS = {
     'cached': pc.bold(pc.green('cached')),
@@ -28,7 +32,7 @@ export class ChromeRemoteCache {
     private statPassthrough = new CacheStat();
     #logfnc: (message: string) => void = console.log;
 
-    constructor(private cm = new CacheManager()) {
+    constructor(private cm = new CacheManagerRedisTTL() as CacheManager) {
     }
 
     public close() {
@@ -73,7 +77,7 @@ export class ChromeRemoteCache {
     private log(type: 'addcache' | 'cached' | 'missing' | 'blocked' | 'pass', textUrl: string) {
         if (this.ignoreDomains.match(textUrl))
             return;
-        let prefix = PREFIXS[type];
+        const prefix = PREFIXS[type];
         this.#logfnc(`${prefix}: ${textUrl}`);
     }
 
@@ -95,7 +99,7 @@ export class ChromeRemoteCache {
             try {
                 await page.Fetch.continueRequest({ requestId });
             } catch (e) {
-                console.log(`failed to continueRequest ${requestId}`);
+                console.log(`failed to continueRequest ${requestId} err:${e}`);
             }
         }
 
@@ -103,7 +107,7 @@ export class ChromeRemoteCache {
             try {
                 await page.Fetch.failRequest({ requestId, errorReason: 'BlockedByClient' });
             } catch (e) {
-                console.log(`failed to failRequest ${requestId}`);
+                console.log(`failed to failRequest ${requestId} err:${e}`);
             }
         }
 
@@ -123,7 +127,7 @@ export class ChromeRemoteCache {
             responses[data.requestId] = data;
         });
 
-        page.Fetch.on("requestPaused", async (event) => {
+        page.Fetch.on("requestPaused", async (event: Protocol.Fetch.RequestPausedEvent) => {
             pausedRequests[event.requestId] = event;
             const textUrl = event.request.url;
             if (textUrl.startsWith('data:')) {
@@ -148,6 +152,7 @@ export class ChromeRemoteCache {
                         delete headers['expires'];
                         delete headers['date'];
                         delete headers['connection'];
+                        delete headers['link'];
                         const responseHeaders = [] as Protocol.Fetch.HeaderEntry[];
                         for (const [name, value] of Object.entries(headers)) {
                             responseHeaders.push({ name, value })
@@ -158,8 +163,9 @@ export class ChromeRemoteCache {
                                 requestId: event.requestId,
                                 responseCode: status,
                                 responseHeaders,
-                                body: data?.toString('base64') || '',
+                                body: b64Encode(data || EMPTY_ARRAY),//  data?.toString('base64') || '',
                             });
+                            // Uint8Array Vs ArrayBuffer
                         } catch (ee) {
                             console.log(`L164: (${meta.status})`, textUrl, ee)
                             console.log(JSON.stringify(meta.headers));
@@ -203,7 +209,9 @@ export class ChromeRemoteCache {
             let resp: Protocol.Network.GetResponseBodyResponse | null = null;
             try {
                 resp = await page.Network.getResponseBody({ requestId })
-            } catch (e) { }
+            } catch (_e) {
+                // ignore
+            }
             if (!resp) {
                 resp = { body: '', base64Encoded: false }
                 // console.log(`No body (${status}) for url: ${url}`, );
@@ -231,10 +239,14 @@ export class ChromeRemoteCache {
                 expires: Date.now() + (maxAge * 1000),
             }
             await this.cm.setCacheMeta(cacheKey, JSON.stringify(cacheData));
-            if (resp.base64Encoded)
-                await this.cm.setCacheData(cacheKey, Buffer.from(resp.body, 'base64'));
-            else
-                await this.cm.setCacheData(cacheKey, Buffer.from(resp.body, 'utf-8'));
+            if (resp.base64Encoded) {
+                const data = b64Decode(resp.body);
+                await this.cm.setCacheData(cacheKey, data); // Buffer.from(resp.body, 'base64')
+            } else {
+                // Buffer.from(resp.body, 'utf-8')
+                const data = new TextEncoder().encode(resp.body);
+                await this.cm.setCacheData(cacheKey, data);
+            }
         });
     }
 

@@ -1,75 +1,75 @@
-import { serial as test } from 'ava';
-import { UrlSet } from './UrlSet'
+import { assert, assertEquals } from "../dev_deps.ts";
+//import { serial as test } from 'ava';
+import { UrlSet } from './UrlSet.ts'
 
-test('UrlSet Exact', t => {
+const { test } = Deno;
+test('UrlSet Exact', _t => {
     const urlSet = new UrlSet<boolean>();
     urlSet.add('a.com', true)
-    t.truthy(urlSet.match('a.com'))
-    t.falsy(urlSet.match('c.com'))
-    t.truthy(urlSet.match('a.com/page'))
-    t.falsy(urlSet.match('c.com/page'))
-    t.falsy(urlSet.match('www.a.com/page'))
+    assert(urlSet.match('a.com'), 'match exact')
+    assert(!urlSet.match('c.com'), 'diffrent domain')
+    assert(urlSet.match('a.com/page'), 'match page in exact domaine')
+    assert(!urlSet.match('c.com/page'), 'no match page in diffrent domaine')
+    assert(!urlSet.match('www.a.com/page'), 'non matched www. prefix')
 });
 
-test('UrlSet widecard', t => {
+test('UrlSet widecard', _t => {
     const urlSet = new UrlSet();
     urlSet.add('*.a.com', true)
-    t.truthy(urlSet.match('a.b.c.a.com'))
-    t.falsy(urlSet.match('a.com'))
+    assert(urlSet.match('a.b.c.a.com'), 'domain match *.a.com')
+    assert(!urlSet.match('a.com'), 'a.con dio not match *.a.com')
 });
 
-test('UrlSet comprex case', t => {
+test('UrlSet comprex case', _t => {
     const urlSet = new UrlSet();
     urlSet.add('encrypted-tbn0.gstatic.com/images', true)
-    t.truthy(urlSet.match('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkHOx1dT0HojzJ56KzHHW-45Vmpjd-X4KcEm3aqyU&s=10'))
+    assert(urlSet.match('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkHOx1dT0HojzJ56KzHHW-45Vmpjd-X4KcEm3aqyU&s=10'))
 });
 
-test('UrlSet no Duplicate', t => {
+test('UrlSet no Duplicate', _t => {
     const urlSet = new UrlSet<boolean>();
-    t.deepEqual(urlSet.size, 0);
+    assertEquals(urlSet.size, 0);
     urlSet.add('a.com', true)
-    t.deepEqual(urlSet.size, 1);
+    assertEquals(urlSet.size, 1);
     urlSet.add('a.com', true)
-    t.deepEqual(urlSet.size, 1);
+    assertEquals(urlSet.size, 1);
     urlSet.add('b.com', true)
-    t.deepEqual(urlSet.size, 2);
+    assertEquals(urlSet.size, 2);
 });
 
-test('UrlSet delete', t => {
+test('UrlSet delete', _t => {
     const urlSet = new UrlSet<boolean>();
-    t.deepEqual(urlSet.size, 0);
+    assertEquals(urlSet.size, 0);
     urlSet.add('a.com', true)
     urlSet.add('a.com/page1', true)
-    t.deepEqual(urlSet.size, 2);
-    t.deepEqual(urlSet.domCount, 1);
-    t.deepEqual(urlSet.widecardDomCount, 0);
+    assertEquals(urlSet.size, 2);
+    assertEquals(urlSet.domCount, 1);
+    assertEquals(urlSet.widecardDomCount, 0);
     urlSet.del('a.com')
-    t.deepEqual(urlSet.size, 1);
-    t.deepEqual(urlSet.domCount, 1);
+    assertEquals(urlSet.size, 1);
+    assertEquals(urlSet.domCount, 1);
     urlSet.del('a.com/page1')
-    t.deepEqual(urlSet.size, 0);
-    t.deepEqual(urlSet.domCount, 0);
+    assertEquals(urlSet.size, 0);
+    assertEquals(urlSet.domCount, 0);
 });
 
-test('UrlSet delete widecard', t => {
+test('UrlSet delete widecard', _t => {
     const urlSet = new UrlSet<boolean>();
-    t.deepEqual(urlSet.size, 0);
+    assertEquals(urlSet.size, 0);
     urlSet.add('*.a.com', true)
     urlSet.add('*.a.com/page1', true)
-    t.deepEqual(urlSet.size, 2);
-    t.deepEqual(urlSet.widecardDomCount, 1);
-    t.deepEqual(urlSet.domCount, 0);
+    assertEquals(urlSet.size, 2);
+    assertEquals(urlSet.widecardDomCount, 1);
+    assertEquals(urlSet.domCount, 0);
     urlSet.del('*.a.com')
-    t.deepEqual(urlSet.size, 1);
-    t.deepEqual(urlSet.widecardDomCount, 1);
+    assertEquals(urlSet.size, 1);
+    assertEquals(urlSet.widecardDomCount, 1);
     urlSet.del('*.a.com/page1')
-    t.deepEqual(urlSet.size, 0);
-    t.deepEqual(urlSet.widecardDomCount, 0);
+    assertEquals(urlSet.size, 0);
+    assertEquals(urlSet.widecardDomCount, 0);
 });
 
-
-
-// test('UrlSet Wide Exact', t => {
+// test('UrlSet Wide Exact', _t => {
 //     const urlSet = new UrlSet();
 //     urlSet.addRules('a.com')
 //     const url = 'http://domain.com/'
