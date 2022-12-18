@@ -1,6 +1,6 @@
 import { build, emptyDir } from "https://deno.land/x/dnt@0.30.0/mod.ts";
 // check version here: https://www.npmjs.com/package/@u4/chrome-remote-interface
-// deno run -A _build.ts 0.4.9;
+// deno run -A _build.ts 0.4.10;
 // cd npm; npm publish;
 if (!Deno.args[0]) {
   console.error('Missing version number')

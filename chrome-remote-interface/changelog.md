@@ -1,5 +1,9 @@
 # Changelog
 
+## version 0.4.10
+
+- fix git bad merge.
+
 ## version 0.4.9
 
 - replace importmap by dep.ts and dev_dep.ts
