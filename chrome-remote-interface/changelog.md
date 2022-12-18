@@ -1,5 +1,10 @@
 # Changelog
 
+## version 0.4.9
+
+- add methods
+- fix deno doc
+
 ## version 0.4.1
 
 - fix dnt conversion
