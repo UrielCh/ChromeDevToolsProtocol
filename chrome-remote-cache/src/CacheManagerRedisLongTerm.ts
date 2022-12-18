@@ -1,5 +1,6 @@
-import Redis from 'ioredis'
-import CacheManager from './CacheManager';
+import CacheManager from './CacheManager.ts';
+// import { connect, type RedisReply, type Bulk } from "https://deno.land/x/redis@v0.27.4/mod.ts";
+import { Redis, type RedisBinary } from './RedisProvider.ts';
 
 const KEY_DATA = 'data:'
 const KEY_META = 'meta:'
@@ -8,8 +9,23 @@ const KEY_COUNTER = 'usage:'
 export class CacheManagerRedisLongTerm implements CacheManager {
     constructor(private redis = new Redis()) { }
 
-    public close() {
-        this.redis.disconnect();
+    public getRedis(): Promise<Redis> {
+        return this.redis.connect();
+    }
+
+    public async close() {
+        const redis = await this.getRedis();
+        await redis.close();
+    }
+
+    /**
+     * delete cache for a domain
+     */
+    async flushDomain(domain: string, path: string) {
+        const redis = await this.redis;
+        await redis.HDEL(KEY_META + domain, path);
+        await redis.HDEL(KEY_DATA + domain, path);
+        await redis.HDEL(KEY_COUNTER + domain, path);
     }
 
     async getCacheMeta(cachekey?: [string, string] | null): Promise<string | null> {
@@ -17,30 +33,35 @@ export class CacheManagerRedisLongTerm implements CacheManager {
             return null;
         const [domain, path] = cachekey
         const key = KEY_META + domain;
-        const cached = await this.redis.hget(key, path);
+        const redis = await this.getRedis();
+        const cached = await redis.HGET(key, path);
         return cached;
     }
 
-    async getCacheData([domain, path]: [string, string]): Promise<Buffer | null> {
-        const key = KEY_DATA + domain;
-        const cached = await this.redis.hgetBuffer(key, path);
+    async getCacheData([domain, path]: [string, string]): Promise<RedisBinary | null> {
+        const key: string = KEY_DATA + domain;
+        const redis = await this.getRedis();
+        const cached = await redis.HGETbin(key, path)
         return cached;
     }
 
     async setCacheMeta([domain, path]: [string, string], cacheData: string): Promise<void> {
         const key = KEY_META + domain;
-        await this.redis.hset(key, [path, cacheData]);
+        const redis = await this.getRedis();
+        await redis.HSET(key, path, cacheData);
     }
 
-    async setCacheData([domain, path]: [string, string], data: Buffer): Promise<void> {
+    async setCacheData([domain, path]: [string, string], data: RedisBinary): Promise<void> {
         const key = KEY_DATA + domain;
-        await this.redis.hset(key, [path, data]);
+        const redis = await this.getRedis();
+        await redis.HSET(key, path, data);
     }
 
     async cacheIncUsage([domain, path]: [string, string], inc = 1): Promise<number> {
         const key = KEY_COUNTER + domain;
-        const cnt = await this.redis.hincrby(key, path, inc);
-        return cnt;
+        const redis = await this.getRedis();
+        const cnt = await redis.HINCBY(key, path, inc);
+        return Number(cnt);
     }
 }
 

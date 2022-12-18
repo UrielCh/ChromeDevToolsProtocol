@@ -1,4 +1,4 @@
-import { splitUrl } from './CacheUtils'
+import { splitUrl } from './CacheUtils.ts'
 
 type RulesStore<T> = Map<string, Array<[string, T]>>;
 
@@ -77,7 +77,7 @@ export class UrlSet<T> {
         } else {
             dest = this.rules;
         }
-        let list = dest.get(domain);
+        const list = dest.get(domain);
         if (!list) {
             return false;
         }
@@ -91,7 +91,7 @@ export class UrlSet<T> {
         if (list.length === 1) {
             dest.delete(domain);
         } else {
-            list.splice(idx, 1); 
+            list.splice(idx, 1);
         }
         return true;
     }

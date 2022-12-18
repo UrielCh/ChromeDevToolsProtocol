@@ -1,4 +1,4 @@
-import { Devtools } from "..";
+import { Devtools } from "../mod.ts";
 /**
  * Sample API usage
  *

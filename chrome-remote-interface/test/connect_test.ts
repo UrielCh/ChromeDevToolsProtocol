@@ -1,7 +1,6 @@
 import { Devtools } from "../lib/Devtools.ts";
 import { devTools } from "./common.ts";
-import { assert } from "@testing/asserts";
-import { describe, it } from "@testing/bdd";
+import { assert, describe, it } from "../dev_deps.ts";
 
 describe("connecting to Chrome", () => {
   describe("with default parameters", () => {

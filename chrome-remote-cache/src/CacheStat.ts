@@ -1,5 +1,5 @@
-import pc from 'picocolors'
-import { formatSize, splitUrl } from './CacheUtils'
+import { pc } from "../deps.ts";
+import { formatSize, splitUrl } from './CacheUtils.ts'
 
 /**
  * a simple class to eveluate data transfert per domains
@@ -19,7 +19,7 @@ export class CacheStat {
     /**
      * get total bandwidh
      */
-     public get transfert(): number {
+    public get transfert(): number {
         return this.#transfert;
     }
 
@@ -33,13 +33,13 @@ export class CacheStat {
         if (url.startsWith('data:'))
             return;
         this.#query++;
-        let size = meta.length
+        let size: number = meta.length
         if (length)
             size += length;
         this.#transfert += size;
 
         const [dom] = splitUrl(url);
-        let old = this.#perDom[dom] || 0;
+        const old: number = this.#perDom[dom] || 0;
         this.#perDom[dom] = old + size;
     }
 

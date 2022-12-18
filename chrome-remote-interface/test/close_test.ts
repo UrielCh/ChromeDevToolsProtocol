@@ -1,5 +1,5 @@
 import { devTools } from "./common.ts";
-import { describe, it } from "@testing/bdd";
+import { describe, it } from "../dev_deps.ts";
 
 describe("closing a connection", () => {
   it("should allow a subsequent new connection", async () => {

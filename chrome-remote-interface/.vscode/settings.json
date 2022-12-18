@@ -1,7 +1,12 @@
 {
   "files.exclude": {
-    "npm": true
+    "**/*.map": true,
+    "lib/*.d.ts": true,
+    "lib/*.js": true,
+    "index.js": true,
+    "index.d.ts": true
   },
+  "editor.defaultFormatter": "denoland.vscode-deno",
   "deno.enable": true,
   "deno.unstable": true
 }

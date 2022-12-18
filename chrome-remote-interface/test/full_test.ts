@@ -1,5 +1,5 @@
 import { devTools } from "./common.ts";
-import { describe, it } from "@testing/bdd";
+import { describe, it } from "../dev_deps.ts";
 
 describe("visite github like puppeteer", () => {
   describe("without checking the result and without specifying parameters", () => {

@@ -58,7 +58,7 @@ export class ProtoRevert {
         this.server = server;
 
         wss.on('connection', (ws: WebSocket.WebSocket, request: http.IncomingMessage) => {
-            this.sessions.push(new ProtoRevertLink(ws, request, this.options.dstPort, {ignoreEvent: this.ignoreEvent, maxParamLen: this.maxParamLen}));
+            this.sessions.push(new ProtoRevertLink(ws, request, this.options.dstPort, { ignoreEvent: this.ignoreEvent, maxParamLen: this.maxParamLen }));
         });
 
         server.on('upgrade', function upgrade(request, socket, head) {
@@ -72,7 +72,7 @@ export class ProtoRevert {
     }
 
     public bookmark(text: string): void {
-        for (const session of this.sessions){
+        for (const session of this.sessions) {
             session.bookmark(text);
         }
     }
@@ -95,9 +95,9 @@ export class ProtoRevert {
                 code += `  return fs.readFileSync("${prefix}_data_" + id + "." + ext, {encoding: "utf-8"});\r\n`;
                 code += '}\r\n';
             }
-            
+
             for (let id = 0; id < session.rawData.length; id++) {
-                const {data, type} = session.rawData[id];
+                const { data, type } = session.rawData[id];
                 fs.writeFileSync(`${prefix}_data_${id + 1}.${type}`, data, { encoding: 'utf8' });
             }
             // const session = protoRev.sessions[protoRev.sessions.length - 1];

@@ -1,6 +1,5 @@
 import { sampleUrl, devTools } from "./common.ts";
-import { assert } from "@testing/asserts";
-import { describe, it } from "@testing/bdd";
+import { assert, describe, it } from "../dev_deps.ts";
 
 describe("registering event", () => {
   describe('"event"', () => {

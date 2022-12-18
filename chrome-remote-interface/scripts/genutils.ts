@@ -1,4 +1,4 @@
-import { join } from "https://deno.land/std@0.163.0/path/mod.ts";
+import { join } from "../dev_deps.ts";
 
 //"" fot nodeJS ".d.ts" for deno
 // const importExtantion = "";// .d.ts";

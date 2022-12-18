@@ -1,4 +1,4 @@
-import { EventEmitter } from "event";
+import { EventEmitter } from "../deps.ts";
 import * as api from "./api.ts";
 import { Protocol } from "./Protocol.ts";
 import { ProtocolError } from "./ProtocolError.ts";
@@ -71,6 +71,7 @@ export class Chrome extends EventEmitter<ProtocolEventsApi> {
   }
   /**
    * Send a command to the remote endpoint and return a Promise that will be resolved once response receved
+   * this is the generic method, you should use .domain.event(), to enforce typing
    */
   public send(
     method: string,

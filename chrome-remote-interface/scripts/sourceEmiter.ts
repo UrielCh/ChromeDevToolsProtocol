@@ -1,9 +1,6 @@
-import { ensureDirSync } from "https://deno.land/std@0.163.0/fs/ensure_dir.ts";
-import { join } from "https://deno.land/std@0.163.0/path/mod.ts";
-// import { basename } from "https://deno.land/std@0.163.0/node/path/posix.ts";
+import { join, ensureDirSync } from "../dev_deps.ts";
 import { Protocol as Proto } from "../lib/Protocol.ts";
 import * as utils from './genutils.ts';
-
 
 function exportInterface(name: string) {
     // emit interface by default
@@ -597,5 +594,4 @@ export class SourceEmiter {
         // this.numIndents = 0;
         // this.emitStr = "";
     }
-
 }

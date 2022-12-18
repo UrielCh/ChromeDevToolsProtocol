@@ -1,7 +1,5 @@
 import { devTools } from "./common.ts";
-import { assert, equal } from "@testing/asserts";
-import { describe, it } from "@testing/bdd";
-
+import { assert, equal, describe, it } from "../dev_deps.ts";
 
 describe("devtool interaction", () => {
   describe("List", () => {

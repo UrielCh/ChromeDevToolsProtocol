@@ -1,10 +1,7 @@
-// import assert from "assert.ts";
 import Devtools from "../mod.ts";
 import { ProtocolError } from "../lib/ProtocolError.ts";
 import { devTools, sampleUrl } from "./common.ts";
-//import { assert, fail, equal } from "https://deno.land/std@0.163.0/testing/asserts.ts";
-import { assert, fail, equal } from "@testing/asserts";
-import { describe, it } from "@testing/bdd";
+import { assert, fail, equal, describe, it } from "../dev_deps.ts";
 
 // const it = Deno.test;
 
@@ -121,7 +118,7 @@ describe("sending a command", () => {
         assert("request" in error);
         assert("response" in error);
         const { response } = error;
-        assert("code" in response);
+        assert("code" in (response as any));
       }
       await chrome.close();
     });

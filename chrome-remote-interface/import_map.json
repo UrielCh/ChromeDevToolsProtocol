@@ -1,9 +1,0 @@
-{
-    "imports": {
-        "event": "https://deno.land/x/event@2.0.1/mod.ts",
-        "@node/internal/errors": "https://deno.land/std@0.126.0/node/internal/errors.ts",
-        "@testing/asserts": "https://deno.land/std@0.152.0/testing/asserts.ts",
-        "@testing/bdd": "https://deno.land/std@0.152.0/testing/bdd.ts",
-        "dnt": "https://deno.land/x/dnt@0.31.0/mod.ts"
-    }
-}

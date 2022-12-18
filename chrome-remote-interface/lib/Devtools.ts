@@ -8,7 +8,7 @@ import {
   DevToolVersion,
   TargetType,
 } from "./models.ts";
-import { type ErrnoException } from "@node/internal/errors";
+import { type ErrnoException } from "../deps.ts";
 export type Chrome = ChromeBase & ProtocolProxyApi.ProtocolApi;
 
 /**
@@ -98,8 +98,8 @@ export class Devtools {
       return text;
     } catch (err) {
       if (err instanceof Error) {
-        if ("cause" in err) {
-          const cause = err.cause;
+        if ("cause" in (err as Error && { cause: Error })) {
+          const cause = (err as Error && { cause: Error }).cause;
           if (cause && (cause instanceof Error)) {
             if ((cause as ErrnoException).code === 'ECONNRESET' && tries > 0) {
               return this.fetchInternal(url, tries - 1);
@@ -109,6 +109,7 @@ export class Devtools {
         }
         throw Error(`Getting ${url} failed: ${err.message}`);
       }
+      console.error(err);
       throw Error(`Getting ${url} failed: ${err}`);
     } finally {
       clearTimeout(id);
@@ -157,8 +158,8 @@ export class Devtools {
         this.connectWebSoketUrl(version.webSocketDebuggerUrl);
       return version;
     } catch (e) {
-      console.log(text);
-      console.log("err ", e);
+      console.error(`fetch(${url}) return "${text}" and cause Error:`);
+      console.error("err ", e);
       throw e;
     }
   }
@@ -219,6 +220,23 @@ export class Devtools {
   }
 
   /**
+   * return the first DevToolTarget of type
+   *
+   * @returns
+   */
+  async getFirstTarget(type = "page" as Omit<TargetType, "browser">): Promise<DevToolTarget> {
+    const list = await this.list();
+    // keep debugable
+    const tabs = list.filter((t) => t.webSocketDebuggerUrl);
+    const tab = tabs.find((t) => t.type === type);
+    if (tab) {
+      return tab;
+    } else {
+      throw Error(`no Chrome ${type} available`);
+    }
+  }
+
+  /**
    * return a Chrome connected to the websocket of the first debugable target
    *
    * @returns
@@ -228,15 +246,8 @@ export class Devtools {
       const v = await this.version();
       return v.connect();
     }
-    const list = await this.list();
-    // keep debugable
-    const tabs = list.filter((t) => t.webSocketDebuggerUrl);
-    const tab = tabs.find((t) => t.type === type);
-    if (tab) {
-      return tab.connect();
-    } else {
-      throw Error("no Chrone available");
-    }
+    const tab = await this.getFirstTarget(type);
+    return tab.connect();
   }
   /**
    * Opens a new tab. Responds with the websocket target data for the new tab.

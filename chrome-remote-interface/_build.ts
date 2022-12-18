@@ -1,6 +1,6 @@
-import { build, emptyDir } from "dnt";
+import { build, emptyDir } from "https://deno.land/x/dnt@0.30.0/mod.ts";
 // check version here: https://www.npmjs.com/package/@u4/chrome-remote-interface
-// deno run -A _build.ts 0.4.8; 
+// deno run -A _build.ts 0.4.9;
 // cd npm; npm publish;
 if (!Deno.args[0]) {
   console.error('Missing version number')
@@ -12,14 +12,12 @@ try {
 
   await build({
     entryPoints: ["./mod.ts"],
-    importMap: "./import_map.json",
     outDir: "./npm",
     shims: {
       // see JS docs for overview and more options
       deno: true,
       webSocket: true,
       undici: true,
-      timers: true,
       custom: [
         {
           package: {
@@ -58,14 +56,14 @@ try {
         "interface",
         "deno"
       ],
-      homepage: "https://github.com/UrielCh/chrome-remote-interface",
+      homepage: "https://github.com/UrielCh/ChromeDevToolsProtocol",
       version: Deno.args[0],
       repository: {
         type: "git",
-        url: "git+https://github.com/UrielCh/chrome-remote-interface.git",
+        url: "git+https://github.com/UrielCh/ChromeDevToolsProtocol.git",
       },
       bugs: {
-        url: "http://github.com/UrielCh/chrome-remote-interface/issues",
+        url: "http://github.com/UrielCh/ChromeDevToolsProtocol/issues",
       },
       "engine-strict": {
         node: ">=14"
@@ -78,7 +76,12 @@ try {
   console.log('cwd:', Deno.cwd());
 
   Deno.copyFileSync("LICENSE", "npm/LICENSE");
-  Deno.copyFileSync("README.md", "npm/README.md");
+
+  let readme = Deno.readTextFileSync("README.md");
+  readme = readme.replaceAll('https://deno.land/x/chrome_remote_interface/mod.ts', '@u4/chrome-remote-interface');
+  Deno.writeTextFileSync("npm/README.md", readme);
+
+  //Deno.copyFileSync("README.md", "npm/README.md");
   Deno.mkdirSync("npm/types/types");
   const files = Deno.readDirSync("types");
   for (const file of files) {
