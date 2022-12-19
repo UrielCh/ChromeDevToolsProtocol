@@ -39,7 +39,7 @@ try {
     package: {
       // package.json properties
       name: "@u4/chrome-remote-interface",
-      author: "Uriel chemouni <uchemouni@gmail.com>",
+      author: "Uriel Chemouni <uchemouni@gmail.com> (https://uriel.deno.dev/)",
       license: "MIT",
       contributors: [
         "Andrey Sidorov <sidoares@yandex.ru>",

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Uriel Chemouni <uchemouni@gmail.com> (https://uriel.deno.dev/)",
   "license": "MIT",
   "dependencies": {
     "@u4/chrome-remote-interface": "link:..\\chrome-remote-interface",

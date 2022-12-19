@@ -24,7 +24,7 @@
     "rebuild": "npm run clean && tsc",
     "prepare": "npm run clean && tsc"
   },
-  "author": "Uriel Chemouni <uchemouni@gmail.com> (https://urielch.github.io/)",
+  "author": "Uriel Chemouni <uchemouni@gmail.com> (https://uriel.deno.dev/)",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.7.2",
