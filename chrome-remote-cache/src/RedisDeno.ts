@@ -13,9 +13,7 @@ export class RedisDeno implements RedisWrapper {
     }
 
     async connect(): Promise<RedisDeno> {
-        console.log('Redis connect called');
         await this.#redis;
-        console.log('Redis connect successed');
         return this;
     }
 
@@ -41,17 +39,14 @@ export class RedisDeno implements RedisWrapper {
         new Buffer
         const redis = await this.#redis;
         const replay = await redis.sendCommand("GET", key);
-        if (!replay)
+        const buffer = replay.buffer();
+        if (!buffer.length)
             return null;
-        return replay.buffer();
+        return buffer;
     }
 
     async SETEX(key: string, seconds: number, value: RedisBinary | string): Promise<void> {
         const redis = await this.#redis;
-        console.log('setEx ', typeof value); // Buffer
-        console.log('setEx ', typeof value); // Buffer
-
-        // const replay = await redis.GET(commandOptions({ returnBuffers: true }), key);
         await redis.setex(key, seconds, value);
     }
 
@@ -78,18 +73,14 @@ export class RedisDeno implements RedisWrapper {
     async HGETbin(key: string, field: string): Promise<RedisBinary | null> {
         const redis = await this.#redis;
         const reply = await redis.sendCommand('hget', key, field);
-        // const replay = await redis.hGet(commandOptions({ returnBuffers: true }), key, path);
-        // const cached: RedisBinary = replay
-        // const cached = await redis.hgetBuffer(key, path);
-        if (!reply)
+        const buffer = reply.buffer();
+        if (!buffer.length)
             return null;
-        return reply.buffer();
+        return buffer;
     }
 
     async HSET(key: string, field: string, value: RedisBinary | string): Promise<void> {
         const redis = await this.#redis;
-        console.log('Hset ', typeof value); // Buffer
-        console.log('Hset ', typeof value); // Buffer
         await redis.hset(key, field, value);
     }
 

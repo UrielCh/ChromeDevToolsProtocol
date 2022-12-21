@@ -21,11 +21,17 @@ export class RedisMoke implements RedisWrapper {
     }
 
     GET(key: string): Promise<string | null> {
-        return Promise.resolve(this.data[key] as string);
+        let value = this.data[key];
+        if (value === undefined)
+            value = null;
+        return Promise.resolve(value);
     }
 
     GETbin(key: string): Promise<RedisBinary | null> {
-        return Promise.resolve(this.data[key] as RedisBinary);
+        let value = this.data[key];
+        if (value === undefined)
+            value = null;
+        return Promise.resolve(value);
     }
 
     SETEX(key: string, _seconds: number, value: RedisBinary | string): Promise<void> {
@@ -51,11 +57,16 @@ export class RedisMoke implements RedisWrapper {
 
     HGET(key: string, field: string): Promise<string | null> {
         const hash = this.data[key] || {}
-        return hash[field];
+        const value = hash[field];
+        if (value === undefined)
+            return Promise.resolve(null);
+        return Promise.resolve(hash[field]);
     }
 
     HGETbin(key: string, field: string): Promise<RedisBinary | null> {
-        const hash = this.data[key] || {}
+        const hash = this.data[key];
+        if (!hash)
+            return Promise.resolve(null);
         return Promise.resolve(hash[field] as RedisBinary);
     }
 
