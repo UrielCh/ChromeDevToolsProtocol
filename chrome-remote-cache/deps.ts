@@ -12,5 +12,17 @@ export {
     type DevToolTarget
 } from "../chrome-remote-interface/mod.ts";
 
+
+type cancellableTimeout = Promise<void> & { cancel: () => void };
+
 // import { delay } from "https://deno.land/std@0.168.0/async/delay.ts";
-export const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+export const delay = (ms: number) => {
+    let timer!: ReturnType<typeof setTimeout>;
+    //typeof<returnType<setTimeout>>
+    const p = new Promise((r) => {
+        timer = setTimeout(r, ms);
+    }) as cancellableTimeout;
+    p.cancel = () => (clearTimeout(timer));
+    return p;
+};
+

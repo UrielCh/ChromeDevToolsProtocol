@@ -10,9 +10,11 @@ test('e2e, require a local Redis and a local chrome', async () => {
     const redis = new Redis({ hostname: '127.0.0.1' });
     try {
         let pass = false;
-        await Promise.race([redis.PING().then(() => pass = true), delay(1000)]);
+        const timeout = delay(1000);
+        await Promise.race([redis.PING().then(() => pass = true), timeout]);
         if (!pass)
             throw Error('Redis ping timeout');
+        timeout.cancel();
         // await redis.PING();
     } catch (e) {
         console.error(`Connection to Redis:127.0.0.1 failed with error: ${(e as Error).message}`);
@@ -39,7 +41,8 @@ test('e2e, require a local Redis and a local chrome', async () => {
     await delay(100);
     await chromePage.Page.navigate({ url: `http://127.0.0.1:${port}/` });
     await delay(100);
-    assertEquals(server.nbRequest, 1, 'first request newly create server replay to 1 request');
+
+    assertEquals(server.nbRequest, 1, `second request replay should be to 1 request but is ${server.nbRequest}`);
     await chromePage.Page.navigate({ url: `http://127.0.0.1:${port}/p2` });
     await delay(100);
     // display cache usage
