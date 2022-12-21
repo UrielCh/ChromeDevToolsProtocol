@@ -21,3 +21,4 @@ sample/src/logall.ts
 chrome-remote-cache/*.txt
 .DS_Store
 chrome-remote-interface/npm/
+chrome-remote-cache/npm/

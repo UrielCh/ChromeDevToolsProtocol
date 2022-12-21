@@ -2,7 +2,7 @@ export default class LocalServer {
     private server?: Deno.Listener;
     public nbRequest = 0;
     public nbConnection = 0;
-    #httpConn?: Deno.HttpConn;
+    #httpConn?: ReturnType<typeof Deno.serveHttp>;// Deno.HttpConn;
     constructor(private port: number) {
     }
 

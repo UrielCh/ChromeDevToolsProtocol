@@ -1,7 +1,7 @@
 import { Devtools, delay } from "../deps.ts";
 import { ChromeRemoteCache, CacheManagerRedisTTL } from "../mod.ts";
 import Redis from "../src/RedisDeno.ts";
-import LocalServer from './TestServer.ts';
+import LocalServer from './LocalServer.ts';
 import { assertEquals } from '../dev_deps.ts'
 
 const { test } = Deno;
