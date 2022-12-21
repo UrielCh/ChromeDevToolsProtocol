@@ -3,7 +3,7 @@ import { dropQueryParam, splitUrl } from './CacheUtils.ts'
 import UrlSet from './UrlSet.ts';
 import { CacheStat } from './CacheStat.ts';
 import { CacheModel } from './model.ts';
-import CacheManagerRedisTTL from './CacheManagerRedisTTL.ts';
+// import CacheManagerRedisTTL from './CacheManagerRedisTTL.ts';
 import CacheManager from './CacheManager.ts';
 
 const EMPTY_ARRAY: Uint8Array = new Uint8Array(0);
@@ -29,7 +29,8 @@ export class ChromeRemoteCache {
     private statPassthrough = new CacheStat();
     #logfnc: (message: string) => void = console.log;
 
-    constructor(private cm = new CacheManagerRedisTTL() as CacheManager) {
+    //  = new CacheManagerRedisTTL() as CacheManager
+    constructor(private cm: CacheManager) {
     }
 
     public close() {

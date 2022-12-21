@@ -1,17 +1,19 @@
-import { Devtools } from "https://deno.land/x/chrome_remote_interface@0.4.3/mod.ts";
+import { Devtools, delay } from "../deps.ts";
 import { ChromeRemoteCache, CacheManagerRedisTTL } from "../mod.ts";
-import Redis from "../src/RedisProvider.ts";
+import Redis from "../src/RedisDeno.ts";
 import LocalServer from './TestServer.ts';
 import { assertEquals } from '../dev_deps.ts'
-
-const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const { test } = Deno;
 
 test('e2e, require a local Redis and a local chrome', async () => {
     const redis = new Redis({ hostname: '127.0.0.1' });
     try {
-        await redis.PING();
+        let pass = false;
+        await Promise.race([redis.PING().then(() => pass = true), delay(1000)]);
+        if (!pass)
+            throw Error('Redis ping timeout');
+        // await redis.PING();
     } catch (e) {
         console.error(`Connection to Redis:127.0.0.1 failed with error: ${(e as Error).message}`);
         console.error(e);

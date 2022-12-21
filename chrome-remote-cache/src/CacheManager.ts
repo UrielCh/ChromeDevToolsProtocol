@@ -1,4 +1,4 @@
-import { RedisBinary } from "./RedisProvider.ts";
+import { RedisBinary } from "./RedisWrapper.ts";
 
 export interface CacheManager {
     close(): Promise<void>

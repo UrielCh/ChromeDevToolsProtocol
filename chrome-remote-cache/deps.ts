@@ -11,3 +11,6 @@ export {
     type ProtocolEventParam,
     type DevToolTarget
 } from "../chrome-remote-interface/mod.ts";
+
+// import { delay } from "https://deno.land/std@0.168.0/async/delay.ts";
+export const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));

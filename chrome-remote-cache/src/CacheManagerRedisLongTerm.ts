@@ -1,15 +1,15 @@
 import CacheManager from './CacheManager.ts';
 // import { connect, type RedisReply, type Bulk } from "https://deno.land/x/redis@v0.27.4/mod.ts";
-import { Redis, type RedisBinary } from './RedisProvider.ts';
+import { RedisWrapper, type RedisBinary } from './RedisWrapper.ts';
 
 const KEY_DATA = 'data:'
 const KEY_META = 'meta:'
 const KEY_COUNTER = 'usage:'
 
 export class CacheManagerRedisLongTerm implements CacheManager {
-    constructor(private redis = new Redis()) { }
+    constructor(private redis: RedisWrapper) { }
 
-    public getRedis(): Promise<Redis> {
+    public getRedis(): Promise<RedisWrapper> {
         return this.redis.connect();
     }
 

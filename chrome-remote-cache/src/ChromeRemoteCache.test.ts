@@ -1,17 +1,17 @@
-import { Devtools } from "https://deno.land/x/chrome_remote_interface@0.4.3/mod.ts";
+import { Devtools, delay } from "../deps.ts";
 import { ChromeRemoteCache, CacheManagerRedisTTL } from "../mod.ts";
-import Redis from "./RedisProvider.ts";
+import RedisDeno from "./RedisDeno.ts";
 
 const { test } = Deno;
 
-const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-test("load google maps and cache images", async () => {
+test("load google maps and cache images, Should take 6 sec+", async () => {
     const hostname = '127.0.0.1';
-    const redis = new Redis({ hostname });
-
+    const redis = new RedisDeno({ hostname });
     try {
-        await redis.PING();
+        let pass = false;
+        await Promise.race([redis.PING().then(() => pass = true), delay(1000)]);
+        if (!pass)
+            throw Error('Redis ping timeout');
     } catch (e) {
         console.error(`Connection to Redis: ${hostname} failed with error: ${(e as Error).message}`);
         console.error(e);
@@ -39,7 +39,7 @@ test("load google maps and cache images", async () => {
     remoteCache.ignore('www.google.com/maps/preview/log204');
     await remoteCache.register(chromePage);
     await chromePage.Page.navigate({ url: 'https://www.google.com/maps/' });
-    await delay(7000);
+    await delay(6000);
     await chromePage.close();
     await devtools.close(page.id);
     await redis.close();

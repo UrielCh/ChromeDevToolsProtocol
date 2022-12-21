@@ -2,7 +2,7 @@
 // import { createClient, commandOptions } from "npm:redis";
 import CacheManager from './CacheManager.ts';
 import { Buffer } from '../deps.ts';
-import { Redis, type RedisBinary } from './RedisProvider.ts';
+import { RedisWrapper, type RedisBinary } from './RedisWrapper.ts';
 
 const KEY_DATA = 'data:'
 const KEY_META = 'meta:'
@@ -12,9 +12,9 @@ const KEY_COUNTER = 'usage:'
  * all data expirer after TTLSec second, default value is 3 days
  */
 export class CacheManagerRedisTTL implements CacheManager {
-    constructor(private redis = new Redis(), private TTLSec = 60 * 60 * 24 * 3) { }
+    constructor(private redis: RedisWrapper, private TTLSec = 60 * 60 * 24 * 3) { }
 
-    public getRedis(): Promise<Redis> {
+    public getRedis(): Promise<RedisWrapper> {
         return this.redis.connect();
     }
 
