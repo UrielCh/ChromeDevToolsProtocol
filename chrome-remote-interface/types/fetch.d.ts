@@ -175,7 +175,9 @@ export type ContinueRequestRequest = {
      */
     postData?: string;
     /**
-     * If set, overrides the request headers.
+     * If set, overrides the request headers. Note that the overrides do not
+     * extend to subsequent redirect hops, if a redirect happens. Another override
+     * may be applied to a different request produced by a redirect.
      */
     headers?: HeaderEntry[];
     /**
@@ -293,7 +295,12 @@ export type RequestPausedEvent = {
      * If the intercepted request had a corresponding Network.requestWillBeSent event fired for it,
      * then this networkId will be the same as the requestId present in the requestWillBeSent event.
      */
-    networkId?: RequestId;
+    networkId?: Network.RequestId;
+    /**
+     * If the request is due to a redirect response from the server, the id of the request that
+     * has caused the redirect.
+     */
+    redirectedRequestId?: RequestId;
 }
 
 /**

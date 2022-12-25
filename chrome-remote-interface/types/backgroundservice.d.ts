@@ -51,6 +51,10 @@ export type BackgroundServiceEvent = {
      * A list of event-specific information.
      */
     eventMetadata: EventMetadata[];
+    /**
+     * Storage key this event belongs to.
+     */
+    storageKey: string;
 }
 
 export type StartObservingRequest = {

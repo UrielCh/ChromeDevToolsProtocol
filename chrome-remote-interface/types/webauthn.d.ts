@@ -89,12 +89,42 @@ export type Credential = {
     largeBlob?: string;
 }
 
+export type EnableRequest = {
+    /**
+     * Whether to enable the WebAuthn user interface. Enabling the UI is
+     * recommended for debugging and demo purposes, as it is closer to the real
+     * experience. Disabling the UI is recommended for automated testing.
+     * Supported at the embedder's discretion if UI is available.
+     * Defaults to false.
+     */
+    enableUI?: boolean;
+}
+
 export type AddVirtualAuthenticatorRequest = {
     options: VirtualAuthenticatorOptions;
 }
 
 export type AddVirtualAuthenticatorResponse = {
     authenticatorId: AuthenticatorId;
+}
+
+export type SetResponseOverrideBitsRequest = {
+    authenticatorId: AuthenticatorId;
+    /**
+     * If isBogusSignature is set, overrides the signature in the authenticator response to be zero.
+     * Defaults to false.
+     */
+    isBogusSignature?: boolean;
+    /**
+     * If isBadUV is set, overrides the UV bit in the flags in the authenticator response to
+     * be zero. Defaults to false.
+     */
+    isBadUV?: boolean;
+    /**
+     * If isBadUP is set, overrides the UP bit in the flags in the authenticator response to
+     * be zero. Defaults to false.
+     */
+    isBadUP?: boolean;
 }
 
 export type RemoveVirtualAuthenticatorRequest = {
@@ -140,5 +170,21 @@ export type SetUserVerifiedRequest = {
 export type SetAutomaticPresenceSimulationRequest = {
     authenticatorId: AuthenticatorId;
     enabled: boolean;
+}
+
+/**
+ * Triggered when a credential is added to an authenticator.
+ */
+export type CredentialAddedEvent = {
+    authenticatorId: AuthenticatorId;
+    credential: Credential;
+}
+
+/**
+ * Triggered when a credential is used in a webauthn assertion.
+ */
+export type CredentialAssertedEvent = {
+    authenticatorId: AuthenticatorId;
+    credential: Credential;
 }
 

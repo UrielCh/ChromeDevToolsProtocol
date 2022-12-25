@@ -121,6 +121,10 @@ export type ProtocolEventsApi = {
      */
     "DOM.pseudoElementAdded": [params: Protocol.DOM.PseudoElementAddedEvent, sessionId?: string],
     /**
+     * Called when top layer elements are changed.
+     */
+    "DOM.topLayerElementsUpdated": [params: Record<never, never>, sessionId?: string],
+    /**
      * Called when a pseudo element is removed from an element.
      */
     "DOM.pseudoElementRemoved": [params: Protocol.DOM.PseudoElementRemovedEvent, sessionId?: string],
@@ -146,12 +150,6 @@ export type ProtocolEventsApi = {
      * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out.
      */
     "Emulation.virtualTimeBudgetExpired": [params: Record<never, never>, sessionId?: string],
-    /**
-     * Issued when the target starts or stops needing BeginFrames.
-     * Deprecated. Issue beginFrame unconditionally instead and use result from
-     * beginFrame to detect whether the frames were suppressed.
-     */
-    "HeadlessExperimental.needsBeginFramesChanged": [params: Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent, sessionId?: string],
     /**
      * Emitted only when `Input.setInterceptDrags` is enabled. Use this data with `Input.dispatchDragEvent` to
      * restore normal drag and drop behavior.
@@ -401,6 +399,10 @@ export type ProtocolEventsApi = {
      * when bfcache navigation fails.
      */
     "Page.backForwardCacheNotUsed": [params: Protocol.Page.BackForwardCacheNotUsedEvent, sessionId?: string],
+    /**
+     * Fired when a prerender attempt is completed.
+     */
+    "Page.prerenderAttemptCompleted": [params: Protocol.Page.PrerenderAttemptCompletedEvent, sessionId?: string],
     "Page.loadEventFired": [params: Protocol.Page.LoadEventFiredEvent, sessionId?: string],
     /**
      * Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation.
@@ -471,6 +473,11 @@ export type ProtocolEventsApi = {
      */
     "Storage.interestGroupAccessed": [params: Protocol.Storage.InterestGroupAccessedEvent, sessionId?: string],
     /**
+     * Shared storage was accessed by the associated page.
+     * The following parameters are included in all events.
+     */
+    "Storage.sharedStorageAccessed": [params: Protocol.Storage.SharedStorageAccessedEvent, sessionId?: string],
+    /**
      * Issued when attached to target because of auto-attach or `attachToTarget` command.
      */
     "Target.attachedToTarget": [params: Protocol.Target.AttachedToTargetEvent, sessionId?: string],
@@ -507,8 +514,8 @@ export type ProtocolEventsApi = {
     "Tethering.accepted": [params: Protocol.Tethering.AcceptedEvent, sessionId?: string],
     "Tracing.bufferUsage": [params: Protocol.Tracing.BufferUsageEvent, sessionId?: string],
     /**
-     * Contains an bucket of collected trace events. When tracing is stopped collected events will be
-     * send as a sequence of dataCollected events followed by tracingComplete event.
+     * Contains a bucket of collected trace events. When tracing is stopped collected events will be
+     * sent as a sequence of dataCollected events followed by tracingComplete event.
      */
     "Tracing.dataCollected": [params: Protocol.Tracing.DataCollectedEvent, sessionId?: string],
     /**
@@ -583,6 +590,14 @@ export type ProtocolEventsApi = {
      */
     "WebAudio.nodeParamDisconnected": [params: Protocol.WebAudio.NodeParamDisconnectedEvent, sessionId?: string],
     /**
+     * Triggered when a credential is added to an authenticator.
+     */
+    "WebAuthn.credentialAdded": [params: Protocol.WebAuthn.CredentialAddedEvent, sessionId?: string],
+    /**
+     * Triggered when a credential is used in a webauthn assertion.
+     */
+    "WebAuthn.credentialAsserted": [params: Protocol.WebAuthn.CredentialAssertedEvent, sessionId?: string],
+    /**
      * This can be called multiple times, and can be used to set / override /
      * remove player properties. A null propValue indicates removal.
      */
@@ -606,89 +621,6 @@ export type ProtocolEventsApi = {
      * list of player ids and all events again.
      */
     "Media.playersCreated": [params: Protocol.Media.PlayersCreatedEvent, sessionId?: string],
-    /**
-     * Issued when new console message is added.
-     */
-    "Console.messageAdded": [params: Protocol.Console.MessageAddedEvent, sessionId?: string],
-    /**
-     * Fired when breakpoint is resolved to an actual script and location.
-     */
-    "Debugger.breakpointResolved": [params: Protocol.Debugger.BreakpointResolvedEvent, sessionId?: string],
-    /**
-     * Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria.
-     */
-    "Debugger.paused": [params: Protocol.Debugger.PausedEvent, sessionId?: string],
-    /**
-     * Fired when the virtual machine resumed execution.
-     */
-    "Debugger.resumed": [params: Record<never, never>, sessionId?: string],
-    /**
-     * Fired when virtual machine fails to parse the script.
-     */
-    "Debugger.scriptFailedToParse": [params: Protocol.Debugger.ScriptFailedToParseEvent, sessionId?: string],
-    /**
-     * Fired when virtual machine parses script. This event is also fired for all known and uncollected
-     * scripts upon enabling debugger.
-     */
-    "Debugger.scriptParsed": [params: Protocol.Debugger.ScriptParsedEvent, sessionId?: string],
-    "HeapProfiler.addHeapSnapshotChunk": [params: Protocol.HeapProfiler.AddHeapSnapshotChunkEvent, sessionId?: string],
-    /**
-     * If heap objects tracking has been started then backend may send update for one or more fragments
-     */
-    "HeapProfiler.heapStatsUpdate": [params: Protocol.HeapProfiler.HeapStatsUpdateEvent, sessionId?: string],
-    /**
-     * If heap objects tracking has been started then backend regularly sends a current value for last
-     * seen object id and corresponding timestamp. If the were changes in the heap since last event
-     * then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event.
-     */
-    "HeapProfiler.lastSeenObjectId": [params: Protocol.HeapProfiler.LastSeenObjectIdEvent, sessionId?: string],
-    "HeapProfiler.reportHeapSnapshotProgress": [params: Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent, sessionId?: string],
-    "HeapProfiler.resetProfiles": [params: Record<never, never>, sessionId?: string],
-    "Profiler.consoleProfileFinished": [params: Protocol.Profiler.ConsoleProfileFinishedEvent, sessionId?: string],
-    /**
-     * Sent when new profile recording is started using console.profile() call.
-     */
-    "Profiler.consoleProfileStarted": [params: Protocol.Profiler.ConsoleProfileStartedEvent, sessionId?: string],
-    /**
-     * Reports coverage delta since the last poll (either from an event like this, or from
-     * `takePreciseCoverage` for the current isolate. May only be sent if precise code
-     * coverage has been started. This event can be trigged by the embedder to, for example,
-     * trigger collection of coverage data immediately at a certain point in time.
-     */
-    "Profiler.preciseCoverageDeltaUpdate": [params: Protocol.Profiler.PreciseCoverageDeltaUpdateEvent, sessionId?: string],
-    /**
-     * Notification is issued every time when binding is called.
-     */
-    "Runtime.bindingCalled": [params: Protocol.Runtime.BindingCalledEvent, sessionId?: string],
-    /**
-     * Issued when console API was called.
-     */
-    "Runtime.consoleAPICalled": [params: Protocol.Runtime.ConsoleAPICalledEvent, sessionId?: string],
-    /**
-     * Issued when unhandled exception was revoked.
-     */
-    "Runtime.exceptionRevoked": [params: Protocol.Runtime.ExceptionRevokedEvent, sessionId?: string],
-    /**
-     * Issued when exception was thrown and unhandled.
-     */
-    "Runtime.exceptionThrown": [params: Protocol.Runtime.ExceptionThrownEvent, sessionId?: string],
-    /**
-     * Issued when new execution context is created.
-     */
-    "Runtime.executionContextCreated": [params: Protocol.Runtime.ExecutionContextCreatedEvent, sessionId?: string],
-    /**
-     * Issued when execution context is destroyed.
-     */
-    "Runtime.executionContextDestroyed": [params: Protocol.Runtime.ExecutionContextDestroyedEvent, sessionId?: string],
-    /**
-     * Issued when all executionContexts were cleared in browser
-     */
-    "Runtime.executionContextsCleared": [params: Record<never, never>, sessionId?: string],
-    /**
-     * Issued when object should be inspected (for example, as a result of inspect() command line API
-     * call).
-     */
-    "Runtime.inspectRequested": [params: Protocol.Runtime.InspectRequestedEvent, sessionId?: string],
     /**
      * Catch all events
      */

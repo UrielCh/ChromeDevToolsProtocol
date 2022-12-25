@@ -588,9 +588,19 @@ export class SourceEmiter {
     }
 
     flushEmitToFile() {
-        console.log(`Writing to ${this.destProtocolFilePath}`);
         // fs.writeFileSync(path, emitStr, { encoding: "utf-8" });
-        Deno.writeTextFileSync(this.destProtocolFilePath, this.emitStr);
+        let old = '';
+        try {
+            old = Deno.readTextFileSync(this.destProtocolFilePath);
+        } catch (_e) {
+            // ignore
+        }
+        if (old.replaceAll(/[\r\n]+/g, '\n') !== this.emitStr.replaceAll(/[\r\n]+/g, '\n')) {
+            console.log(`Writing to ${this.destProtocolFilePath}`);
+            Deno.writeTextFileSync(this.destProtocolFilePath, this.emitStr);
+        } else {
+            console.log(`Keep ${this.destProtocolFilePath} un changed`);
+        }
         // this.numIndents = 0;
         // this.emitStr = "";
     }

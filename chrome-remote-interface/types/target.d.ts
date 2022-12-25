@@ -36,7 +36,36 @@ export type TargetInfo = {
      */
     openerFrameId?: Page.FrameId;
     browserContextId?: Browser.BrowserContextID;
+    /**
+     * Provides additional details for specific target types. For example, for
+     * the type of "page", this may be set to "portal" or "prerender".
+     */
+    subtype?: string;
 }
+
+/**
+ * A filter used by target query/discovery/auto-attach operations.
+ */
+export type FilterEntry = {
+    /**
+     * If set, causes exclusion of mathcing targets from the list.
+     */
+    exclude?: boolean;
+    /**
+     * If not present, matches any type.
+     */
+    type?: string;
+}
+
+/**
+ * The entries in TargetFilter are matched sequentially against targets and
+ * the first entry that matches determines if the target is included or not,
+ * depending on the value of `exclude` field in the entry.
+ * If filter is not specified, the one assumed is
+ * [{type: "browser", exclude: true}, {type: "tab", exclude: true}, {}]
+ * (i.e. include everything but `browser` and `tab`).
+ */
+export type TargetFilter = FilterEntry[];
 
 export type RemoteLocation = {
     host: string;
@@ -155,6 +184,10 @@ export type CreateTargetRequest = {
      * false by default).
      */
     background?: boolean;
+    /**
+     * Whether to create the target of type "tab".
+     */
+    forTab?: boolean;
 }
 
 export type CreateTargetResponse = {
@@ -185,6 +218,15 @@ export type GetTargetInfoRequest = {
 
 export type GetTargetInfoResponse = {
     targetInfo: TargetInfo;
+}
+
+export type GetTargetsRequest = {
+    /**
+     * Only targets matching filter will be reported. If filter is not specified
+     * and target discovery is currently enabled, a filter used for target discovery
+     * is used for consistency.
+     */
+    filter?: TargetFilter;
 }
 
 export type GetTargetsResponse = {
@@ -222,6 +264,10 @@ export type SetAutoAttachRequest = {
      * and eventually retire it. See crbug.com/991325.
      */
     flatten?: boolean;
+    /**
+     * Only targets matching filter will be attached.
+     */
+    filter?: TargetFilter;
 }
 
 export type AutoAttachRelatedRequest = {
@@ -231,6 +277,10 @@ export type AutoAttachRelatedRequest = {
      * to run paused targets.
      */
     waitForDebuggerOnStart: boolean;
+    /**
+     * Only targets matching filter will be attached.
+     */
+    filter?: TargetFilter;
 }
 
 export type SetDiscoverTargetsRequest = {
@@ -238,6 +288,11 @@ export type SetDiscoverTargetsRequest = {
      * Whether to discover available targets.
      */
     discover: boolean;
+    /**
+     * Only targets matching filter will be attached. If `discover` is false,
+     * `filter` must be omitted or empty.
+     */
+    filter?: TargetFilter;
 }
 
 export type SetRemoteLocationsRequest = {

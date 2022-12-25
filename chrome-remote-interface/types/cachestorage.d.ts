@@ -63,6 +63,10 @@ export type Cache = {
      */
     securityOrigin: string;
     /**
+     * Storage key of the cache.
+     */
+    storageKey: string;
+    /**
      * The name of the cache.
      */
     cacheName: string;
@@ -103,9 +107,14 @@ export type DeleteEntryRequest = {
 
 export type RequestCacheNamesRequest = {
     /**
+     * At least and at most one of securityOrigin, storageKey must be specified.
      * Security origin.
      */
-    securityOrigin: string;
+    securityOrigin?: string;
+    /**
+     * Storage key.
+     */
+    storageKey?: string;
 }
 
 export type RequestCacheNamesResponse = {

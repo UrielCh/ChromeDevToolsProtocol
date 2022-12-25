@@ -5,6 +5,8 @@ export type integer = number;
  * Query and modify DOM storage.
  */
 
+export type SerializedStorageKey = string;
+
 /**
  * DOM Storage identifier.
  */
@@ -12,7 +14,11 @@ export type StorageId = {
     /**
      * Security origin for the storage.
      */
-    securityOrigin: string;
+    securityOrigin?: string;
+    /**
+     * Represents a key by which DOM Storage keys its CachedStorageAreas
+     */
+    storageKey?: SerializedStorageKey;
     /**
      * Whether the storage is local storage (not session storage).
      */

@@ -39,18 +39,18 @@ export type AffectedFrame = {
     frameId: Page.FrameId;
 }
 
-export type SameSiteCookieExclusionReason = ("ExcludeSameSiteUnspecifiedTreatedAsLax" | "ExcludeSameSiteNoneInsecure" | "ExcludeSameSiteLax" | "ExcludeSameSiteStrict" | "ExcludeInvalidSameParty" | "ExcludeSamePartyCrossPartyContext");
+export type CookieExclusionReason = ("ExcludeSameSiteUnspecifiedTreatedAsLax" | "ExcludeSameSiteNoneInsecure" | "ExcludeSameSiteLax" | "ExcludeSameSiteStrict" | "ExcludeInvalidSameParty" | "ExcludeSamePartyCrossPartyContext" | "ExcludeDomainNonASCII" | "ExcludeThirdPartyCookieBlockedInFirstPartySet");
 
-export type SameSiteCookieWarningReason = ("WarnSameSiteUnspecifiedCrossSiteContext" | "WarnSameSiteNoneInsecure" | "WarnSameSiteUnspecifiedLaxAllowUnsafe" | "WarnSameSiteStrictLaxDowngradeStrict" | "WarnSameSiteStrictCrossDowngradeStrict" | "WarnSameSiteStrictCrossDowngradeLax" | "WarnSameSiteLaxCrossDowngradeStrict" | "WarnSameSiteLaxCrossDowngradeLax");
+export type CookieWarningReason = ("WarnSameSiteUnspecifiedCrossSiteContext" | "WarnSameSiteNoneInsecure" | "WarnSameSiteUnspecifiedLaxAllowUnsafe" | "WarnSameSiteStrictLaxDowngradeStrict" | "WarnSameSiteStrictCrossDowngradeStrict" | "WarnSameSiteStrictCrossDowngradeLax" | "WarnSameSiteLaxCrossDowngradeStrict" | "WarnSameSiteLaxCrossDowngradeLax" | "WarnAttributeValueExceedsMaxSize" | "WarnDomainNonASCII");
 
-export type SameSiteCookieOperation = ("SetCookie" | "ReadCookie");
+export type CookieOperation = ("SetCookie" | "ReadCookie");
 
 /**
  * This information is currently necessary, as the front-end has a difficult
  * time finding a specific cookie. With this, we can convey specific error
  * information without the cookie.
  */
-export type SameSiteCookieIssueDetails = {
+export type CookieIssueDetails = {
     /**
      * If AffectedCookie is not set then rawCookieLine contains the raw
      * Set-Cookie header string. This hints at a problem where the
@@ -59,13 +59,13 @@ export type SameSiteCookieIssueDetails = {
      */
     cookie?: AffectedCookie;
     rawCookieLine?: string;
-    cookieWarningReasons: SameSiteCookieWarningReason[];
-    cookieExclusionReasons: SameSiteCookieExclusionReason[];
+    cookieWarningReasons: CookieWarningReason[];
+    cookieExclusionReasons: CookieExclusionReason[];
     /**
      * Optionally identifies the site-for-cookies and the cookie url, which
      * may be used by the front-end as additional context.
      */
-    operation: SameSiteCookieOperation;
+    operation: CookieOperation;
     siteForCookies?: string;
     cookieUrl?: string;
     request?: AffectedRequest;
@@ -73,7 +73,7 @@ export type SameSiteCookieIssueDetails = {
 
 export type MixedContentResolutionStatus = ("MixedContentBlocked" | "MixedContentAutomaticallyUpgraded" | "MixedContentWarning");
 
-export type MixedContentResourceType = ("Audio" | "Beacon" | "CSPReport" | "Download" | "EventSource" | "Favicon" | "Font" | "Form" | "Frame" | "Image" | "Import" | "Manifest" | "Ping" | "PluginData" | "PluginResource" | "Prefetch" | "Resource" | "Script" | "ServiceWorker" | "SharedWorker" | "Stylesheet" | "Track" | "Video" | "Worker" | "XMLHttpRequest" | "XSLT");
+export type MixedContentResourceType = ("AttributionSrc" | "Audio" | "Beacon" | "CSPReport" | "Download" | "EventSource" | "Favicon" | "Font" | "Form" | "Frame" | "Image" | "Import" | "Manifest" | "Ping" | "PluginData" | "PluginResource" | "Prefetch" | "Resource" | "Script" | "ServiceWorker" | "SharedWorker" | "Stylesheet" | "Track" | "Video" | "Worker" | "XMLHttpRequest" | "XSLT");
 
 export type MixedContentIssueDetails = {
     /**
@@ -225,15 +225,14 @@ export type CorsIssueDetails = {
     clientSecurityState?: Network.ClientSecurityState;
 }
 
-export type AttributionReportingIssueType = ("PermissionPolicyDisabled" | "InvalidAttributionSourceEventId" | "InvalidAttributionData" | "AttributionSourceUntrustworthyOrigin" | "AttributionUntrustworthyOrigin" | "AttributionTriggerDataTooLarge" | "AttributionEventSourceTriggerDataTooLarge" | "InvalidAttributionSourceExpiry" | "InvalidAttributionSourcePriority" | "InvalidEventSourceTriggerData" | "InvalidTriggerPriority" | "InvalidTriggerDedupKey");
+export type AttributionReportingIssueType = ("PermissionPolicyDisabled" | "PermissionPolicyNotDelegated" | "UntrustworthyReportingOrigin" | "InsecureContext" | "InvalidHeader" | "InvalidRegisterTriggerHeader" | "InvalidEligibleHeader" | "TooManyConcurrentRequests" | "SourceAndTriggerHeaders" | "SourceIgnored" | "TriggerIgnored");
 
 /**
  * Details for issues around "Attribution Reporting API" usage.
- * Explainer: https://github.com/WICG/conversion-measurement-api
+ * Explainer: https://github.com/WICG/attribution-reporting-api
  */
 export type AttributionReportingIssueDetails = {
     violationType: AttributionReportingIssueType;
-    frame?: AffectedFrame;
     request?: AffectedRequest;
     violatingNodeId?: DOM.BackendNodeId;
     invalidParameter?: string;
@@ -260,7 +259,7 @@ export type NavigatorUserAgentIssueDetails = {
     location?: SourceCodeLocation;
 }
 
-export type GenericIssueErrorType = ("CrossOriginPortalPostMessageError");
+export type GenericIssueErrorType = ("CrossOriginPortalPostMessageError" | "FormLabelForNameError");
 
 /**
  * Depending on the concrete errorType, different properties are set.
@@ -271,27 +270,19 @@ export type GenericIssueDetails = {
      */
     errorType: GenericIssueErrorType;
     frameId?: Page.FrameId;
+    violatingNodeId?: DOM.BackendNodeId;
 }
+
+export type DeprecationIssueType = ("AuthorizationCoveredByWildcard" | "CanRequestURLHTTPContainingNewline" | "ChromeLoadTimesConnectionInfo" | "ChromeLoadTimesFirstPaintAfterLoadTime" | "ChromeLoadTimesWasAlternateProtocolAvailable" | "CookieWithTruncatingChar" | "CrossOriginAccessBasedOnDocumentDomain" | "CrossOriginWindowAlert" | "CrossOriginWindowConfirm" | "CSSSelectorInternalMediaControlsOverlayCastButton" | "DeprecationExample" | "DocumentDomainSettingWithoutOriginAgentClusterHeader" | "EventPath" | "ExpectCTHeader" | "GeolocationInsecureOrigin" | "GeolocationInsecureOriginDeprecatedNotRemoved" | "GetUserMediaInsecureOrigin" | "HostCandidateAttributeGetter" | "IdentityInCanMakePaymentEvent" | "InsecurePrivateNetworkSubresourceRequest" | "LocalCSSFileExtensionRejected" | "MediaSourceAbortRemove" | "MediaSourceDurationTruncatingBuffered" | "NoSysexWebMIDIWithoutPermission" | "NotificationInsecureOrigin" | "NotificationPermissionRequestedIframe" | "ObsoleteWebRtcCipherSuite" | "OpenWebDatabaseInsecureContext" | "OverflowVisibleOnReplacedElement" | "PaymentInstruments" | "PaymentRequestCSPViolation" | "PersistentQuotaType" | "PictureSourceSrc" | "PrefixedCancelAnimationFrame" | "PrefixedRequestAnimationFrame" | "PrefixedStorageInfo" | "PrefixedVideoDisplayingFullscreen" | "PrefixedVideoEnterFullscreen" | "PrefixedVideoEnterFullScreen" | "PrefixedVideoExitFullscreen" | "PrefixedVideoExitFullScreen" | "PrefixedVideoSupportsFullscreen" | "RangeExpand" | "RequestedSubresourceWithEmbeddedCredentials" | "RTCConstraintEnableDtlsSrtpFalse" | "RTCConstraintEnableDtlsSrtpTrue" | "RTCPeerConnectionComplexPlanBSdpUsingDefaultSdpSemantics" | "RTCPeerConnectionSdpSemanticsPlanB" | "RtcpMuxPolicyNegotiate" | "SharedArrayBufferConstructedWithoutIsolation" | "TextToSpeech_DisallowedByAutoplay" | "V8SharedArrayBufferConstructedInExtensionWithoutIsolation" | "XHRJSONEncodingDetection" | "XMLHttpRequestSynchronousInNonWorkerOutsideBeforeUnload" | "XRSupportsSession");
 
 /**
  * This issue tracks information needed to print a deprecation message.
- * The formatting is inherited from the old console.log version, see more at:
- * https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/frame/deprecation.cc
- * TODO(crbug.com/1264960): Re-work format to add i18n support per:
- * https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/public/devtools_protocol/README.md
+ * https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/frame/third_party/blink/renderer/core/frame/deprecation/README.md
  */
 export type DeprecationIssueDetails = {
     affectedFrame?: AffectedFrame;
     sourceCodeLocation: SourceCodeLocation;
-    /**
-     * The content of the deprecation issue (this won't be translated),
-     * e.g. "window.inefficientLegacyStorageMethod will be removed in M97,
-     * around January 2022. Please use Web Storage or Indexed Database
-     * instead. This standard was abandoned in January, 1970. See
-     * https://www.chromestatus.com/feature/5684870116278272 for more details."
-     */
-    message?: string;
-    deprecationType: string;
+    type: DeprecationIssueType;
 }
 
 export type ClientHintIssueReason = ("MetaTagAllowListInvalidOrigin" | "MetaTagModifiedHTML");
@@ -303,10 +294,10 @@ export type FederatedAuthRequestIssueDetails = {
 /**
  * Represents the failure reason when a federated authentication reason fails.
  * Should be updated alongside RequestIdTokenStatus in
- * third_party/blink/public/mojom/webid/federated_auth_request.mojom to include
+ * third_party/blink/public/mojom/devtools/inspector_issue.mojom to include
  * all cases except for success.
  */
-export type FederatedAuthRequestIssueReason = ("ApprovalDeclined" | "TooManyRequests" | "WellKnownHttpNotFound" | "WellKnownNoResponse" | "WellKnownInvalidResponse" | "ClientIdMetadataHttpNotFound" | "ClientIdMetadataNoResponse" | "ClientIdMetadataInvalidResponse" | "ErrorFetchingSignin" | "InvalidSigninResponse" | "AccountsHttpNotFound" | "AccountsNoResponse" | "AccountsInvalidResponse" | "IdTokenHttpNotFound" | "IdTokenNoResponse" | "IdTokenInvalidResponse" | "IdTokenInvalidRequest" | "ErrorIdToken" | "Canceled");
+export type FederatedAuthRequestIssueReason = ("ShouldEmbargo" | "TooManyRequests" | "WellKnownHttpNotFound" | "WellKnownNoResponse" | "WellKnownInvalidResponse" | "ConfigNotInWellKnown" | "WellKnownTooBig" | "ConfigHttpNotFound" | "ConfigNoResponse" | "ConfigInvalidResponse" | "ClientMetadataHttpNotFound" | "ClientMetadataNoResponse" | "ClientMetadataInvalidResponse" | "DisabledInSettings" | "ErrorFetchingSignin" | "InvalidSigninResponse" | "AccountsHttpNotFound" | "AccountsNoResponse" | "AccountsInvalidResponse" | "IdTokenHttpNotFound" | "IdTokenNoResponse" | "IdTokenInvalidResponse" | "IdTokenInvalidRequest" | "ErrorIdToken" | "Canceled" | "RpPageNotVisible");
 
 /**
  * This issue tracks client hints related issues. It's used to deprecate old
@@ -322,7 +313,7 @@ export type ClientHintIssueDetails = {
  * optional fields in InspectorIssueDetails to convey more specific
  * information about the kind of issue.
  */
-export type InspectorIssueCode = ("SameSiteCookieIssue" | "MixedContentIssue" | "BlockedByResponseIssue" | "HeavyAdIssue" | "ContentSecurityPolicyIssue" | "SharedArrayBufferIssue" | "TrustedWebActivityIssue" | "LowTextContrastIssue" | "CorsIssue" | "AttributionReportingIssue" | "QuirksModeIssue" | "NavigatorUserAgentIssue" | "GenericIssue" | "DeprecationIssue" | "ClientHintIssue" | "FederatedAuthRequestIssue");
+export type InspectorIssueCode = ("CookieIssue" | "MixedContentIssue" | "BlockedByResponseIssue" | "HeavyAdIssue" | "ContentSecurityPolicyIssue" | "SharedArrayBufferIssue" | "TrustedWebActivityIssue" | "LowTextContrastIssue" | "CorsIssue" | "AttributionReportingIssue" | "QuirksModeIssue" | "NavigatorUserAgentIssue" | "GenericIssue" | "DeprecationIssue" | "ClientHintIssue" | "FederatedAuthRequestIssue");
 
 /**
  * This struct holds a list of optional fields with additional information
@@ -330,7 +321,7 @@ export type InspectorIssueCode = ("SameSiteCookieIssue" | "MixedContentIssue" | 
  * add a new optional field to this type.
  */
 export type InspectorIssueDetails = {
-    sameSiteCookieIssueDetails?: SameSiteCookieIssueDetails;
+    cookieIssueDetails?: CookieIssueDetails;
     mixedContentIssueDetails?: MixedContentIssueDetails;
     blockedByResponseIssueDetails?: BlockedByResponseIssueDetails;
     heavyAdIssueDetails?: HeavyAdIssueDetails;

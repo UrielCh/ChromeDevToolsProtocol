@@ -206,6 +206,14 @@ export type GetInfoResponse = {
     commandLine: string;
 }
 
+export type GetFeatureStateRequest = {
+    featureState: string;
+}
+
+export type GetFeatureStateResponse = {
+    featureEnabled: boolean;
+}
+
 export type GetProcessInfoResponse = {
     /**
      * An array of process info blocks.

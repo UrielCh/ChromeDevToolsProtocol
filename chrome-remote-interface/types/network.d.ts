@@ -16,7 +16,7 @@ export type integer = number;
 /**
  * Resource type as it was perceived by the rendering engine.
  */
-export type ResourceType = ("Document" | "Stylesheet" | "Image" | "Media" | "Font" | "Script" | "TextTrack" | "XHR" | "Fetch" | "EventSource" | "WebSocket" | "Manifest" | "SignedExchange" | "Ping" | "CSPViolationReport" | "Preflight" | "Other");
+export type ResourceType = ("Document" | "Stylesheet" | "Image" | "Media" | "Font" | "Script" | "TextTrack" | "XHR" | "Fetch" | "Prefetch" | "EventSource" | "WebSocket" | "Manifest" | "SignedExchange" | "Ping" | "CSPViolationReport" | "Preflight" | "Other");
 
 /**
  * Unique loader identifier.
@@ -336,6 +336,16 @@ export type SecurityDetails = {
      * Whether the request complied with Certificate Transparency policy
      */
     certificateTransparencyCompliance: CertificateTransparencyCompliance;
+    /**
+     * The signature algorithm used by the server in the TLS server signature,
+     * represented as a TLS SignatureScheme code point. Omitted if not
+     * applicable or not known.
+     */
+    serverSignatureAlgorithm?: integer;
+    /**
+     * Whether the connection used Encrypted ClientHello
+     */
+    encryptedClientHello: boolean;
 }
 
 /**
@@ -388,6 +398,11 @@ export type TrustTokenParams = {
 }
 
 export type TrustTokenOperationType = ("Issuance" | "Redemption" | "Signing");
+
+/**
+ * The reason why Chrome uses a specific transport protocol for HTTP semantics.
+ */
+export type AlternateProtocolUsage = ("alternativeJobWonWithoutRace" | "alternativeJobWonRace" | "mainJobWonRace" | "mappingMissing" | "broken" | "dnsAlpnH3JobWonWithoutRace" | "dnsAlpnH3JobWonRace" | "unspecifiedReason");
 
 /**
  * HTTP response data.
@@ -477,6 +492,10 @@ export type Response = {
      * Protocol used to fetch this request.
      */
     protocol?: string;
+    /**
+     * The reason why Chrome uses a specific transport protocol for HTTP semantics.
+     */
+    alternateProtocolUsage?: AlternateProtocolUsage;
     /**
      * Security state of the request resource.
      */
@@ -686,12 +705,12 @@ export type Cookie = {
 /**
  * Types of reasons why a cookie may not be stored from a response.
  */
-export type SetCookieBlockedReason = ("SecureOnly" | "SameSiteStrict" | "SameSiteLax" | "SameSiteUnspecifiedTreatedAsLax" | "SameSiteNoneInsecure" | "UserPreferences" | "SyntaxError" | "SchemeNotSupported" | "OverwriteSecure" | "InvalidDomain" | "InvalidPrefix" | "UnknownError" | "SchemefulSameSiteStrict" | "SchemefulSameSiteLax" | "SchemefulSameSiteUnspecifiedTreatedAsLax" | "SamePartyFromCrossPartyContext" | "SamePartyConflictsWithOtherAttributes" | "NameValuePairExceedsMaxSize");
+export type SetCookieBlockedReason = ("SecureOnly" | "SameSiteStrict" | "SameSiteLax" | "SameSiteUnspecifiedTreatedAsLax" | "SameSiteNoneInsecure" | "UserPreferences" | "ThirdPartyBlockedInFirstPartySet" | "SyntaxError" | "SchemeNotSupported" | "OverwriteSecure" | "InvalidDomain" | "InvalidPrefix" | "UnknownError" | "SchemefulSameSiteStrict" | "SchemefulSameSiteLax" | "SchemefulSameSiteUnspecifiedTreatedAsLax" | "SamePartyFromCrossPartyContext" | "SamePartyConflictsWithOtherAttributes" | "NameValuePairExceedsMaxSize");
 
 /**
  * Types of reasons why a cookie may not be sent with a request.
  */
-export type CookieBlockedReason = ("SecureOnly" | "NotOnPath" | "DomainMismatch" | "SameSiteStrict" | "SameSiteLax" | "SameSiteUnspecifiedTreatedAsLax" | "SameSiteNoneInsecure" | "UserPreferences" | "UnknownError" | "SchemefulSameSiteStrict" | "SchemefulSameSiteLax" | "SchemefulSameSiteUnspecifiedTreatedAsLax" | "SamePartyFromCrossPartyContext" | "NameValuePairExceedsMaxSize");
+export type CookieBlockedReason = ("SecureOnly" | "NotOnPath" | "DomainMismatch" | "SameSiteStrict" | "SameSiteLax" | "SameSiteUnspecifiedTreatedAsLax" | "SameSiteNoneInsecure" | "UserPreferences" | "ThirdPartyBlockedInFirstPartySet" | "UnknownError" | "SchemefulSameSiteStrict" | "SchemefulSameSiteLax" | "SchemefulSameSiteUnspecifiedTreatedAsLax" | "SamePartyFromCrossPartyContext" | "NameValuePairExceedsMaxSize");
 
 /**
  * A cookie which was not stored from a response with the corresponding reason.
@@ -1014,7 +1033,7 @@ export type ClientSecurityState = {
     privateNetworkRequestPolicy: PrivateNetworkRequestPolicy;
 }
 
-export type CrossOriginOpenerPolicyValue = ("SameOrigin" | "SameOriginAllowPopups" | "UnsafeNone" | "SameOriginPlusCoep" | "SameOriginAllowPopupsPlusCoep");
+export type CrossOriginOpenerPolicyValue = ("SameOrigin" | "SameOriginAllowPopups" | "RestrictProperties" | "UnsafeNone" | "SameOriginPlusCoep" | "RestrictPropertiesPlusCoep");
 
 export type CrossOriginOpenerPolicyStatus = {
     value: CrossOriginOpenerPolicyValue;
@@ -2048,6 +2067,10 @@ export type RequestWillBeSentExtraInfoEvent = {
      * The client security state set for the request.
      */
     clientSecurityState?: ClientSecurityState;
+    /**
+     * Whether the site has partitioned cookies stored in a partition different than the current one.
+     */
+    siteHasCookieInOtherPartition?: boolean;
 }
 
 /**
@@ -2095,6 +2118,7 @@ export const enum TrustTokenOperationDoneEventStatus {
     ResourceExhausted = "ResourceExhausted",
     AlreadyExists = "AlreadyExists",
     Unavailable = "Unavailable",
+    Unauthorized = "Unauthorized",
     BadResponse = "BadResponse",
     InternalError = "InternalError",
     UnknownError = "UnknownError",
@@ -2114,7 +2138,7 @@ export type TrustTokenOperationDoneEvent = {
      * of the operation already exists und thus, the operation was abort
      * preemptively (e.g. a cache hit). (TrustTokenOperationDoneEventStatus enum)
      */
-    status: ("Ok" | "InvalidArgument" | "FailedPrecondition" | "ResourceExhausted" | "AlreadyExists" | "Unavailable" | "BadResponse" | "InternalError" | "UnknownError" | "FulfilledLocally");
+    status: ("Ok" | "InvalidArgument" | "FailedPrecondition" | "ResourceExhausted" | "AlreadyExists" | "Unavailable" | "Unauthorized" | "BadResponse" | "InternalError" | "UnknownError" | "FulfilledLocally");
     type: TrustTokenOperationType;
     requestId: RequestId;
     /**

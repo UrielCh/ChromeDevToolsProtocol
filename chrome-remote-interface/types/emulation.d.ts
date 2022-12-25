@@ -86,12 +86,14 @@ export type UserAgentMetadata = {
     architecture: string;
     model: string;
     mobile: boolean;
+    bitness?: string;
+    wow64?: boolean;
 }
 
 /**
  * Enum of image types that can be disabled.
  */
-export type DisabledImageType = ("avif" | "jxl" | "webp");
+export type DisabledImageType = ("avif" | "webp");
 
 export type CanEmulateResponse = {
     /**
@@ -362,6 +364,13 @@ export type SetDisabledImageTypesRequest = {
     imageTypes: DisabledImageType[];
 }
 
+export type SetHardwareConcurrencyOverrideRequest = {
+    /**
+     * Hardware concurrency to report
+     */
+    hardwareConcurrency: integer;
+}
+
 export type SetUserAgentOverrideRequest = {
     /**
      * User agent to use.
@@ -379,5 +388,12 @@ export type SetUserAgentOverrideRequest = {
      * To be sent in Sec-CH-UA-* headers and returned in navigator.userAgentData
      */
     userAgentMetadata?: UserAgentMetadata;
+}
+
+export type SetAutomationOverrideRequest = {
+    /**
+     * Whether the override should be enabled.
+     */
+    enabled: boolean;
 }
 

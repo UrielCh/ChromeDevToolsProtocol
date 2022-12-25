@@ -23,6 +23,11 @@ export type TraceConfig = {
      */
     recordMode?: ("recordUntilFull" | "recordContinuously" | "recordAsMuchAsPossible" | "echoToConsole");
     /**
+     * Size of the trace buffer in kilobytes. If not specified or zero is passed, a default value
+     * of 200 MB would be used.
+     */
+    traceBufferSizeInKb?: number;
+    /**
      * Turns on JavaScript stack sampling.
      */
     enableSampling?: boolean;
@@ -179,8 +184,8 @@ export type BufferUsageEvent = {
 }
 
 /**
- * Contains an bucket of collected trace events. When tracing is stopped collected events will be
- * send as a sequence of dataCollected events followed by tracingComplete event.
+ * Contains a bucket of collected trace events. When tracing is stopped collected events will be
+ * sent as a sequence of dataCollected events followed by tracingComplete event.
  */
 export type DataCollectedEvent = {
     value: any[];

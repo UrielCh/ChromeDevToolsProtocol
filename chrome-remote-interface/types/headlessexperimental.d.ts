@@ -8,6 +8,7 @@ export type integer = number;
 export const enum ScreenshotParamsFormat {
     Jpeg = "jpeg",
     Png = "png",
+    Webp = "webp",
 }
 
 /**
@@ -17,11 +18,15 @@ export type ScreenshotParams = {
     /**
      * Image compression format (defaults to png). (ScreenshotParamsFormat enum)
      */
-    format?: ("jpeg" | "png");
+    format?: ("jpeg" | "png" | "webp");
     /**
      * Compression quality from range [0..100] (jpeg only).
      */
     quality?: integer;
+    /**
+     * Optimize image encoding for speed, not for resulting size (defaults to false)
+     */
+    optimizeForSpeed?: boolean;
 }
 
 export type BeginFrameRequest = {
@@ -59,17 +64,5 @@ export type BeginFrameResponse = {
      * Base64-encoded image data of the screenshot, if one was requested and successfully taken. (Encoded as a base64 string when passed over JSON)
      */
     screenshotData?: string;
-}
-
-/**
- * Issued when the target starts or stops needing BeginFrames.
- * Deprecated. Issue beginFrame unconditionally instead and use result from
- * beginFrame to detect whether the frames were suppressed.
- */
-export type NeedsBeginFramesChangedEvent = {
-    /**
-     * True if BeginFrames are needed, false otherwise.
-     */
-    needsBeginFrames: boolean;
 }
 

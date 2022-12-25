@@ -362,6 +362,11 @@ export type NodeTreeSnapshot = {
      */
     pseudoType?: RareStringData;
     /**
+     * Pseudo element identifier for this node. Only present if there is a
+     * valid pseudoType.
+     */
+    pseudoIdentifier?: RareStringData;
+    /**
      * Whether this DOM node responds to mouse clicks. This includes nodes that have had click
      * event listeners attached via JavaScript as well as anchor tags that naturally navigate when
      * clicked.

@@ -30,6 +30,10 @@ export type PseudoElementMatches = {
      */
     pseudoType: DOM.PseudoType;
     /**
+     * Pseudo element custom ident.
+     */
+    pseudoIdentifier?: string;
+    /**
      * Matches of CSS rules applicable to the pseudo style.
      */
     matches: RuleMatch[];
@@ -47,6 +51,16 @@ export type InheritedStyleEntry = {
      * Matches of CSS rules matching the ancestor node in the style inheritance chain.
      */
     matchedCSSRules: RuleMatch[];
+}
+
+/**
+ * Inherited pseudo element matches from pseudos of an ancestor node.
+ */
+export type InheritedPseudoElementMatches = {
+    /**
+     * Matches of pseudo styles from the pseudos of an ancestor node.
+     */
+    pseudoElements: PseudoElementMatches[];
 }
 
 /**
@@ -208,6 +222,16 @@ export type CSSRule = {
      * The array enumerates @supports at-rules starting with the innermost one, going outwards.
      */
     supports?: CSSSupports[];
+    /**
+     * Cascade layer array. Contains the layer hierarchy that this rule belongs to starting
+     * with the innermost layer and going outwards.
+     */
+    layers?: CSSLayer[];
+    /**
+     * @scope CSS at-rule array.
+     * The array enumerates @scope at-rules starting with the innermost one, going outwards.
+     */
+    scopes?: CSSScope[];
 }
 
 /**
@@ -344,6 +368,11 @@ export type CSSProperty = {
      * The entire property range in the enclosing style declaration (if available).
      */
     range?: SourceRange;
+    /**
+     * Parsed longhand components of this property if it is a shorthand.
+     * This field will be empty if the given property is not a shorthand.
+     */
+    longhandProperties?: CSSProperty[];
 }
 
 export const enum CSSMediaSource {
@@ -448,6 +477,14 @@ export type CSSContainerQuery = {
      * Optional name for the container.
      */
     name?: string;
+    /**
+     * Optional physical axes queried for the container.
+     */
+    physicalAxes?: DOM.PhysicalAxes;
+    /**
+     * Optional logical axes queried for the container.
+     */
+    logicalAxes?: DOM.LogicalAxes;
 }
 
 /**
@@ -459,6 +496,10 @@ export type CSSSupports = {
      */
     text: string;
     /**
+     * Whether the supports condition is satisfied.
+     */
+    active: boolean;
+    /**
      * The associated rule header range in the enclosing stylesheet (if
      * available).
      */
@@ -467,6 +508,63 @@ export type CSSSupports = {
      * Identifier of the stylesheet containing this object (if exists).
      */
     styleSheetId?: StyleSheetId;
+}
+
+/**
+ * CSS Scope at-rule descriptor.
+ */
+export type CSSScope = {
+    /**
+     * Scope rule text.
+     */
+    text: string;
+    /**
+     * The associated rule header range in the enclosing stylesheet (if
+     * available).
+     */
+    range?: SourceRange;
+    /**
+     * Identifier of the stylesheet containing this object (if exists).
+     */
+    styleSheetId?: StyleSheetId;
+}
+
+/**
+ * CSS Layer at-rule descriptor.
+ */
+export type CSSLayer = {
+    /**
+     * Layer name.
+     */
+    text: string;
+    /**
+     * The associated rule header range in the enclosing stylesheet (if
+     * available).
+     */
+    range?: SourceRange;
+    /**
+     * Identifier of the stylesheet containing this object (if exists).
+     */
+    styleSheetId?: StyleSheetId;
+}
+
+/**
+ * CSS Layer data.
+ */
+export type CSSLayerData = {
+    /**
+     * Layer name.
+     */
+    name: string;
+    /**
+     * Direct sub-layers
+     */
+    subLayers?: CSSLayerData[];
+    /**
+     * Layer order. The order determines the order of the layer in the cascade order.
+     * A higher number has higher priority in the cascade order.
+     */
+    order: number;
 }
 
 /**
@@ -538,6 +636,10 @@ export type FontFace = {
      * The font-stretch.
      */
     fontStretch: string;
+    /**
+     * The font-display.
+     */
+    fontDisplay: string;
     /**
      * The unicode-range.
      */
@@ -748,9 +850,17 @@ export type GetMatchedStylesForNodeResponse = {
      */
     inherited?: InheritedStyleEntry[];
     /**
+     * A chain of inherited pseudo element styles (from the immediate node parent up to the DOM tree root).
+     */
+    inheritedPseudoElements?: InheritedPseudoElementMatches[];
+    /**
      * A list of CSS keyframed animations matching this node.
      */
     cssKeyframesRules?: CSSKeyframesRule[];
+    /**
+     * Id of the first parent element that does not have display: contents.
+     */
+    parentLayoutNodeId?: DOM.NodeId;
 }
 
 export type GetMediaQueriesResponse = {
@@ -777,6 +887,14 @@ export type GetStyleSheetTextResponse = {
      * The stylesheet text.
      */
     text: string;
+}
+
+export type GetLayersForNodeRequest = {
+    nodeId: DOM.NodeId;
+}
+
+export type GetLayersForNodeResponse = {
+    rootLayer: CSSLayerData;
 }
 
 export type TrackComputedStyleUpdatesRequest = {
@@ -836,6 +954,32 @@ export type SetContainerQueryTextResponse = {
      * The resulting CSS container query rule after modification.
      */
     containerQuery: CSSContainerQuery;
+}
+
+export type SetSupportsTextRequest = {
+    styleSheetId: StyleSheetId;
+    range: SourceRange;
+    text: string;
+}
+
+export type SetSupportsTextResponse = {
+    /**
+     * The resulting CSS Supports rule after modification.
+     */
+    supports: CSSSupports;
+}
+
+export type SetScopeTextRequest = {
+    styleSheetId: StyleSheetId;
+    range: SourceRange;
+    text: string;
+}
+
+export type SetScopeTextResponse = {
+    /**
+     * The resulting CSS Scope rule after modification.
+     */
+    scope: CSSScope;
 }
 
 export type SetRuleSelectorRequest = {

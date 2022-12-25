@@ -55,27 +55,38 @@ export type PlayerEvent = {
     value: string;
 }
 
-export const enum PlayerErrorType {
-    Pipeline_error = "pipeline_error",
-    Media_error = "media_error",
+/**
+ * Represents logged source line numbers reported in an error.
+ * NOTE: file and line are from chromium c++ implementation code, not js.
+ */
+export type PlayerErrorSourceLocation = {
+    file: string;
+    line: integer;
 }
 
 /**
  * Corresponds to kMediaError
  */
 export type PlayerError = {
+    errorType: string;
     /**
-     *  (PlayerErrorType enum)
+     * Code is the numeric enum entry for a specific set of error codes, such
+     * as PipelineStatusCodes in media/base/pipeline_status.h
      */
-    type: ("pipeline_error" | "media_error");
+    code: integer;
     /**
-     * When this switches to using media::Status instead of PipelineStatus
-     * we can remove "errorCode" and replace it with the fields from
-     * a Status instance. This also seems like a duplicate of the error
-     * level enum - there is a todo bug to have that level removed and
-     * use this instead. (crbug.com/1068454)
+     * A trace of where this error was caused / where it passed through.
      */
-    errorCode: string;
+    stack: PlayerErrorSourceLocation[];
+    /**
+     * Errors potentially have a root cause error, ie, a DecoderError might be
+     * caused by an WindowsError
+     */
+    cause: PlayerError[];
+    /**
+     * Extra data attached to an error, such as an HRESULT, Video Codec, etc.
+     */
+    data: any;
 }
 
 /**

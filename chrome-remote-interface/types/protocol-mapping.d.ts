@@ -122,6 +122,10 @@ export namespace ProtocolMapping {
          */
         "DOM.pseudoElementAdded": [Protocol.DOM.PseudoElementAddedEvent];
         /**
+         * Called when top layer elements are changed.
+         */
+        "DOM.topLayerElementsUpdated": [];
+        /**
          * Called when a pseudo element is removed from an element.
          */
         "DOM.pseudoElementRemoved": [Protocol.DOM.PseudoElementRemovedEvent];
@@ -147,12 +151,6 @@ export namespace ProtocolMapping {
          * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out.
          */
         "Emulation.virtualTimeBudgetExpired": [];
-        /**
-         * Issued when the target starts or stops needing BeginFrames.
-         * Deprecated. Issue beginFrame unconditionally instead and use result from
-         * beginFrame to detect whether the frames were suppressed.
-         */
-        "HeadlessExperimental.needsBeginFramesChanged": [Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent];
         /**
          * Emitted only when `Input.setInterceptDrags` is enabled. Use this data with `Input.dispatchDragEvent` to
          * restore normal drag and drop behavior.
@@ -402,6 +400,10 @@ export namespace ProtocolMapping {
          * when bfcache navigation fails.
          */
         "Page.backForwardCacheNotUsed": [Protocol.Page.BackForwardCacheNotUsedEvent];
+        /**
+         * Fired when a prerender attempt is completed.
+         */
+        "Page.prerenderAttemptCompleted": [Protocol.Page.PrerenderAttemptCompletedEvent];
         "Page.loadEventFired": [Protocol.Page.LoadEventFiredEvent];
         /**
          * Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation.
@@ -472,6 +474,11 @@ export namespace ProtocolMapping {
          */
         "Storage.interestGroupAccessed": [Protocol.Storage.InterestGroupAccessedEvent];
         /**
+         * Shared storage was accessed by the associated page.
+         * The following parameters are included in all events.
+         */
+        "Storage.sharedStorageAccessed": [Protocol.Storage.SharedStorageAccessedEvent];
+        /**
          * Issued when attached to target because of auto-attach or `attachToTarget` command.
          */
         "Target.attachedToTarget": [Protocol.Target.AttachedToTargetEvent];
@@ -508,8 +515,8 @@ export namespace ProtocolMapping {
         "Tethering.accepted": [Protocol.Tethering.AcceptedEvent];
         "Tracing.bufferUsage": [Protocol.Tracing.BufferUsageEvent];
         /**
-         * Contains an bucket of collected trace events. When tracing is stopped collected events will be
-         * send as a sequence of dataCollected events followed by tracingComplete event.
+         * Contains a bucket of collected trace events. When tracing is stopped collected events will be
+         * sent as a sequence of dataCollected events followed by tracingComplete event.
          */
         "Tracing.dataCollected": [Protocol.Tracing.DataCollectedEvent];
         /**
@@ -584,6 +591,14 @@ export namespace ProtocolMapping {
          */
         "WebAudio.nodeParamDisconnected": [Protocol.WebAudio.NodeParamDisconnectedEvent];
         /**
+         * Triggered when a credential is added to an authenticator.
+         */
+        "WebAuthn.credentialAdded": [Protocol.WebAuthn.CredentialAddedEvent];
+        /**
+         * Triggered when a credential is used in a webauthn assertion.
+         */
+        "WebAuthn.credentialAsserted": [Protocol.WebAuthn.CredentialAssertedEvent];
+        /**
          * This can be called multiple times, and can be used to set / override /
          * remove player properties. A null propValue indicates removal.
          */
@@ -607,89 +622,6 @@ export namespace ProtocolMapping {
          * list of player ids and all events again.
          */
         "Media.playersCreated": [Protocol.Media.PlayersCreatedEvent];
-        /**
-         * Issued when new console message is added.
-         */
-        "Console.messageAdded": [Protocol.Console.MessageAddedEvent];
-        /**
-         * Fired when breakpoint is resolved to an actual script and location.
-         */
-        "Debugger.breakpointResolved": [Protocol.Debugger.BreakpointResolvedEvent];
-        /**
-         * Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria.
-         */
-        "Debugger.paused": [Protocol.Debugger.PausedEvent];
-        /**
-         * Fired when the virtual machine resumed execution.
-         */
-        "Debugger.resumed": [];
-        /**
-         * Fired when virtual machine fails to parse the script.
-         */
-        "Debugger.scriptFailedToParse": [Protocol.Debugger.ScriptFailedToParseEvent];
-        /**
-         * Fired when virtual machine parses script. This event is also fired for all known and uncollected
-         * scripts upon enabling debugger.
-         */
-        "Debugger.scriptParsed": [Protocol.Debugger.ScriptParsedEvent];
-        "HeapProfiler.addHeapSnapshotChunk": [Protocol.HeapProfiler.AddHeapSnapshotChunkEvent];
-        /**
-         * If heap objects tracking has been started then backend may send update for one or more fragments
-         */
-        "HeapProfiler.heapStatsUpdate": [Protocol.HeapProfiler.HeapStatsUpdateEvent];
-        /**
-         * If heap objects tracking has been started then backend regularly sends a current value for last
-         * seen object id and corresponding timestamp. If the were changes in the heap since last event
-         * then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event.
-         */
-        "HeapProfiler.lastSeenObjectId": [Protocol.HeapProfiler.LastSeenObjectIdEvent];
-        "HeapProfiler.reportHeapSnapshotProgress": [Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent];
-        "HeapProfiler.resetProfiles": [];
-        "Profiler.consoleProfileFinished": [Protocol.Profiler.ConsoleProfileFinishedEvent];
-        /**
-         * Sent when new profile recording is started using console.profile() call.
-         */
-        "Profiler.consoleProfileStarted": [Protocol.Profiler.ConsoleProfileStartedEvent];
-        /**
-         * Reports coverage delta since the last poll (either from an event like this, or from
-         * `takePreciseCoverage` for the current isolate. May only be sent if precise code
-         * coverage has been started. This event can be trigged by the embedder to, for example,
-         * trigger collection of coverage data immediately at a certain point in time.
-         */
-        "Profiler.preciseCoverageDeltaUpdate": [Protocol.Profiler.PreciseCoverageDeltaUpdateEvent];
-        /**
-         * Notification is issued every time when binding is called.
-         */
-        "Runtime.bindingCalled": [Protocol.Runtime.BindingCalledEvent];
-        /**
-         * Issued when console API was called.
-         */
-        "Runtime.consoleAPICalled": [Protocol.Runtime.ConsoleAPICalledEvent];
-        /**
-         * Issued when unhandled exception was revoked.
-         */
-        "Runtime.exceptionRevoked": [Protocol.Runtime.ExceptionRevokedEvent];
-        /**
-         * Issued when exception was thrown and unhandled.
-         */
-        "Runtime.exceptionThrown": [Protocol.Runtime.ExceptionThrownEvent];
-        /**
-         * Issued when new execution context is created.
-         */
-        "Runtime.executionContextCreated": [Protocol.Runtime.ExecutionContextCreatedEvent];
-        /**
-         * Issued when execution context is destroyed.
-         */
-        "Runtime.executionContextDestroyed": [Protocol.Runtime.ExecutionContextDestroyedEvent];
-        /**
-         * Issued when all executionContexts were cleared in browser
-         */
-        "Runtime.executionContextsCleared": [];
-        /**
-         * Issued when object should be inspected (for example, as a result of inspect() command line API
-         * call).
-         */
-        "Runtime.inspectRequested": [Protocol.Runtime.InspectRequestedEvent];
     }
 
     export type Commands = {
@@ -1100,6 +1032,16 @@ export namespace ProtocolMapping {
             returnType: Protocol.CSS.GetStyleSheetTextResponse;
         };
         /**
+         * Returns all layers parsed by the rendering engine for the tree scope of a node.
+         * Given a DOM element identified by nodeId, getLayersForNode returns the root
+         * layer for the nearest ancestor document or shadow root. The layer root contains
+         * the full layer tree for the tree scope and their ordering.
+         */
+        "CSS.getLayersForNode": {
+            paramsType: [Protocol.CSS.GetLayersForNodeRequest];
+            returnType: Protocol.CSS.GetLayersForNodeResponse;
+        };
+        /**
          * Starts tracking the given computed styles for updates. The specified array of properties
          * replaces the one previously specified. Pass empty array to disable tracking.
          * Use takeComputedStyleUpdates to retrieve the list of nodes that had properties modified.
@@ -1146,6 +1088,20 @@ export namespace ProtocolMapping {
         "CSS.setContainerQueryText": {
             paramsType: [Protocol.CSS.SetContainerQueryTextRequest];
             returnType: Protocol.CSS.SetContainerQueryTextResponse;
+        };
+        /**
+         * Modifies the expression of a supports at-rule.
+         */
+        "CSS.setSupportsText": {
+            paramsType: [Protocol.CSS.SetSupportsTextRequest];
+            returnType: Protocol.CSS.SetSupportsTextResponse;
+        };
+        /**
+         * Modifies the expression of a scope at-rule.
+         */
+        "CSS.setScopeText": {
+            paramsType: [Protocol.CSS.SetScopeTextRequest];
+            returnType: Protocol.CSS.SetScopeTextResponse;
         };
         /**
          * Modifies the rule selector.
@@ -1216,7 +1172,7 @@ export namespace ProtocolMapping {
          * Requests cache names.
          */
         "CacheStorage.requestCacheNames": {
-            paramsType: [Protocol.CacheStorage.RequestCacheNamesRequest];
+            paramsType: [Protocol.CacheStorage.RequestCacheNamesRequest?];
             returnType: Protocol.CacheStorage.RequestCacheNamesResponse;
         };
         /**
@@ -1488,6 +1444,15 @@ export namespace ProtocolMapping {
             returnType: Protocol.DOM.QuerySelectorAllResponse;
         };
         /**
+         * Returns NodeIds of current top layer elements.
+         * Top layer is rendered closest to the user within a viewport, therefore its elements always
+         * appear on top of all other content.
+         */
+        "DOM.getTopLayerElements": {
+            paramsType: [];
+            returnType: Protocol.DOM.GetTopLayerElementsResponse;
+        };
+        /**
          * Re-does the last undone action.
          */
         "DOM.redo": {
@@ -1621,9 +1586,10 @@ export namespace ProtocolMapping {
             returnType: Protocol.DOM.GetFrameOwnerResponse;
         };
         /**
-         * Returns the container of the given node based on container query conditions.
-         * If containerName is given, it will find the nearest container with a matching name;
-         * otherwise it will find the nearest container regardless of its container name.
+         * Returns the query container of the given node based on container query
+         * conditions: containerName, physical, and logical axes. If no axes are
+         * provided, the style container is returned, which is the direct parent or the
+         * closest element with a matching container-name.
          */
         "DOM.getContainerForNode": {
             paramsType: [Protocol.DOM.GetContainerForNodeRequest];
@@ -1998,6 +1964,10 @@ export namespace ProtocolMapping {
             paramsType: [Protocol.Emulation.SetDisabledImageTypesRequest];
             returnType: void;
         };
+        "Emulation.setHardwareConcurrencyOverride": {
+            paramsType: [Protocol.Emulation.SetHardwareConcurrencyOverrideRequest];
+            returnType: void;
+        };
         /**
          * Allows overriding user agent with the given string.
          */
@@ -2006,10 +1976,17 @@ export namespace ProtocolMapping {
             returnType: void;
         };
         /**
+         * Allows overriding the automation flag.
+         */
+        "Emulation.setAutomationOverride": {
+            paramsType: [Protocol.Emulation.SetAutomationOverrideRequest];
+            returnType: void;
+        };
+        /**
          * Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a
          * screenshot from the resulting frame. Requires that the target was created with enabled
          * BeginFrameControl. Designed for use with --run-all-compositor-stages-before-draw, see also
-         * https://goo.gl/3zHXhB for more background.
+         * https://goo.gle/chrome-headless-rendering for more background.
          */
         "HeadlessExperimental.beginFrame": {
             paramsType: [Protocol.HeadlessExperimental.BeginFrameRequest?];
@@ -2110,7 +2087,7 @@ export namespace ProtocolMapping {
          * Requests database names for given security origin.
          */
         "IndexedDB.requestDatabaseNames": {
-            paramsType: [Protocol.IndexedDB.RequestDatabaseNamesRequest];
+            paramsType: [Protocol.IndexedDB.RequestDatabaseNamesRequest?];
             returnType: Protocol.IndexedDB.RequestDatabaseNamesResponse;
         };
         /**
@@ -2917,9 +2894,14 @@ export namespace ProtocolMapping {
             paramsType: [];
             returnType: Protocol.Page.GetAppIdResponse;
         };
+        "Page.getAdScriptId": {
+            paramsType: [Protocol.Page.GetAdScriptIdRequest];
+            returnType: Protocol.Page.GetAdScriptIdResponse;
+        };
         /**
-         * Returns all browser cookies. Depending on the backend support, will return detailed cookie
-         * information in the `cookies` field.
+         * Returns all browser cookies for the page and all of its subframes. Depending
+         * on the backend support, will return detailed cookie information in the
+         * `cookies` field.
          */
         "Page.getCookies": {
             paramsType: [];
@@ -3353,10 +3335,24 @@ export namespace ProtocolMapping {
             returnType: void;
         };
         /**
+         * Returns a storage key given a frame id.
+         */
+        "Storage.getStorageKeyForFrame": {
+            paramsType: [Protocol.Storage.GetStorageKeyForFrameRequest];
+            returnType: Protocol.Storage.GetStorageKeyForFrameResponse;
+        };
+        /**
          * Clears storage for origin.
          */
         "Storage.clearDataForOrigin": {
             paramsType: [Protocol.Storage.ClearDataForOriginRequest];
+            returnType: void;
+        };
+        /**
+         * Clears storage for storage key.
+         */
+        "Storage.clearDataForStorageKey": {
+            paramsType: [Protocol.Storage.ClearDataForStorageKeyRequest];
             returnType: void;
         };
         /**
@@ -3402,10 +3398,24 @@ export namespace ProtocolMapping {
             returnType: void;
         };
         /**
+         * Registers storage key to be notified when an update occurs to its cache storage list.
+         */
+        "Storage.trackCacheStorageForStorageKey": {
+            paramsType: [Protocol.Storage.TrackCacheStorageForStorageKeyRequest];
+            returnType: void;
+        };
+        /**
          * Registers origin to be notified when an update occurs to its IndexedDB.
          */
         "Storage.trackIndexedDBForOrigin": {
             paramsType: [Protocol.Storage.TrackIndexedDBForOriginRequest];
+            returnType: void;
+        };
+        /**
+         * Registers storage key to be notified when an update occurs to its IndexedDB.
+         */
+        "Storage.trackIndexedDBForStorageKey": {
+            paramsType: [Protocol.Storage.TrackIndexedDBForStorageKeyRequest];
             returnType: void;
         };
         /**
@@ -3416,10 +3426,24 @@ export namespace ProtocolMapping {
             returnType: void;
         };
         /**
+         * Unregisters storage key from receiving notifications for cache storage.
+         */
+        "Storage.untrackCacheStorageForStorageKey": {
+            paramsType: [Protocol.Storage.UntrackCacheStorageForStorageKeyRequest];
+            returnType: void;
+        };
+        /**
          * Unregisters origin from receiving notifications for IndexedDB.
          */
         "Storage.untrackIndexedDBForOrigin": {
             paramsType: [Protocol.Storage.UntrackIndexedDBForOriginRequest];
+            returnType: void;
+        };
+        /**
+         * Unregisters storage key from receiving notifications for IndexedDB.
+         */
+        "Storage.untrackIndexedDBForStorageKey": {
+            paramsType: [Protocol.Storage.UntrackIndexedDBForStorageKeyRequest];
             returnType: void;
         };
         /**
@@ -3453,11 +3477,67 @@ export namespace ProtocolMapping {
             returnType: void;
         };
         /**
+         * Gets metadata for an origin's shared storage.
+         */
+        "Storage.getSharedStorageMetadata": {
+            paramsType: [Protocol.Storage.GetSharedStorageMetadataRequest];
+            returnType: Protocol.Storage.GetSharedStorageMetadataResponse;
+        };
+        /**
+         * Gets the entries in an given origin's shared storage.
+         */
+        "Storage.getSharedStorageEntries": {
+            paramsType: [Protocol.Storage.GetSharedStorageEntriesRequest];
+            returnType: Protocol.Storage.GetSharedStorageEntriesResponse;
+        };
+        /**
+         * Sets entry with `key` and `value` for a given origin's shared storage.
+         */
+        "Storage.setSharedStorageEntry": {
+            paramsType: [Protocol.Storage.SetSharedStorageEntryRequest];
+            returnType: void;
+        };
+        /**
+         * Deletes entry for `key` (if it exists) for a given origin's shared storage.
+         */
+        "Storage.deleteSharedStorageEntry": {
+            paramsType: [Protocol.Storage.DeleteSharedStorageEntryRequest];
+            returnType: void;
+        };
+        /**
+         * Clears all entries for a given origin's shared storage.
+         */
+        "Storage.clearSharedStorageEntries": {
+            paramsType: [Protocol.Storage.ClearSharedStorageEntriesRequest];
+            returnType: void;
+        };
+        /**
+         * Resets the budget for `ownerOrigin` by clearing all budget withdrawals.
+         */
+        "Storage.resetSharedStorageBudget": {
+            paramsType: [Protocol.Storage.ResetSharedStorageBudgetRequest];
+            returnType: void;
+        };
+        /**
+         * Enables/disables issuing of sharedStorageAccessed events.
+         */
+        "Storage.setSharedStorageTracking": {
+            paramsType: [Protocol.Storage.SetSharedStorageTrackingRequest];
+            returnType: void;
+        };
+        /**
          * Returns information about the system.
          */
         "SystemInfo.getInfo": {
             paramsType: [];
             returnType: Protocol.SystemInfo.GetInfoResponse;
+        };
+        /**
+         * Returns information about the feature state.
+         */
+        "SystemInfo.getFeatureState": {
+            paramsType: [Protocol.SystemInfo.GetFeatureStateRequest];
+            returnType: Protocol.SystemInfo.GetFeatureStateResponse;
         };
         /**
          * Returns information about all running processes.
@@ -3556,7 +3636,7 @@ export namespace ProtocolMapping {
          * Retrieves a list of available targets.
          */
         "Target.getTargets": {
-            paramsType: [];
+            paramsType: [Protocol.Target.GetTargetsRequest?];
             returnType: Protocol.Target.GetTargetsResponse;
         };
         /**
@@ -3761,7 +3841,7 @@ export namespace ProtocolMapping {
          * retrieval with a virtual authenticator.
          */
         "WebAuthn.enable": {
-            paramsType: [];
+            paramsType: [Protocol.WebAuthn.EnableRequest?];
             returnType: void;
         };
         /**
@@ -3777,6 +3857,13 @@ export namespace ProtocolMapping {
         "WebAuthn.addVirtualAuthenticator": {
             paramsType: [Protocol.WebAuthn.AddVirtualAuthenticatorRequest];
             returnType: Protocol.WebAuthn.AddVirtualAuthenticatorResponse;
+        };
+        /**
+         * Resets parameters isBogusSignature, isBadUV, isBadUP to false if they are not present.
+         */
+        "WebAuthn.setResponseOverrideBits": {
+            paramsType: [Protocol.WebAuthn.SetResponseOverrideBitsRequest];
+            returnType: void;
         };
         /**
          * Removes the given authenticator.
@@ -3850,542 +3937,6 @@ export namespace ProtocolMapping {
         "Media.disable": {
             paramsType: [];
             returnType: void;
-        };
-        /**
-         * Does nothing.
-         */
-        "Console.clearMessages": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Disables console domain, prevents further console messages from being reported to the client.
-         */
-        "Console.disable": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Enables console domain, sends the messages collected so far to the client by means of the
-         * `messageAdded` notification.
-         */
-        "Console.enable": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Continues execution until specific location is reached.
-         */
-        "Debugger.continueToLocation": {
-            paramsType: [Protocol.Debugger.ContinueToLocationRequest];
-            returnType: void;
-        };
-        /**
-         * Disables debugger for given page.
-         */
-        "Debugger.disable": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Enables debugger for the given page. Clients should not assume that the debugging has been
-         * enabled until the result for this command is received.
-         */
-        "Debugger.enable": {
-            paramsType: [Protocol.Debugger.EnableRequest?];
-            returnType: Protocol.Debugger.EnableResponse;
-        };
-        /**
-         * Evaluates expression on a given call frame.
-         */
-        "Debugger.evaluateOnCallFrame": {
-            paramsType: [Protocol.Debugger.EvaluateOnCallFrameRequest];
-            returnType: Protocol.Debugger.EvaluateOnCallFrameResponse;
-        };
-        /**
-         * Returns possible locations for breakpoint. scriptId in start and end range locations should be
-         * the same.
-         */
-        "Debugger.getPossibleBreakpoints": {
-            paramsType: [Protocol.Debugger.GetPossibleBreakpointsRequest];
-            returnType: Protocol.Debugger.GetPossibleBreakpointsResponse;
-        };
-        /**
-         * Returns source for the script with given id.
-         */
-        "Debugger.getScriptSource": {
-            paramsType: [Protocol.Debugger.GetScriptSourceRequest];
-            returnType: Protocol.Debugger.GetScriptSourceResponse;
-        };
-        /**
-         * This command is deprecated. Use getScriptSource instead.
-         */
-        "Debugger.getWasmBytecode": {
-            paramsType: [Protocol.Debugger.GetWasmBytecodeRequest];
-            returnType: Protocol.Debugger.GetWasmBytecodeResponse;
-        };
-        /**
-         * Returns stack trace with given `stackTraceId`.
-         */
-        "Debugger.getStackTrace": {
-            paramsType: [Protocol.Debugger.GetStackTraceRequest];
-            returnType: Protocol.Debugger.GetStackTraceResponse;
-        };
-        /**
-         * Stops on the next JavaScript statement.
-         */
-        "Debugger.pause": {
-            paramsType: [];
-            returnType: void;
-        };
-        "Debugger.pauseOnAsyncCall": {
-            paramsType: [Protocol.Debugger.PauseOnAsyncCallRequest];
-            returnType: void;
-        };
-        /**
-         * Removes JavaScript breakpoint.
-         */
-        "Debugger.removeBreakpoint": {
-            paramsType: [Protocol.Debugger.RemoveBreakpointRequest];
-            returnType: void;
-        };
-        /**
-         * Restarts particular call frame from the beginning.
-         */
-        "Debugger.restartFrame": {
-            paramsType: [Protocol.Debugger.RestartFrameRequest];
-            returnType: Protocol.Debugger.RestartFrameResponse;
-        };
-        /**
-         * Resumes JavaScript execution.
-         */
-        "Debugger.resume": {
-            paramsType: [Protocol.Debugger.ResumeRequest?];
-            returnType: void;
-        };
-        /**
-         * Searches for given string in script content.
-         */
-        "Debugger.searchInContent": {
-            paramsType: [Protocol.Debugger.SearchInContentRequest];
-            returnType: Protocol.Debugger.SearchInContentResponse;
-        };
-        /**
-         * Enables or disables async call stacks tracking.
-         */
-        "Debugger.setAsyncCallStackDepth": {
-            paramsType: [Protocol.Debugger.SetAsyncCallStackDepthRequest];
-            returnType: void;
-        };
-        /**
-         * Replace previous blackbox patterns with passed ones. Forces backend to skip stepping/pausing in
-         * scripts with url matching one of the patterns. VM will try to leave blackboxed script by
-         * performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
-         */
-        "Debugger.setBlackboxPatterns": {
-            paramsType: [Protocol.Debugger.SetBlackboxPatternsRequest];
-            returnType: void;
-        };
-        /**
-         * Makes backend skip steps in the script in blackboxed ranges. VM will try leave blacklisted
-         * scripts by performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
-         * Positions array contains positions where blackbox state is changed. First interval isn't
-         * blackboxed. Array should be sorted.
-         */
-        "Debugger.setBlackboxedRanges": {
-            paramsType: [Protocol.Debugger.SetBlackboxedRangesRequest];
-            returnType: void;
-        };
-        /**
-         * Sets JavaScript breakpoint at a given location.
-         */
-        "Debugger.setBreakpoint": {
-            paramsType: [Protocol.Debugger.SetBreakpointRequest];
-            returnType: Protocol.Debugger.SetBreakpointResponse;
-        };
-        /**
-         * Sets instrumentation breakpoint.
-         */
-        "Debugger.setInstrumentationBreakpoint": {
-            paramsType: [Protocol.Debugger.SetInstrumentationBreakpointRequest];
-            returnType: Protocol.Debugger.SetInstrumentationBreakpointResponse;
-        };
-        /**
-         * Sets JavaScript breakpoint at given location specified either by URL or URL regex. Once this
-         * command is issued, all existing parsed scripts will have breakpoints resolved and returned in
-         * `locations` property. Further matching script parsing will result in subsequent
-         * `breakpointResolved` events issued. This logical breakpoint will survive page reloads.
-         */
-        "Debugger.setBreakpointByUrl": {
-            paramsType: [Protocol.Debugger.SetBreakpointByUrlRequest];
-            returnType: Protocol.Debugger.SetBreakpointByUrlResponse;
-        };
-        /**
-         * Sets JavaScript breakpoint before each call to the given function.
-         * If another function was created from the same source as a given one,
-         * calling it will also trigger the breakpoint.
-         */
-        "Debugger.setBreakpointOnFunctionCall": {
-            paramsType: [Protocol.Debugger.SetBreakpointOnFunctionCallRequest];
-            returnType: Protocol.Debugger.SetBreakpointOnFunctionCallResponse;
-        };
-        /**
-         * Activates / deactivates all breakpoints on the page.
-         */
-        "Debugger.setBreakpointsActive": {
-            paramsType: [Protocol.Debugger.SetBreakpointsActiveRequest];
-            returnType: void;
-        };
-        /**
-         * Defines pause on exceptions state. Can be set to stop on all exceptions, uncaught exceptions or
-         * no exceptions. Initial pause on exceptions state is `none`.
-         */
-        "Debugger.setPauseOnExceptions": {
-            paramsType: [Protocol.Debugger.SetPauseOnExceptionsRequest];
-            returnType: void;
-        };
-        /**
-         * Changes return value in top frame. Available only at return break position.
-         */
-        "Debugger.setReturnValue": {
-            paramsType: [Protocol.Debugger.SetReturnValueRequest];
-            returnType: void;
-        };
-        /**
-         * Edits JavaScript source live.
-         */
-        "Debugger.setScriptSource": {
-            paramsType: [Protocol.Debugger.SetScriptSourceRequest];
-            returnType: Protocol.Debugger.SetScriptSourceResponse;
-        };
-        /**
-         * Makes page not interrupt on any pauses (breakpoint, exception, dom exception etc).
-         */
-        "Debugger.setSkipAllPauses": {
-            paramsType: [Protocol.Debugger.SetSkipAllPausesRequest];
-            returnType: void;
-        };
-        /**
-         * Changes value of variable in a callframe. Object-based scopes are not supported and must be
-         * mutated manually.
-         */
-        "Debugger.setVariableValue": {
-            paramsType: [Protocol.Debugger.SetVariableValueRequest];
-            returnType: void;
-        };
-        /**
-         * Steps into the function call.
-         */
-        "Debugger.stepInto": {
-            paramsType: [Protocol.Debugger.StepIntoRequest?];
-            returnType: void;
-        };
-        /**
-         * Steps out of the function call.
-         */
-        "Debugger.stepOut": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Steps over the statement.
-         */
-        "Debugger.stepOver": {
-            paramsType: [Protocol.Debugger.StepOverRequest?];
-            returnType: void;
-        };
-        /**
-         * Enables console to refer to the node with given id via $x (see Command Line API for more details
-         * $x functions).
-         */
-        "HeapProfiler.addInspectedHeapObject": {
-            paramsType: [Protocol.HeapProfiler.AddInspectedHeapObjectRequest];
-            returnType: void;
-        };
-        "HeapProfiler.collectGarbage": {
-            paramsType: [];
-            returnType: void;
-        };
-        "HeapProfiler.disable": {
-            paramsType: [];
-            returnType: void;
-        };
-        "HeapProfiler.enable": {
-            paramsType: [];
-            returnType: void;
-        };
-        "HeapProfiler.getHeapObjectId": {
-            paramsType: [Protocol.HeapProfiler.GetHeapObjectIdRequest];
-            returnType: Protocol.HeapProfiler.GetHeapObjectIdResponse;
-        };
-        "HeapProfiler.getObjectByHeapObjectId": {
-            paramsType: [Protocol.HeapProfiler.GetObjectByHeapObjectIdRequest];
-            returnType: Protocol.HeapProfiler.GetObjectByHeapObjectIdResponse;
-        };
-        "HeapProfiler.getSamplingProfile": {
-            paramsType: [];
-            returnType: Protocol.HeapProfiler.GetSamplingProfileResponse;
-        };
-        "HeapProfiler.startSampling": {
-            paramsType: [Protocol.HeapProfiler.StartSamplingRequest?];
-            returnType: void;
-        };
-        "HeapProfiler.startTrackingHeapObjects": {
-            paramsType: [Protocol.HeapProfiler.StartTrackingHeapObjectsRequest?];
-            returnType: void;
-        };
-        "HeapProfiler.stopSampling": {
-            paramsType: [];
-            returnType: Protocol.HeapProfiler.StopSamplingResponse;
-        };
-        "HeapProfiler.stopTrackingHeapObjects": {
-            paramsType: [Protocol.HeapProfiler.StopTrackingHeapObjectsRequest?];
-            returnType: void;
-        };
-        "HeapProfiler.takeHeapSnapshot": {
-            paramsType: [Protocol.HeapProfiler.TakeHeapSnapshotRequest?];
-            returnType: void;
-        };
-        "Profiler.disable": {
-            paramsType: [];
-            returnType: void;
-        };
-        "Profiler.enable": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Collect coverage data for the current isolate. The coverage data may be incomplete due to
-         * garbage collection.
-         */
-        "Profiler.getBestEffortCoverage": {
-            paramsType: [];
-            returnType: Protocol.Profiler.GetBestEffortCoverageResponse;
-        };
-        /**
-         * Changes CPU profiler sampling interval. Must be called before CPU profiles recording started.
-         */
-        "Profiler.setSamplingInterval": {
-            paramsType: [Protocol.Profiler.SetSamplingIntervalRequest];
-            returnType: void;
-        };
-        "Profiler.start": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code
-         * coverage may be incomplete. Enabling prevents running optimized code and resets execution
-         * counters.
-         */
-        "Profiler.startPreciseCoverage": {
-            paramsType: [Protocol.Profiler.StartPreciseCoverageRequest?];
-            returnType: Protocol.Profiler.StartPreciseCoverageResponse;
-        };
-        /**
-         * Enable type profile.
-         */
-        "Profiler.startTypeProfile": {
-            paramsType: [];
-            returnType: void;
-        };
-        "Profiler.stop": {
-            paramsType: [];
-            returnType: Protocol.Profiler.StopResponse;
-        };
-        /**
-         * Disable precise code coverage. Disabling releases unnecessary execution count records and allows
-         * executing optimized code.
-         */
-        "Profiler.stopPreciseCoverage": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Disable type profile. Disabling releases type profile data collected so far.
-         */
-        "Profiler.stopTypeProfile": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Collect coverage data for the current isolate, and resets execution counters. Precise code
-         * coverage needs to have started.
-         */
-        "Profiler.takePreciseCoverage": {
-            paramsType: [];
-            returnType: Protocol.Profiler.TakePreciseCoverageResponse;
-        };
-        /**
-         * Collect type profile.
-         */
-        "Profiler.takeTypeProfile": {
-            paramsType: [];
-            returnType: Protocol.Profiler.TakeTypeProfileResponse;
-        };
-        /**
-         * Add handler to promise with given promise object id.
-         */
-        "Runtime.awaitPromise": {
-            paramsType: [Protocol.Runtime.AwaitPromiseRequest];
-            returnType: Protocol.Runtime.AwaitPromiseResponse;
-        };
-        /**
-         * Calls function with given declaration on the given object. Object group of the result is
-         * inherited from the target object.
-         */
-        "Runtime.callFunctionOn": {
-            paramsType: [Protocol.Runtime.CallFunctionOnRequest];
-            returnType: Protocol.Runtime.CallFunctionOnResponse;
-        };
-        /**
-         * Compiles expression.
-         */
-        "Runtime.compileScript": {
-            paramsType: [Protocol.Runtime.CompileScriptRequest];
-            returnType: Protocol.Runtime.CompileScriptResponse;
-        };
-        /**
-         * Disables reporting of execution contexts creation.
-         */
-        "Runtime.disable": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Discards collected exceptions and console API calls.
-         */
-        "Runtime.discardConsoleEntries": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Enables reporting of execution contexts creation by means of `executionContextCreated` event.
-         * When the reporting gets enabled the event will be sent immediately for each existing execution
-         * context.
-         */
-        "Runtime.enable": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Evaluates expression on global object.
-         */
-        "Runtime.evaluate": {
-            paramsType: [Protocol.Runtime.EvaluateRequest];
-            returnType: Protocol.Runtime.EvaluateResponse;
-        };
-        /**
-         * Returns the isolate id.
-         */
-        "Runtime.getIsolateId": {
-            paramsType: [];
-            returnType: Protocol.Runtime.GetIsolateIdResponse;
-        };
-        /**
-         * Returns the JavaScript heap usage.
-         * It is the total usage of the corresponding isolate not scoped to a particular Runtime.
-         */
-        "Runtime.getHeapUsage": {
-            paramsType: [];
-            returnType: Protocol.Runtime.GetHeapUsageResponse;
-        };
-        /**
-         * Returns properties of a given object. Object group of the result is inherited from the target
-         * object.
-         */
-        "Runtime.getProperties": {
-            paramsType: [Protocol.Runtime.GetPropertiesRequest];
-            returnType: Protocol.Runtime.GetPropertiesResponse;
-        };
-        /**
-         * Returns all let, const and class variables from global scope.
-         */
-        "Runtime.globalLexicalScopeNames": {
-            paramsType: [Protocol.Runtime.GlobalLexicalScopeNamesRequest?];
-            returnType: Protocol.Runtime.GlobalLexicalScopeNamesResponse;
-        };
-        "Runtime.queryObjects": {
-            paramsType: [Protocol.Runtime.QueryObjectsRequest];
-            returnType: Protocol.Runtime.QueryObjectsResponse;
-        };
-        /**
-         * Releases remote object with given id.
-         */
-        "Runtime.releaseObject": {
-            paramsType: [Protocol.Runtime.ReleaseObjectRequest];
-            returnType: void;
-        };
-        /**
-         * Releases all remote objects that belong to a given group.
-         */
-        "Runtime.releaseObjectGroup": {
-            paramsType: [Protocol.Runtime.ReleaseObjectGroupRequest];
-            returnType: void;
-        };
-        /**
-         * Tells inspected instance to run if it was waiting for debugger to attach.
-         */
-        "Runtime.runIfWaitingForDebugger": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * Runs script with given id in a given context.
-         */
-        "Runtime.runScript": {
-            paramsType: [Protocol.Runtime.RunScriptRequest];
-            returnType: Protocol.Runtime.RunScriptResponse;
-        };
-        /**
-         * Enables or disables async call stacks tracking.
-         */
-        "Runtime.setAsyncCallStackDepth": {
-            paramsType: [Protocol.Runtime.SetAsyncCallStackDepthRequest];
-            returnType: void;
-        };
-        "Runtime.setCustomObjectFormatterEnabled": {
-            paramsType: [Protocol.Runtime.SetCustomObjectFormatterEnabledRequest];
-            returnType: void;
-        };
-        "Runtime.setMaxCallStackSizeToCapture": {
-            paramsType: [Protocol.Runtime.SetMaxCallStackSizeToCaptureRequest];
-            returnType: void;
-        };
-        /**
-         * Terminate current or next JavaScript execution.
-         * Will cancel the termination when the outer-most script execution ends.
-         */
-        "Runtime.terminateExecution": {
-            paramsType: [];
-            returnType: void;
-        };
-        /**
-         * If executionContextId is empty, adds binding with the given name on the
-         * global objects of all inspected contexts, including those created later,
-         * bindings survive reloads.
-         * Binding function takes exactly one argument, this argument should be string,
-         * in case of any other input, function throws an exception.
-         * Each binding function call produces Runtime.bindingCalled notification.
-         */
-        "Runtime.addBinding": {
-            paramsType: [Protocol.Runtime.AddBindingRequest];
-            returnType: void;
-        };
-        /**
-         * This method does not remove binding function from global object but
-         * unsubscribes current runtime agent from Runtime.bindingCalled notifications.
-         */
-        "Runtime.removeBinding": {
-            paramsType: [Protocol.Runtime.RemoveBindingRequest];
-            returnType: void;
-        };
-        /**
-         * Returns supported domains.
-         */
-        "Schema.getDomains": {
-            paramsType: [];
-            returnType: Protocol.Schema.GetDomainsResponse;
         };
     }
 }

@@ -1,5 +1,5 @@
-import type * as Network from './network.d.ts'
 import type * as Runtime from './runtime.d.ts'
+import type * as Network from './network.d.ts'
 import type * as DOM from './dom.d.ts'
 import type * as IO from './io.d.ts'
 import type * as Debugger from './debugger.d.ts'
@@ -32,6 +32,22 @@ export type AdFrameStatus = {
 }
 
 /**
+ * Identifies the bottom-most script which caused the frame to be labelled
+ * as an ad.
+ */
+export type AdScriptId = {
+    /**
+     * Script Id of the bottom-most script which caused the frame to be labelled
+     * as an ad.
+     */
+    scriptId: Runtime.ScriptId;
+    /**
+     * Id of adScriptId's debugger.
+     */
+    debuggerId: Runtime.UniqueDebuggerId;
+}
+
+/**
  * Indicates whether the frame is a secure context and why it is the case.
  */
 export type SecureContextType = ("Secure" | "SecureLocalhost" | "InsecureScheme" | "InsecureAncestor");
@@ -47,12 +63,12 @@ export type GatedAPIFeatures = ("SharedArrayBuffers" | "SharedArrayBuffersTransf
  * All Permissions Policy features. This enum should match the one defined
  * in third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5.
  */
-export type PermissionsPolicyFeature = ("accelerometer" | "ambient-light-sensor" | "attribution-reporting" | "autoplay" | "camera" | "ch-dpr" | "ch-device-memory" | "ch-downlink" | "ch-ect" | "ch-prefers-color-scheme" | "ch-rtt" | "ch-ua" | "ch-ua-arch" | "ch-ua-bitness" | "ch-ua-platform" | "ch-ua-model" | "ch-ua-mobile" | "ch-ua-full" | "ch-ua-full-version" | "ch-ua-full-version-list" | "ch-ua-platform-version" | "ch-ua-reduced" | "ch-ua-wow64" | "ch-viewport-height" | "ch-viewport-width" | "ch-width" | "ch-partitioned-cookies" | "clipboard-read" | "clipboard-write" | "cross-origin-isolated" | "direct-sockets" | "display-capture" | "document-domain" | "encrypted-media" | "execution-while-out-of-viewport" | "execution-while-not-rendered" | "focus-without-user-activation" | "fullscreen" | "frobulate" | "gamepad" | "geolocation" | "gyroscope" | "hid" | "idle-detection" | "join-ad-interest-group" | "keyboard-map" | "magnetometer" | "microphone" | "midi" | "otp-credentials" | "payment" | "picture-in-picture" | "publickey-credentials-get" | "run-ad-auction" | "screen-wake-lock" | "serial" | "shared-autofill" | "storage-access-api" | "sync-xhr" | "trust-token-redemption" | "usb" | "vertical-scroll" | "web-share" | "window-placement" | "xr-spatial-tracking");
+export type PermissionsPolicyFeature = ("accelerometer" | "ambient-light-sensor" | "attribution-reporting" | "autoplay" | "bluetooth" | "browsing-topics" | "camera" | "ch-dpr" | "ch-device-memory" | "ch-downlink" | "ch-ect" | "ch-prefers-color-scheme" | "ch-prefers-reduced-motion" | "ch-rtt" | "ch-save-data" | "ch-ua" | "ch-ua-arch" | "ch-ua-bitness" | "ch-ua-platform" | "ch-ua-model" | "ch-ua-mobile" | "ch-ua-full" | "ch-ua-full-version" | "ch-ua-full-version-list" | "ch-ua-platform-version" | "ch-ua-reduced" | "ch-ua-wow64" | "ch-viewport-height" | "ch-viewport-width" | "ch-width" | "clipboard-read" | "clipboard-write" | "compute-pressure" | "cross-origin-isolated" | "direct-sockets" | "display-capture" | "document-domain" | "encrypted-media" | "execution-while-out-of-viewport" | "execution-while-not-rendered" | "focus-without-user-activation" | "fullscreen" | "frobulate" | "gamepad" | "geolocation" | "gyroscope" | "hid" | "identity-credentials-get" | "idle-detection" | "interest-cohort" | "join-ad-interest-group" | "keyboard-map" | "local-fonts" | "magnetometer" | "microphone" | "midi" | "otp-credentials" | "payment" | "picture-in-picture" | "publickey-credentials-get" | "run-ad-auction" | "screen-wake-lock" | "serial" | "shared-autofill" | "shared-storage" | "smart-card" | "storage-access" | "sync-xhr" | "trust-token-redemption" | "unload" | "usb" | "vertical-scroll" | "web-share" | "window-placement" | "xr-spatial-tracking");
 
 /**
  * Reason for a permissions policy feature to be disabled.
  */
-export type PermissionsPolicyBlockReason = ("Header" | "IframeAttribute" | "InFencedFrameTree");
+export type PermissionsPolicyBlockReason = ("Header" | "IframeAttribute" | "InFencedFrameTree" | "InIsolatedApp");
 
 export type PermissionsPolicyBlockLocator = {
     frameId: FrameId;
@@ -456,9 +472,9 @@ export type FontFamilies = {
      */
     fantasy?: string;
     /**
-     * The pictograph font-family.
+     * The math font-family.
      */
-    pictograph?: string;
+    math?: string;
 }
 
 /**
@@ -546,7 +562,7 @@ export type NavigationType = ("Navigation" | "BackForwardCacheRestore");
 /**
  * List of not restored reasons for back-forward cache.
  */
-export type BackForwardCacheNotRestoredReason = ("NotPrimaryMainFrame" | "BackForwardCacheDisabled" | "RelatedActiveContentsExist" | "HTTPStatusNotOK" | "SchemeNotHTTPOrHTTPS" | "Loading" | "WasGrantedMediaAccess" | "DisableForRenderFrameHostCalled" | "DomainNotAllowed" | "HTTPMethodNotGET" | "SubframeIsNavigating" | "Timeout" | "CacheLimit" | "JavaScriptExecution" | "RendererProcessKilled" | "RendererProcessCrashed" | "GrantedMediaStreamAccess" | "SchedulerTrackedFeatureUsed" | "ConflictingBrowsingInstance" | "CacheFlushed" | "ServiceWorkerVersionActivation" | "SessionRestored" | "ServiceWorkerPostMessage" | "EnteredBackForwardCacheBeforeServiceWorkerHostAdded" | "RenderFrameHostReused_SameSite" | "RenderFrameHostReused_CrossSite" | "ServiceWorkerClaim" | "IgnoreEventAndEvict" | "HaveInnerContents" | "TimeoutPuttingInCache" | "BackForwardCacheDisabledByLowMemory" | "BackForwardCacheDisabledByCommandLine" | "NetworkRequestDatapipeDrainedAsBytesConsumer" | "NetworkRequestRedirected" | "NetworkRequestTimeout" | "NetworkExceedsBufferLimit" | "NavigationCancelledWhileRestoring" | "NotMostRecentNavigationEntry" | "BackForwardCacheDisabledForPrerender" | "UserAgentOverrideDiffers" | "ForegroundCacheLimit" | "BrowsingInstanceNotSwapped" | "BackForwardCacheDisabledForDelegate" | "OptInUnloadHeaderNotPresent" | "UnloadHandlerExistsInMainFrame" | "UnloadHandlerExistsInSubFrame" | "ServiceWorkerUnregistration" | "CacheControlNoStore" | "CacheControlNoStoreCookieModified" | "CacheControlNoStoreHTTPOnlyCookieModified" | "NoResponseHead" | "Unknown" | "ActivationNavigationsDisallowedForBug1234857" | "WebSocket" | "WebTransport" | "WebRTC" | "MainResourceHasCacheControlNoStore" | "MainResourceHasCacheControlNoCache" | "SubresourceHasCacheControlNoStore" | "SubresourceHasCacheControlNoCache" | "ContainsPlugins" | "DocumentLoaded" | "DedicatedWorkerOrWorklet" | "OutstandingNetworkRequestOthers" | "OutstandingIndexedDBTransaction" | "RequestedNotificationsPermission" | "RequestedMIDIPermission" | "RequestedAudioCapturePermission" | "RequestedVideoCapturePermission" | "RequestedBackForwardCacheBlockedSensors" | "RequestedBackgroundWorkPermission" | "BroadcastChannel" | "IndexedDBConnection" | "WebXR" | "SharedWorker" | "WebLocks" | "WebHID" | "WebShare" | "RequestedStorageAccessGrant" | "WebNfc" | "OutstandingNetworkRequestFetch" | "OutstandingNetworkRequestXHR" | "AppBanner" | "Printing" | "WebDatabase" | "PictureInPicture" | "Portal" | "SpeechRecognizer" | "IdleManager" | "PaymentManager" | "SpeechSynthesis" | "KeyboardLock" | "WebOTPService" | "OutstandingNetworkRequestDirectSocket" | "InjectedJavascript" | "InjectedStyleSheet" | "Dummy" | "ContentSecurityHandler" | "ContentWebAuthenticationAPI" | "ContentFileChooser" | "ContentSerial" | "ContentFileSystemAccess" | "ContentMediaDevicesDispatcherHost" | "ContentWebBluetooth" | "ContentWebUSB" | "ContentMediaSession" | "ContentMediaSessionService" | "ContentScreenReader" | "EmbedderPopupBlockerTabHelper" | "EmbedderSafeBrowsingTriggeredPopupBlocker" | "EmbedderSafeBrowsingThreatDetails" | "EmbedderAppBannerManager" | "EmbedderDomDistillerViewerSource" | "EmbedderDomDistillerSelfDeletingRequestDelegate" | "EmbedderOomInterventionTabHelper" | "EmbedderOfflinePage" | "EmbedderChromePasswordManagerClientBindCredentialManager" | "EmbedderPermissionRequestManager" | "EmbedderModalDialog" | "EmbedderExtensions" | "EmbedderExtensionMessaging" | "EmbedderExtensionMessagingForOpenPort" | "EmbedderExtensionSentMessageToCachedFrame");
+export type BackForwardCacheNotRestoredReason = ("NotPrimaryMainFrame" | "BackForwardCacheDisabled" | "RelatedActiveContentsExist" | "HTTPStatusNotOK" | "SchemeNotHTTPOrHTTPS" | "Loading" | "WasGrantedMediaAccess" | "DisableForRenderFrameHostCalled" | "DomainNotAllowed" | "HTTPMethodNotGET" | "SubframeIsNavigating" | "Timeout" | "CacheLimit" | "JavaScriptExecution" | "RendererProcessKilled" | "RendererProcessCrashed" | "SchedulerTrackedFeatureUsed" | "ConflictingBrowsingInstance" | "CacheFlushed" | "ServiceWorkerVersionActivation" | "SessionRestored" | "ServiceWorkerPostMessage" | "EnteredBackForwardCacheBeforeServiceWorkerHostAdded" | "RenderFrameHostReused_SameSite" | "RenderFrameHostReused_CrossSite" | "ServiceWorkerClaim" | "IgnoreEventAndEvict" | "HaveInnerContents" | "TimeoutPuttingInCache" | "BackForwardCacheDisabledByLowMemory" | "BackForwardCacheDisabledByCommandLine" | "NetworkRequestDatapipeDrainedAsBytesConsumer" | "NetworkRequestRedirected" | "NetworkRequestTimeout" | "NetworkExceedsBufferLimit" | "NavigationCancelledWhileRestoring" | "NotMostRecentNavigationEntry" | "BackForwardCacheDisabledForPrerender" | "UserAgentOverrideDiffers" | "ForegroundCacheLimit" | "BrowsingInstanceNotSwapped" | "BackForwardCacheDisabledForDelegate" | "UnloadHandlerExistsInMainFrame" | "UnloadHandlerExistsInSubFrame" | "ServiceWorkerUnregistration" | "CacheControlNoStore" | "CacheControlNoStoreCookieModified" | "CacheControlNoStoreHTTPOnlyCookieModified" | "NoResponseHead" | "Unknown" | "ActivationNavigationsDisallowedForBug1234857" | "ErrorDocument" | "FencedFramesEmbedder" | "WebSocket" | "WebTransport" | "WebRTC" | "MainResourceHasCacheControlNoStore" | "MainResourceHasCacheControlNoCache" | "SubresourceHasCacheControlNoStore" | "SubresourceHasCacheControlNoCache" | "ContainsPlugins" | "DocumentLoaded" | "DedicatedWorkerOrWorklet" | "OutstandingNetworkRequestOthers" | "OutstandingIndexedDBTransaction" | "RequestedMIDIPermission" | "RequestedAudioCapturePermission" | "RequestedVideoCapturePermission" | "RequestedBackForwardCacheBlockedSensors" | "RequestedBackgroundWorkPermission" | "BroadcastChannel" | "IndexedDBConnection" | "WebXR" | "SharedWorker" | "WebLocks" | "WebHID" | "WebShare" | "RequestedStorageAccessGrant" | "WebNfc" | "OutstandingNetworkRequestFetch" | "OutstandingNetworkRequestXHR" | "AppBanner" | "Printing" | "WebDatabase" | "PictureInPicture" | "Portal" | "SpeechRecognizer" | "IdleManager" | "PaymentManager" | "SpeechSynthesis" | "KeyboardLock" | "WebOTPService" | "OutstandingNetworkRequestDirectSocket" | "InjectedJavascript" | "InjectedStyleSheet" | "KeepaliveRequest" | "IndexedDBEvent" | "Dummy" | "AuthorizationHeader" | "ContentSecurityHandler" | "ContentWebAuthenticationAPI" | "ContentFileChooser" | "ContentSerial" | "ContentFileSystemAccess" | "ContentMediaDevicesDispatcherHost" | "ContentWebBluetooth" | "ContentWebUSB" | "ContentMediaSessionService" | "ContentScreenReader" | "EmbedderPopupBlockerTabHelper" | "EmbedderSafeBrowsingTriggeredPopupBlocker" | "EmbedderSafeBrowsingThreatDetails" | "EmbedderAppBannerManager" | "EmbedderDomDistillerViewerSource" | "EmbedderDomDistillerSelfDeletingRequestDelegate" | "EmbedderOomInterventionTabHelper" | "EmbedderOfflinePage" | "EmbedderChromePasswordManagerClientBindCredentialManager" | "EmbedderPermissionRequestManager" | "EmbedderModalDialog" | "EmbedderExtensions" | "EmbedderExtensionMessaging" | "EmbedderExtensionMessagingForOpenPort" | "EmbedderExtensionSentMessageToCachedFrame");
 
 /**
  * Types of not restored reasons for back-forward cache.
@@ -562,6 +578,12 @@ export type BackForwardCacheNotRestoredExplanation = {
      * Not restored reason
      */
     reason: BackForwardCacheNotRestoredReason;
+    /**
+     * Context associated with the reason. The meaning of this context is
+     * dependent on the reason:
+     * - EmbedderExtensionSentMessageToCachedFrame: the extension ID.
+     */
+    context?: string;
 }
 
 export type BackForwardCacheNotRestoredExplanationTree = {
@@ -578,6 +600,11 @@ export type BackForwardCacheNotRestoredExplanationTree = {
      */
     children: BackForwardCacheNotRestoredExplanationTree[];
 }
+
+/**
+ * List of FinalStatus reasons for Prerender2.
+ */
+export type PrerenderFinalStatus = ("Activated" | "Destroyed" | "LowEndDevice" | "InvalidSchemeRedirect" | "InvalidSchemeNavigation" | "InProgressNavigation" | "NavigationRequestBlockedByCsp" | "MainFrameNavigation" | "MojoBinderPolicy" | "RendererProcessCrashed" | "RendererProcessKilled" | "Download" | "TriggerDestroyed" | "NavigationNotCommitted" | "NavigationBadHttpStatus" | "ClientCertRequested" | "NavigationRequestNetworkError" | "MaxNumOfRunningPrerendersExceeded" | "CancelAllHostsForTesting" | "DidFailLoad" | "Stop" | "SslCertificateError" | "LoginAuthRequested" | "UaChangeRequiresReload" | "BlockedByClient" | "AudioOutputDeviceRequested" | "MixedContent" | "TriggerBackgrounded" | "EmbedderTriggeredAndCrossOriginRedirected" | "MemoryLimitExceeded" | "FailToGetMemoryUsage" | "DataSaverEnabled" | "HasEffectiveUrl" | "ActivatedBeforeStarted" | "InactivePageRestriction" | "StartFailed" | "TimeoutBackgrounded" | "CrossSiteRedirect" | "CrossSiteNavigation" | "SameSiteCrossOriginRedirect" | "SameSiteCrossOriginNavigation" | "SameSiteCrossOriginRedirectNotOptIn" | "SameSiteCrossOriginNavigationNotOptIn" | "ActivationNavigationParameterMismatch" | "ActivatedInBackground" | "EmbedderHostDisallowed" | "ActivationNavigationDestroyedBeforeSuccess");
 
 export type AddScriptToEvaluateOnLoadRequest = {
     scriptSource: string;
@@ -639,6 +666,10 @@ export type CaptureScreenshotRequest = {
      * Capture the screenshot beyond the viewport. Defaults to false.
      */
     captureBeyondViewport?: boolean;
+    /**
+     * Optimize image encoding for speed, not for resulting size (defaults to false)
+     */
+    optimizeForSpeed?: boolean;
 }
 
 export type CaptureScreenshotResponse = {
@@ -735,6 +766,18 @@ export type GetAppIdResponse = {
     recommendedId?: string;
 }
 
+export type GetAdScriptIdRequest = {
+    frameId: FrameId;
+}
+
+export type GetAdScriptIdResponse = {
+    /**
+     * Identifies the bottom-most script which caused the frame to be labelled
+     * as an ad. Only sent if frame is labelled as an ad and id is available.
+     */
+    adScriptId?: AdScriptId;
+}
+
 export type GetCookiesResponse = {
     /**
      * Array of cookie objects.
@@ -751,15 +794,15 @@ export type GetFrameTreeResponse = {
 
 export type GetLayoutMetricsResponse = {
     /**
-     * Deprecated metrics relating to the layout viewport. Can be in DP or in CSS pixels depending on the `enable-use-zoom-for-dsf` flag. Use `cssLayoutViewport` instead.
+     * Deprecated metrics relating to the layout viewport. Is in device pixels. Use `cssLayoutViewport` instead.
      */
     layoutViewport: LayoutViewport;
     /**
-     * Deprecated metrics relating to the visual viewport. Can be in DP or in CSS pixels depending on the `enable-use-zoom-for-dsf` flag. Use `cssVisualViewport` instead.
+     * Deprecated metrics relating to the visual viewport. Is in device pixels. Use `cssVisualViewport` instead.
      */
     visualViewport: VisualViewport;
     /**
-     * Deprecated size of scrollable area. Can be in DP or in CSS pixels depending on the `enable-use-zoom-for-dsf` flag. Use `cssContentSize` instead.
+     * Deprecated size of scrollable area. Is in DP. Use `cssContentSize` instead.
      */
     contentSize: DOM.Rect;
     /**
@@ -857,7 +900,8 @@ export type NavigateResponse = {
      */
     frameId: FrameId;
     /**
-     * Loader identifier.
+     * Loader identifier. This is omitted in case of same-document navigation,
+     * as the previously committed loaderId would not change.
      */
     loaderId?: Network.LoaderId;
     /**
@@ -920,15 +964,16 @@ export type PrintToPDFRequest = {
      */
     marginRight?: number;
     /**
-     * Paper ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means
-     * print all pages.
+     * Paper ranges to print, one based, e.g., '1-5, 8, 11-13'. Pages are
+     * printed in the document order, not in the order specified, and no
+     * more than once.
+     * Defaults to empty string, which implies the entire document is printed.
+     * The page numbers are quietly capped to actual page count of the
+     * document, and ranges beyond the end of the document are ignored.
+     * If this results in no pages to print, an error is reported.
+     * It is an error to specify a range with start greater than end.
      */
     pageRanges?: string;
-    /**
-     * Whether to silently ignore invalid but successfully parsed page ranges, such as '3-2'.
-     * Defaults to false.
-     */
-    ignoreInvalidPageRanges?: boolean;
     /**
      * HTML template for the print header. Should be valid HTML markup with following
      * classes used to inject printing values into them:
@@ -1260,15 +1305,16 @@ export type AddCompilationCacheRequest = {
 
 export const enum SetSPCTransactionModeRequestMode {
     None = "none",
-    Autoaccept = "autoaccept",
-    Autoreject = "autoreject",
+    AutoAccept = "autoAccept",
+    AutoReject = "autoReject",
+    AutoOptOut = "autoOptOut",
 }
 
 export type SetSPCTransactionModeRequest = {
     /**
      *  (SetSPCTransactionModeRequestMode enum)
      */
-    mode: ("none" | "autoaccept" | "autoreject");
+    mode: ("none" | "autoAccept" | "autoReject" | "autoOptOut");
 }
 
 export type GenerateTestReportRequest = {
@@ -1304,13 +1350,13 @@ export type FileChooserOpenedEvent = {
      */
     frameId: FrameId;
     /**
-     * Input node id.
-     */
-    backendNodeId: DOM.BackendNodeId;
-    /**
      * Input mode. (FileChooserOpenedEventMode enum)
      */
     mode: ("selectSingle" | "selectMultiple");
+    /**
+     * Input node id. Only present for file choosers opened via an <input type="file"> element.
+     */
+    backendNodeId?: DOM.BackendNodeId;
 }
 
 /**
@@ -1582,6 +1628,23 @@ export type BackForwardCacheNotUsedEvent = {
      * Tree structure of reasons why the page could not be cached for each frame.
      */
     notRestoredExplanationsTree?: BackForwardCacheNotRestoredExplanationTree;
+}
+
+/**
+ * Fired when a prerender attempt is completed.
+ */
+export type PrerenderAttemptCompletedEvent = {
+    /**
+     * The frame id of the frame initiating prerendering.
+     */
+    initiatingFrameId: FrameId;
+    prerenderingUrl: string;
+    finalStatus: PrerenderFinalStatus;
+    /**
+     * This is used to give users more information about the name of the API call
+     * that is incompatible with prerender and has caused the cancellation of the attempt
+     */
+    disallowedApiMethod?: string;
 }
 
 export type LoadEventFiredEvent = {

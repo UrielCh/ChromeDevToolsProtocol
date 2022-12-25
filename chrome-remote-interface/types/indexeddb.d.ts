@@ -165,9 +165,14 @@ export type KeyPath = {
 
 export type ClearObjectStoreRequest = {
     /**
+     * At least and at most one of securityOrigin, storageKey must be specified.
      * Security origin.
      */
-    securityOrigin: string;
+    securityOrigin?: string;
+    /**
+     * Storage key.
+     */
+    storageKey?: string;
     /**
      * Database name.
      */
@@ -180,9 +185,14 @@ export type ClearObjectStoreRequest = {
 
 export type DeleteDatabaseRequest = {
     /**
+     * At least and at most one of securityOrigin, storageKey must be specified.
      * Security origin.
      */
-    securityOrigin: string;
+    securityOrigin?: string;
+    /**
+     * Storage key.
+     */
+    storageKey?: string;
     /**
      * Database name.
      */
@@ -190,7 +200,15 @@ export type DeleteDatabaseRequest = {
 }
 
 export type DeleteObjectStoreEntriesRequest = {
-    securityOrigin: string;
+    /**
+     * At least and at most one of securityOrigin, storageKey must be specified.
+     * Security origin.
+     */
+    securityOrigin?: string;
+    /**
+     * Storage key.
+     */
+    storageKey?: string;
     databaseName: string;
     objectStoreName: string;
     /**
@@ -201,9 +219,14 @@ export type DeleteObjectStoreEntriesRequest = {
 
 export type RequestDataRequest = {
     /**
+     * At least and at most one of securityOrigin, storageKey must be specified.
      * Security origin.
      */
-    securityOrigin: string;
+    securityOrigin?: string;
+    /**
+     * Storage key.
+     */
+    storageKey?: string;
     /**
      * Database name.
      */
@@ -243,9 +266,14 @@ export type RequestDataResponse = {
 
 export type GetMetadataRequest = {
     /**
+     * At least and at most one of securityOrigin, storageKey must be specified.
      * Security origin.
      */
-    securityOrigin: string;
+    securityOrigin?: string;
+    /**
+     * Storage key.
+     */
+    storageKey?: string;
     /**
      * Database name.
      */
@@ -271,9 +299,14 @@ export type GetMetadataResponse = {
 
 export type RequestDatabaseRequest = {
     /**
+     * At least and at most one of securityOrigin, storageKey must be specified.
      * Security origin.
      */
-    securityOrigin: string;
+    securityOrigin?: string;
+    /**
+     * Storage key.
+     */
+    storageKey?: string;
     /**
      * Database name.
      */
@@ -289,9 +322,14 @@ export type RequestDatabaseResponse = {
 
 export type RequestDatabaseNamesRequest = {
     /**
+     * At least and at most one of securityOrigin, storageKey must be specified.
      * Security origin.
      */
-    securityOrigin: string;
+    securityOrigin?: string;
+    /**
+     * Storage key.
+     */
+    storageKey?: string;
 }
 
 export type RequestDatabaseNamesResponse = {

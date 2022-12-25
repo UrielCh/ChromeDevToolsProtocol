@@ -15,6 +15,7 @@ try {
         outDir: "./npm",
         shims: {
             // see JS docs for overview and more options
+            // blob: true,
             deno: true,
             webSocket: true,
             undici: true,

@@ -15,7 +15,6 @@ import { SourceEmiter } from "./sourceEmiter.ts";
 // ProtocolType | ProtocolItems
 // P.RefType & P.PropertyBaseType
 
-
 // fs.mkdirSync(typeDir, { recursive: true });
 const se = new SourceEmiter("protocol");
 se.emitModule(localDescriptor.domains);

@@ -43,7 +43,7 @@ export type BackendNode = {
 /**
  * Pseudo element type.
  */
-export type PseudoType = ("first-line" | "first-letter" | "before" | "after" | "marker" | "backdrop" | "selection" | "target-text" | "spelling-error" | "grammar-error" | "highlight" | "first-line-inherited" | "scrollbar" | "scrollbar-thumb" | "scrollbar-button" | "scrollbar-track" | "scrollbar-track-piece" | "scrollbar-corner" | "resizer" | "input-list-button" | "transition" | "transition-container" | "transition-old-content" | "transition-new-content");
+export type PseudoType = ("first-line" | "first-letter" | "before" | "after" | "marker" | "backdrop" | "selection" | "target-text" | "spelling-error" | "grammar-error" | "highlight" | "first-line-inherited" | "scrollbar" | "scrollbar-thumb" | "scrollbar-button" | "scrollbar-track" | "scrollbar-track-piece" | "scrollbar-corner" | "resizer" | "input-list-button" | "view-transition" | "view-transition-group" | "view-transition-image-pair" | "view-transition-old" | "view-transition-new");
 
 /**
  * Shadow root type.
@@ -54,6 +54,16 @@ export type ShadowRootType = ("user-agent" | "open" | "closed");
  * Document compatibility mode.
  */
 export type CompatibilityMode = ("QuirksMode" | "LimitedQuirksMode" | "NoQuirksMode");
+
+/**
+ * ContainerSelector physical axes
+ */
+export type PhysicalAxes = ("Horizontal" | "Vertical" | "Both");
+
+/**
+ * ContainerSelector logical axes
+ */
+export type LogicalAxes = ("Inline" | "Block" | "Both");
 
 /**
  * DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
@@ -139,6 +149,11 @@ export type Node = {
      */
     pseudoType?: PseudoType;
     /**
+     * Pseudo element identifier for this node. Only present if there is a
+     * valid pseudoType.
+     */
+    pseudoIdentifier?: string;
+    /**
      * Shadow root type.
      */
     shadowRootType?: ShadowRootType;
@@ -177,6 +192,7 @@ export type Node = {
      */
     isSVG?: boolean;
     compatibilityMode?: CompatibilityMode;
+    assignedSlot?: BackendNode;
 }
 
 /**
@@ -737,6 +753,13 @@ export type QuerySelectorAllResponse = {
     nodeIds: NodeId[];
 }
 
+export type GetTopLayerElementsResponse = {
+    /**
+     * NodeIds of top layer elements
+     */
+    nodeIds: NodeId[];
+}
+
 export type RemoveAttributeRequest = {
     /**
      * Id of the element to remove attribute from.
@@ -959,6 +982,8 @@ export type GetFrameOwnerResponse = {
 export type GetContainerForNodeRequest = {
     nodeId: NodeId;
     containerName?: string;
+    physicalAxes?: PhysicalAxes;
+    logicalAxes?: LogicalAxes;
 }
 
 export type GetContainerForNodeResponse = {
@@ -1051,7 +1076,7 @@ export type ChildNodeInsertedEvent = {
      */
     parentNodeId: NodeId;
     /**
-     * If of the previous siblint.
+     * Id of the previous sibling.
      */
     previousNodeId: NodeId;
     /**

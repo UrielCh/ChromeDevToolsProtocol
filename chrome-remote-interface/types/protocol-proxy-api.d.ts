@@ -94,18 +94,6 @@ export namespace ProtocolProxyApi {
 
         Media: MediaApi;
 
-        Console: ConsoleApi;
-
-        Debugger: DebuggerApi;
-
-        HeapProfiler: HeapProfilerApi;
-
-        Profiler: ProfilerApi;
-
-        Runtime: RuntimeApi;
-
-        Schema: SchemaApi;
-
     }
 
 
@@ -529,6 +517,14 @@ export namespace ProtocolProxyApi {
         getStyleSheetText(params: Protocol.CSS.GetStyleSheetTextRequest, sessionId?: SessionId): Promise<Protocol.CSS.GetStyleSheetTextResponse>;
 
         /**
+         * Returns all layers parsed by the rendering engine for the tree scope of a node.
+         * Given a DOM element identified by nodeId, getLayersForNode returns the root
+         * layer for the nearest ancestor document or shadow root. The layer root contains
+         * the full layer tree for the tree scope and their ordering.
+         */
+        getLayersForNode(params: Protocol.CSS.GetLayersForNodeRequest, sessionId?: SessionId): Promise<Protocol.CSS.GetLayersForNodeResponse>;
+
+        /**
          * Starts tracking the given computed styles for updates. The specified array of properties
          * replaces the one previously specified. Pass empty array to disable tracking.
          * Use takeComputedStyleUpdates to retrieve the list of nodes that had properties modified.
@@ -563,6 +559,16 @@ export namespace ProtocolProxyApi {
          * Modifies the expression of a container query.
          */
         setContainerQueryText(params: Protocol.CSS.SetContainerQueryTextRequest, sessionId?: SessionId): Promise<Protocol.CSS.SetContainerQueryTextResponse>;
+
+        /**
+         * Modifies the expression of a supports at-rule.
+         */
+        setSupportsText(params: Protocol.CSS.SetSupportsTextRequest, sessionId?: SessionId): Promise<Protocol.CSS.SetSupportsTextResponse>;
+
+        /**
+         * Modifies the expression of a scope at-rule.
+         */
+        setScopeText(params: Protocol.CSS.SetScopeTextRequest, sessionId?: SessionId): Promise<Protocol.CSS.SetScopeTextResponse>;
 
         /**
          * Modifies the rule selector.
@@ -674,7 +680,7 @@ export namespace ProtocolProxyApi {
         /**
          * Requests cache names.
          */
-        requestCacheNames(params: Protocol.CacheStorage.RequestCacheNamesRequest, sessionId?: SessionId): Promise<Protocol.CacheStorage.RequestCacheNamesResponse>;
+        requestCacheNames(params?: Protocol.CacheStorage.RequestCacheNamesRequest, sessionId?: SessionId): Promise<Protocol.CacheStorage.RequestCacheNamesResponse>;
 
         /**
          * Fetches cache entry.
@@ -903,6 +909,13 @@ export namespace ProtocolProxyApi {
         querySelectorAll(params: Protocol.DOM.QuerySelectorAllRequest, sessionId?: SessionId): Promise<Protocol.DOM.QuerySelectorAllResponse>;
 
         /**
+         * Returns NodeIds of current top layer elements.
+         * Top layer is rendered closest to the user within a viewport, therefore its elements always
+         * appear on top of all other content.
+         */
+        getTopLayerElements(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.DOM.GetTopLayerElementsResponse>;
+
+        /**
          * Re-does the last undone action.
          */
         redo(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
@@ -1000,9 +1013,10 @@ export namespace ProtocolProxyApi {
         getFrameOwner(params: Protocol.DOM.GetFrameOwnerRequest, sessionId?: SessionId): Promise<Protocol.DOM.GetFrameOwnerResponse>;
 
         /**
-         * Returns the container of the given node based on container query conditions.
-         * If containerName is given, it will find the nearest container with a matching name;
-         * otherwise it will find the nearest container regardless of its container name.
+         * Returns the query container of the given node based on container query
+         * conditions: containerName, physical, and logical axes. If no axes are
+         * provided, the style container is returned, which is the direct parent or the
+         * closest element with a matching container-name.
          */
         getContainerForNode(params: Protocol.DOM.GetContainerForNodeRequest, sessionId?: SessionId): Promise<Protocol.DOM.GetContainerForNodeResponse>;
 
@@ -1121,6 +1135,17 @@ export namespace ProtocolProxyApi {
         off(event: "pseudoElementAdded", listener: (params: Protocol.DOM.PseudoElementAddedEvent) => void): void;
         off(event: `pseudoElementAdded.${SessionId}`, listener: (params: Protocol.DOM.PseudoElementAddedEvent) => void): void;
         pseudoElementAdded(sessionId?: SessionId): Promise<Protocol.DOM.PseudoElementAddedEvent>;
+
+        /**
+         * Called when top layer elements are changed.
+         */
+        on(event: "topLayerElementsUpdated", listener: () => void): void;
+        on(event: `topLayerElementsUpdated.${SessionId}`, listener: () => void): void;
+        once(event: "topLayerElementsUpdated", listener: () => void): void;
+        once(event: `topLayerElementsUpdated.${SessionId}`, listener: () => void): void;
+        off(event: "topLayerElementsUpdated", listener: () => void): void;
+        off(event: `topLayerElementsUpdated.${SessionId}`, listener: () => void): void;
+        topLayerElementsUpdated(sessionId?: SessionId): Promise<void>;
 
         /**
          * Called when a pseudo element is removed from an element.
@@ -1481,10 +1506,17 @@ export namespace ProtocolProxyApi {
 
         setDisabledImageTypes(params: Protocol.Emulation.SetDisabledImageTypesRequest, sessionId?: SessionId): Promise<void>;
 
+        setHardwareConcurrencyOverride(params: Protocol.Emulation.SetHardwareConcurrencyOverrideRequest, sessionId?: SessionId): Promise<void>;
+
         /**
          * Allows overriding user agent with the given string.
          */
         setUserAgentOverride(params: Protocol.Emulation.SetUserAgentOverrideRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Allows overriding the automation flag.
+         */
+        setAutomationOverride(params: Protocol.Emulation.SetAutomationOverrideRequest, sessionId?: SessionId): Promise<void>;
 
         /**
          * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out.
@@ -1504,7 +1536,7 @@ export namespace ProtocolProxyApi {
          * Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a
          * screenshot from the resulting frame. Requires that the target was created with enabled
          * BeginFrameControl. Designed for use with --run-all-compositor-stages-before-draw, see also
-         * https://goo.gl/3zHXhB for more background.
+         * https://goo.gle/chrome-headless-rendering for more background.
          */
         beginFrame(params?: Protocol.HeadlessExperimental.BeginFrameRequest, sessionId?: SessionId): Promise<Protocol.HeadlessExperimental.BeginFrameResponse>;
 
@@ -1517,19 +1549,6 @@ export namespace ProtocolProxyApi {
          * Enables headless events for the target.
          */
         enable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Issued when the target starts or stops needing BeginFrames.
-         * Deprecated. Issue beginFrame unconditionally instead and use result from
-         * beginFrame to detect whether the frames were suppressed.
-         */
-        on(event: "needsBeginFramesChanged", listener: (params: Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent) => void): void;
-        on(event: `needsBeginFramesChanged.${SessionId}`, listener: (params: Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent) => void): void;
-        once(event: "needsBeginFramesChanged", listener: (params: Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent) => void): void;
-        once(event: `needsBeginFramesChanged.${SessionId}`, listener: (params: Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent) => void): void;
-        off(event: "needsBeginFramesChanged", listener: (params: Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent) => void): void;
-        off(event: `needsBeginFramesChanged.${SessionId}`, listener: (params: Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent) => void): void;
-        needsBeginFramesChanged(sessionId?: SessionId): Promise<Protocol.HeadlessExperimental.NeedsBeginFramesChangedEvent>;
 
     }
 
@@ -1595,7 +1614,7 @@ export namespace ProtocolProxyApi {
         /**
          * Requests database names for given security origin.
          */
-        requestDatabaseNames(params: Protocol.IndexedDB.RequestDatabaseNamesRequest, sessionId?: SessionId): Promise<Protocol.IndexedDB.RequestDatabaseNamesResponse>;
+        requestDatabaseNames(params?: Protocol.IndexedDB.RequestDatabaseNamesRequest, sessionId?: SessionId): Promise<Protocol.IndexedDB.RequestDatabaseNamesResponse>;
 
     }
 
@@ -2649,9 +2668,12 @@ export namespace ProtocolProxyApi {
          */
         getAppId(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Page.GetAppIdResponse>;
 
+        getAdScriptId(params: Protocol.Page.GetAdScriptIdRequest, sessionId?: SessionId): Promise<Protocol.Page.GetAdScriptIdResponse>;
+
         /**
-         * Returns all browser cookies. Depending on the backend support, will return detailed cookie
-         * information in the `cookies` field.
+         * Returns all browser cookies for the page and all of its subframes. Depending
+         * on the backend support, will return detailed cookie information in the
+         * `cookies` field.
          */
         getCookies(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Page.GetCookiesResponse>;
 
@@ -3096,6 +3118,17 @@ export namespace ProtocolProxyApi {
         off(event: `backForwardCacheNotUsed.${SessionId}`, listener: (params: Protocol.Page.BackForwardCacheNotUsedEvent) => void): void;
         backForwardCacheNotUsed(sessionId?: SessionId): Promise<Protocol.Page.BackForwardCacheNotUsedEvent>;
 
+        /**
+         * Fired when a prerender attempt is completed.
+         */
+        on(event: "prerenderAttemptCompleted", listener: (params: Protocol.Page.PrerenderAttemptCompletedEvent) => void): void;
+        on(event: `prerenderAttemptCompleted.${SessionId}`, listener: (params: Protocol.Page.PrerenderAttemptCompletedEvent) => void): void;
+        once(event: "prerenderAttemptCompleted", listener: (params: Protocol.Page.PrerenderAttemptCompletedEvent) => void): void;
+        once(event: `prerenderAttemptCompleted.${SessionId}`, listener: (params: Protocol.Page.PrerenderAttemptCompletedEvent) => void): void;
+        off(event: "prerenderAttemptCompleted", listener: (params: Protocol.Page.PrerenderAttemptCompletedEvent) => void): void;
+        off(event: `prerenderAttemptCompleted.${SessionId}`, listener: (params: Protocol.Page.PrerenderAttemptCompletedEvent) => void): void;
+        prerenderAttemptCompleted(sessionId?: SessionId): Promise<Protocol.Page.PrerenderAttemptCompletedEvent>;
+
         on(event: "loadEventFired", listener: (params: Protocol.Page.LoadEventFiredEvent) => void): void;
         on(event: `loadEventFired.${SessionId}`, listener: (params: Protocol.Page.LoadEventFiredEvent) => void): void;
         once(event: "loadEventFired", listener: (params: Protocol.Page.LoadEventFiredEvent) => void): void;
@@ -3339,9 +3372,19 @@ export namespace ProtocolProxyApi {
 
     export type StorageApi = {
         /**
+         * Returns a storage key given a frame id.
+         */
+        getStorageKeyForFrame(params: Protocol.Storage.GetStorageKeyForFrameRequest, sessionId?: SessionId): Promise<Protocol.Storage.GetStorageKeyForFrameResponse>;
+
+        /**
          * Clears storage for origin.
          */
         clearDataForOrigin(params: Protocol.Storage.ClearDataForOriginRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Clears storage for storage key.
+         */
+        clearDataForStorageKey(params: Protocol.Storage.ClearDataForStorageKeyRequest, sessionId?: SessionId): Promise<void>;
 
         /**
          * Returns all browser cookies.
@@ -3374,9 +3417,19 @@ export namespace ProtocolProxyApi {
         trackCacheStorageForOrigin(params: Protocol.Storage.TrackCacheStorageForOriginRequest, sessionId?: SessionId): Promise<void>;
 
         /**
+         * Registers storage key to be notified when an update occurs to its cache storage list.
+         */
+        trackCacheStorageForStorageKey(params: Protocol.Storage.TrackCacheStorageForStorageKeyRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
          * Registers origin to be notified when an update occurs to its IndexedDB.
          */
         trackIndexedDBForOrigin(params: Protocol.Storage.TrackIndexedDBForOriginRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Registers storage key to be notified when an update occurs to its IndexedDB.
+         */
+        trackIndexedDBForStorageKey(params: Protocol.Storage.TrackIndexedDBForStorageKeyRequest, sessionId?: SessionId): Promise<void>;
 
         /**
          * Unregisters origin from receiving notifications for cache storage.
@@ -3384,9 +3437,19 @@ export namespace ProtocolProxyApi {
         untrackCacheStorageForOrigin(params: Protocol.Storage.UntrackCacheStorageForOriginRequest, sessionId?: SessionId): Promise<void>;
 
         /**
+         * Unregisters storage key from receiving notifications for cache storage.
+         */
+        untrackCacheStorageForStorageKey(params: Protocol.Storage.UntrackCacheStorageForStorageKeyRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
          * Unregisters origin from receiving notifications for IndexedDB.
          */
         untrackIndexedDBForOrigin(params: Protocol.Storage.UntrackIndexedDBForOriginRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Unregisters storage key from receiving notifications for IndexedDB.
+         */
+        untrackIndexedDBForStorageKey(params: Protocol.Storage.UntrackIndexedDBForStorageKeyRequest, sessionId?: SessionId): Promise<void>;
 
         /**
          * Returns the number of stored Trust Tokens per issuer for the
@@ -3409,6 +3472,41 @@ export namespace ProtocolProxyApi {
          * Enables/Disables issuing of interestGroupAccessed events.
          */
         setInterestGroupTracking(params: Protocol.Storage.SetInterestGroupTrackingRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Gets metadata for an origin's shared storage.
+         */
+        getSharedStorageMetadata(params: Protocol.Storage.GetSharedStorageMetadataRequest, sessionId?: SessionId): Promise<Protocol.Storage.GetSharedStorageMetadataResponse>;
+
+        /**
+         * Gets the entries in an given origin's shared storage.
+         */
+        getSharedStorageEntries(params: Protocol.Storage.GetSharedStorageEntriesRequest, sessionId?: SessionId): Promise<Protocol.Storage.GetSharedStorageEntriesResponse>;
+
+        /**
+         * Sets entry with `key` and `value` for a given origin's shared storage.
+         */
+        setSharedStorageEntry(params: Protocol.Storage.SetSharedStorageEntryRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Deletes entry for `key` (if it exists) for a given origin's shared storage.
+         */
+        deleteSharedStorageEntry(params: Protocol.Storage.DeleteSharedStorageEntryRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Clears all entries for a given origin's shared storage.
+         */
+        clearSharedStorageEntries(params: Protocol.Storage.ClearSharedStorageEntriesRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Resets the budget for `ownerOrigin` by clearing all budget withdrawals.
+         */
+        resetSharedStorageBudget(params: Protocol.Storage.ResetSharedStorageBudgetRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Enables/disables issuing of sharedStorageAccessed events.
+         */
+        setSharedStorageTracking(params: Protocol.Storage.SetSharedStorageTrackingRequest, sessionId?: SessionId): Promise<void>;
 
         /**
          * A cache's contents have been modified.
@@ -3465,6 +3563,18 @@ export namespace ProtocolProxyApi {
         off(event: `interestGroupAccessed.${SessionId}`, listener: (params: Protocol.Storage.InterestGroupAccessedEvent) => void): void;
         interestGroupAccessed(sessionId?: SessionId): Promise<Protocol.Storage.InterestGroupAccessedEvent>;
 
+        /**
+         * Shared storage was accessed by the associated page.
+         * The following parameters are included in all events.
+         */
+        on(event: "sharedStorageAccessed", listener: (params: Protocol.Storage.SharedStorageAccessedEvent) => void): void;
+        on(event: `sharedStorageAccessed.${SessionId}`, listener: (params: Protocol.Storage.SharedStorageAccessedEvent) => void): void;
+        once(event: "sharedStorageAccessed", listener: (params: Protocol.Storage.SharedStorageAccessedEvent) => void): void;
+        once(event: `sharedStorageAccessed.${SessionId}`, listener: (params: Protocol.Storage.SharedStorageAccessedEvent) => void): void;
+        off(event: "sharedStorageAccessed", listener: (params: Protocol.Storage.SharedStorageAccessedEvent) => void): void;
+        off(event: `sharedStorageAccessed.${SessionId}`, listener: (params: Protocol.Storage.SharedStorageAccessedEvent) => void): void;
+        sharedStorageAccessed(sessionId?: SessionId): Promise<Protocol.Storage.SharedStorageAccessedEvent>;
+
     }
 
     export type SystemInfoApi = {
@@ -3472,6 +3582,11 @@ export namespace ProtocolProxyApi {
          * Returns information about the system.
          */
         getInfo(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.SystemInfo.GetInfoResponse>;
+
+        /**
+         * Returns information about the feature state.
+         */
+        getFeatureState(params: Protocol.SystemInfo.GetFeatureStateRequest, sessionId?: SessionId): Promise<Protocol.SystemInfo.GetFeatureStateResponse>;
 
         /**
          * Returns information about all running processes.
@@ -3548,7 +3663,7 @@ export namespace ProtocolProxyApi {
         /**
          * Retrieves a list of available targets.
          */
-        getTargets(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Target.GetTargetsResponse>;
+        getTargets(params?: Protocol.Target.GetTargetsRequest, sessionId?: SessionId): Promise<Protocol.Target.GetTargetsResponse>;
 
         /**
          * Sends protocol message over session with given id.
@@ -3728,8 +3843,8 @@ export namespace ProtocolProxyApi {
         bufferUsage(sessionId?: SessionId): Promise<Protocol.Tracing.BufferUsageEvent>;
 
         /**
-         * Contains an bucket of collected trace events. When tracing is stopped collected events will be
-         * send as a sequence of dataCollected events followed by tracingComplete event.
+         * Contains a bucket of collected trace events. When tracing is stopped collected events will be
+         * sent as a sequence of dataCollected events followed by tracingComplete event.
          */
         on(event: "dataCollected", listener: (params: Protocol.Tracing.DataCollectedEvent) => void): void;
         on(event: `dataCollected.${SessionId}`, listener: (params: Protocol.Tracing.DataCollectedEvent) => void): void;
@@ -4012,7 +4127,7 @@ export namespace ProtocolProxyApi {
          * Enable the WebAuthn domain and start intercepting credential storage and
          * retrieval with a virtual authenticator.
          */
-        enable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
+        enable(params?: Protocol.WebAuthn.EnableRequest, sessionId?: SessionId): Promise<void>;
 
         /**
          * Disable the WebAuthn domain.
@@ -4023,6 +4138,11 @@ export namespace ProtocolProxyApi {
          * Creates and adds a virtual authenticator.
          */
         addVirtualAuthenticator(params: Protocol.WebAuthn.AddVirtualAuthenticatorRequest, sessionId?: SessionId): Promise<Protocol.WebAuthn.AddVirtualAuthenticatorResponse>;
+
+        /**
+         * Resets parameters isBogusSignature, isBadUV, isBadUP to false if they are not present.
+         */
+        setResponseOverrideBits(params: Protocol.WebAuthn.SetResponseOverrideBitsRequest, sessionId?: SessionId): Promise<void>;
 
         /**
          * Removes the given authenticator.
@@ -4066,6 +4186,28 @@ export namespace ProtocolProxyApi {
          * The default is true.
          */
         setAutomaticPresenceSimulation(params: Protocol.WebAuthn.SetAutomaticPresenceSimulationRequest, sessionId?: SessionId): Promise<void>;
+
+        /**
+         * Triggered when a credential is added to an authenticator.
+         */
+        on(event: "credentialAdded", listener: (params: Protocol.WebAuthn.CredentialAddedEvent) => void): void;
+        on(event: `credentialAdded.${SessionId}`, listener: (params: Protocol.WebAuthn.CredentialAddedEvent) => void): void;
+        once(event: "credentialAdded", listener: (params: Protocol.WebAuthn.CredentialAddedEvent) => void): void;
+        once(event: `credentialAdded.${SessionId}`, listener: (params: Protocol.WebAuthn.CredentialAddedEvent) => void): void;
+        off(event: "credentialAdded", listener: (params: Protocol.WebAuthn.CredentialAddedEvent) => void): void;
+        off(event: `credentialAdded.${SessionId}`, listener: (params: Protocol.WebAuthn.CredentialAddedEvent) => void): void;
+        credentialAdded(sessionId?: SessionId): Promise<Protocol.WebAuthn.CredentialAddedEvent>;
+
+        /**
+         * Triggered when a credential is used in a webauthn assertion.
+         */
+        on(event: "credentialAsserted", listener: (params: Protocol.WebAuthn.CredentialAssertedEvent) => void): void;
+        on(event: `credentialAsserted.${SessionId}`, listener: (params: Protocol.WebAuthn.CredentialAssertedEvent) => void): void;
+        once(event: "credentialAsserted", listener: (params: Protocol.WebAuthn.CredentialAssertedEvent) => void): void;
+        once(event: `credentialAsserted.${SessionId}`, listener: (params: Protocol.WebAuthn.CredentialAssertedEvent) => void): void;
+        off(event: "credentialAsserted", listener: (params: Protocol.WebAuthn.CredentialAssertedEvent) => void): void;
+        off(event: `credentialAsserted.${SessionId}`, listener: (params: Protocol.WebAuthn.CredentialAssertedEvent) => void): void;
+        credentialAsserted(sessionId?: SessionId): Promise<Protocol.WebAuthn.CredentialAssertedEvent>;
 
     }
 
@@ -4138,637 +4280,6 @@ export namespace ProtocolProxyApi {
         off(event: "playersCreated", listener: (params: Protocol.Media.PlayersCreatedEvent) => void): void;
         off(event: `playersCreated.${SessionId}`, listener: (params: Protocol.Media.PlayersCreatedEvent) => void): void;
         playersCreated(sessionId?: SessionId): Promise<Protocol.Media.PlayersCreatedEvent>;
-
-    }
-
-    export type ConsoleApi = {
-        /**
-         * Does nothing.
-         */
-        clearMessages(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Disables console domain, prevents further console messages from being reported to the client.
-         */
-        disable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Enables console domain, sends the messages collected so far to the client by means of the
-         * `messageAdded` notification.
-         */
-        enable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Issued when new console message is added.
-         */
-        on(event: "messageAdded", listener: (params: Protocol.Console.MessageAddedEvent) => void): void;
-        on(event: `messageAdded.${SessionId}`, listener: (params: Protocol.Console.MessageAddedEvent) => void): void;
-        once(event: "messageAdded", listener: (params: Protocol.Console.MessageAddedEvent) => void): void;
-        once(event: `messageAdded.${SessionId}`, listener: (params: Protocol.Console.MessageAddedEvent) => void): void;
-        off(event: "messageAdded", listener: (params: Protocol.Console.MessageAddedEvent) => void): void;
-        off(event: `messageAdded.${SessionId}`, listener: (params: Protocol.Console.MessageAddedEvent) => void): void;
-        messageAdded(sessionId?: SessionId): Promise<Protocol.Console.MessageAddedEvent>;
-
-    }
-
-    export type DebuggerApi = {
-        /**
-         * Continues execution until specific location is reached.
-         */
-        continueToLocation(params: Protocol.Debugger.ContinueToLocationRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Disables debugger for given page.
-         */
-        disable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Enables debugger for the given page. Clients should not assume that the debugging has been
-         * enabled until the result for this command is received.
-         */
-        enable(params?: Protocol.Debugger.EnableRequest, sessionId?: SessionId): Promise<Protocol.Debugger.EnableResponse>;
-
-        /**
-         * Evaluates expression on a given call frame.
-         */
-        evaluateOnCallFrame(params: Protocol.Debugger.EvaluateOnCallFrameRequest, sessionId?: SessionId): Promise<Protocol.Debugger.EvaluateOnCallFrameResponse>;
-
-        /**
-         * Returns possible locations for breakpoint. scriptId in start and end range locations should be
-         * the same.
-         */
-        getPossibleBreakpoints(params: Protocol.Debugger.GetPossibleBreakpointsRequest, sessionId?: SessionId): Promise<Protocol.Debugger.GetPossibleBreakpointsResponse>;
-
-        /**
-         * Returns source for the script with given id.
-         */
-        getScriptSource(params: Protocol.Debugger.GetScriptSourceRequest, sessionId?: SessionId): Promise<Protocol.Debugger.GetScriptSourceResponse>;
-
-        /**
-         * This command is deprecated. Use getScriptSource instead.
-         */
-        getWasmBytecode(params: Protocol.Debugger.GetWasmBytecodeRequest, sessionId?: SessionId): Promise<Protocol.Debugger.GetWasmBytecodeResponse>;
-
-        /**
-         * Returns stack trace with given `stackTraceId`.
-         */
-        getStackTrace(params: Protocol.Debugger.GetStackTraceRequest, sessionId?: SessionId): Promise<Protocol.Debugger.GetStackTraceResponse>;
-
-        /**
-         * Stops on the next JavaScript statement.
-         */
-        pause(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        pauseOnAsyncCall(params: Protocol.Debugger.PauseOnAsyncCallRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Removes JavaScript breakpoint.
-         */
-        removeBreakpoint(params: Protocol.Debugger.RemoveBreakpointRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Restarts particular call frame from the beginning.
-         */
-        restartFrame(params: Protocol.Debugger.RestartFrameRequest, sessionId?: SessionId): Promise<Protocol.Debugger.RestartFrameResponse>;
-
-        /**
-         * Resumes JavaScript execution.
-         */
-        resume(params?: Protocol.Debugger.ResumeRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Searches for given string in script content.
-         */
-        searchInContent(params: Protocol.Debugger.SearchInContentRequest, sessionId?: SessionId): Promise<Protocol.Debugger.SearchInContentResponse>;
-
-        /**
-         * Enables or disables async call stacks tracking.
-         */
-        setAsyncCallStackDepth(params: Protocol.Debugger.SetAsyncCallStackDepthRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Replace previous blackbox patterns with passed ones. Forces backend to skip stepping/pausing in
-         * scripts with url matching one of the patterns. VM will try to leave blackboxed script by
-         * performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
-         */
-        setBlackboxPatterns(params: Protocol.Debugger.SetBlackboxPatternsRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Makes backend skip steps in the script in blackboxed ranges. VM will try leave blacklisted
-         * scripts by performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
-         * Positions array contains positions where blackbox state is changed. First interval isn't
-         * blackboxed. Array should be sorted.
-         */
-        setBlackboxedRanges(params: Protocol.Debugger.SetBlackboxedRangesRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Sets JavaScript breakpoint at a given location.
-         */
-        setBreakpoint(params: Protocol.Debugger.SetBreakpointRequest, sessionId?: SessionId): Promise<Protocol.Debugger.SetBreakpointResponse>;
-
-        /**
-         * Sets instrumentation breakpoint.
-         */
-        setInstrumentationBreakpoint(params: Protocol.Debugger.SetInstrumentationBreakpointRequest, sessionId?: SessionId): Promise<Protocol.Debugger.SetInstrumentationBreakpointResponse>;
-
-        /**
-         * Sets JavaScript breakpoint at given location specified either by URL or URL regex. Once this
-         * command is issued, all existing parsed scripts will have breakpoints resolved and returned in
-         * `locations` property. Further matching script parsing will result in subsequent
-         * `breakpointResolved` events issued. This logical breakpoint will survive page reloads.
-         */
-        setBreakpointByUrl(params: Protocol.Debugger.SetBreakpointByUrlRequest, sessionId?: SessionId): Promise<Protocol.Debugger.SetBreakpointByUrlResponse>;
-
-        /**
-         * Sets JavaScript breakpoint before each call to the given function.
-         * If another function was created from the same source as a given one,
-         * calling it will also trigger the breakpoint.
-         */
-        setBreakpointOnFunctionCall(params: Protocol.Debugger.SetBreakpointOnFunctionCallRequest, sessionId?: SessionId): Promise<Protocol.Debugger.SetBreakpointOnFunctionCallResponse>;
-
-        /**
-         * Activates / deactivates all breakpoints on the page.
-         */
-        setBreakpointsActive(params: Protocol.Debugger.SetBreakpointsActiveRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Defines pause on exceptions state. Can be set to stop on all exceptions, uncaught exceptions or
-         * no exceptions. Initial pause on exceptions state is `none`.
-         */
-        setPauseOnExceptions(params: Protocol.Debugger.SetPauseOnExceptionsRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Changes return value in top frame. Available only at return break position.
-         */
-        setReturnValue(params: Protocol.Debugger.SetReturnValueRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Edits JavaScript source live.
-         */
-        setScriptSource(params: Protocol.Debugger.SetScriptSourceRequest, sessionId?: SessionId): Promise<Protocol.Debugger.SetScriptSourceResponse>;
-
-        /**
-         * Makes page not interrupt on any pauses (breakpoint, exception, dom exception etc).
-         */
-        setSkipAllPauses(params: Protocol.Debugger.SetSkipAllPausesRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Changes value of variable in a callframe. Object-based scopes are not supported and must be
-         * mutated manually.
-         */
-        setVariableValue(params: Protocol.Debugger.SetVariableValueRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Steps into the function call.
-         */
-        stepInto(params?: Protocol.Debugger.StepIntoRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Steps out of the function call.
-         */
-        stepOut(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Steps over the statement.
-         */
-        stepOver(params?: Protocol.Debugger.StepOverRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Fired when breakpoint is resolved to an actual script and location.
-         */
-        on(event: "breakpointResolved", listener: (params: Protocol.Debugger.BreakpointResolvedEvent) => void): void;
-        on(event: `breakpointResolved.${SessionId}`, listener: (params: Protocol.Debugger.BreakpointResolvedEvent) => void): void;
-        once(event: "breakpointResolved", listener: (params: Protocol.Debugger.BreakpointResolvedEvent) => void): void;
-        once(event: `breakpointResolved.${SessionId}`, listener: (params: Protocol.Debugger.BreakpointResolvedEvent) => void): void;
-        off(event: "breakpointResolved", listener: (params: Protocol.Debugger.BreakpointResolvedEvent) => void): void;
-        off(event: `breakpointResolved.${SessionId}`, listener: (params: Protocol.Debugger.BreakpointResolvedEvent) => void): void;
-        breakpointResolved(sessionId?: SessionId): Promise<Protocol.Debugger.BreakpointResolvedEvent>;
-
-        /**
-         * Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria.
-         */
-        on(event: "paused", listener: (params: Protocol.Debugger.PausedEvent) => void): void;
-        on(event: `paused.${SessionId}`, listener: (params: Protocol.Debugger.PausedEvent) => void): void;
-        once(event: "paused", listener: (params: Protocol.Debugger.PausedEvent) => void): void;
-        once(event: `paused.${SessionId}`, listener: (params: Protocol.Debugger.PausedEvent) => void): void;
-        off(event: "paused", listener: (params: Protocol.Debugger.PausedEvent) => void): void;
-        off(event: `paused.${SessionId}`, listener: (params: Protocol.Debugger.PausedEvent) => void): void;
-        paused(sessionId?: SessionId): Promise<Protocol.Debugger.PausedEvent>;
-
-        /**
-         * Fired when the virtual machine resumed execution.
-         */
-        on(event: "resumed", listener: () => void): void;
-        on(event: `resumed.${SessionId}`, listener: () => void): void;
-        once(event: "resumed", listener: () => void): void;
-        once(event: `resumed.${SessionId}`, listener: () => void): void;
-        off(event: "resumed", listener: () => void): void;
-        off(event: `resumed.${SessionId}`, listener: () => void): void;
-        resumed(sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Fired when virtual machine fails to parse the script.
-         */
-        on(event: "scriptFailedToParse", listener: (params: Protocol.Debugger.ScriptFailedToParseEvent) => void): void;
-        on(event: `scriptFailedToParse.${SessionId}`, listener: (params: Protocol.Debugger.ScriptFailedToParseEvent) => void): void;
-        once(event: "scriptFailedToParse", listener: (params: Protocol.Debugger.ScriptFailedToParseEvent) => void): void;
-        once(event: `scriptFailedToParse.${SessionId}`, listener: (params: Protocol.Debugger.ScriptFailedToParseEvent) => void): void;
-        off(event: "scriptFailedToParse", listener: (params: Protocol.Debugger.ScriptFailedToParseEvent) => void): void;
-        off(event: `scriptFailedToParse.${SessionId}`, listener: (params: Protocol.Debugger.ScriptFailedToParseEvent) => void): void;
-        scriptFailedToParse(sessionId?: SessionId): Promise<Protocol.Debugger.ScriptFailedToParseEvent>;
-
-        /**
-         * Fired when virtual machine parses script. This event is also fired for all known and uncollected
-         * scripts upon enabling debugger.
-         */
-        on(event: "scriptParsed", listener: (params: Protocol.Debugger.ScriptParsedEvent) => void): void;
-        on(event: `scriptParsed.${SessionId}`, listener: (params: Protocol.Debugger.ScriptParsedEvent) => void): void;
-        once(event: "scriptParsed", listener: (params: Protocol.Debugger.ScriptParsedEvent) => void): void;
-        once(event: `scriptParsed.${SessionId}`, listener: (params: Protocol.Debugger.ScriptParsedEvent) => void): void;
-        off(event: "scriptParsed", listener: (params: Protocol.Debugger.ScriptParsedEvent) => void): void;
-        off(event: `scriptParsed.${SessionId}`, listener: (params: Protocol.Debugger.ScriptParsedEvent) => void): void;
-        scriptParsed(sessionId?: SessionId): Promise<Protocol.Debugger.ScriptParsedEvent>;
-
-    }
-
-    export type HeapProfilerApi = {
-        /**
-         * Enables console to refer to the node with given id via $x (see Command Line API for more details
-         * $x functions).
-         */
-        addInspectedHeapObject(params: Protocol.HeapProfiler.AddInspectedHeapObjectRequest, sessionId?: SessionId): Promise<void>;
-
-        collectGarbage(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        disable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        enable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        getHeapObjectId(params: Protocol.HeapProfiler.GetHeapObjectIdRequest, sessionId?: SessionId): Promise<Protocol.HeapProfiler.GetHeapObjectIdResponse>;
-
-        getObjectByHeapObjectId(params: Protocol.HeapProfiler.GetObjectByHeapObjectIdRequest, sessionId?: SessionId): Promise<Protocol.HeapProfiler.GetObjectByHeapObjectIdResponse>;
-
-        getSamplingProfile(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.HeapProfiler.GetSamplingProfileResponse>;
-
-        startSampling(params?: Protocol.HeapProfiler.StartSamplingRequest, sessionId?: SessionId): Promise<void>;
-
-        startTrackingHeapObjects(params?: Protocol.HeapProfiler.StartTrackingHeapObjectsRequest, sessionId?: SessionId): Promise<void>;
-
-        stopSampling(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.HeapProfiler.StopSamplingResponse>;
-
-        stopTrackingHeapObjects(params?: Protocol.HeapProfiler.StopTrackingHeapObjectsRequest, sessionId?: SessionId): Promise<void>;
-
-        takeHeapSnapshot(params?: Protocol.HeapProfiler.TakeHeapSnapshotRequest, sessionId?: SessionId): Promise<void>;
-
-        on(event: "addHeapSnapshotChunk", listener: (params: Protocol.HeapProfiler.AddHeapSnapshotChunkEvent) => void): void;
-        on(event: `addHeapSnapshotChunk.${SessionId}`, listener: (params: Protocol.HeapProfiler.AddHeapSnapshotChunkEvent) => void): void;
-        once(event: "addHeapSnapshotChunk", listener: (params: Protocol.HeapProfiler.AddHeapSnapshotChunkEvent) => void): void;
-        once(event: `addHeapSnapshotChunk.${SessionId}`, listener: (params: Protocol.HeapProfiler.AddHeapSnapshotChunkEvent) => void): void;
-        off(event: "addHeapSnapshotChunk", listener: (params: Protocol.HeapProfiler.AddHeapSnapshotChunkEvent) => void): void;
-        off(event: `addHeapSnapshotChunk.${SessionId}`, listener: (params: Protocol.HeapProfiler.AddHeapSnapshotChunkEvent) => void): void;
-        addHeapSnapshotChunk(sessionId?: SessionId): Promise<Protocol.HeapProfiler.AddHeapSnapshotChunkEvent>;
-
-        /**
-         * If heap objects tracking has been started then backend may send update for one or more fragments
-         */
-        on(event: "heapStatsUpdate", listener: (params: Protocol.HeapProfiler.HeapStatsUpdateEvent) => void): void;
-        on(event: `heapStatsUpdate.${SessionId}`, listener: (params: Protocol.HeapProfiler.HeapStatsUpdateEvent) => void): void;
-        once(event: "heapStatsUpdate", listener: (params: Protocol.HeapProfiler.HeapStatsUpdateEvent) => void): void;
-        once(event: `heapStatsUpdate.${SessionId}`, listener: (params: Protocol.HeapProfiler.HeapStatsUpdateEvent) => void): void;
-        off(event: "heapStatsUpdate", listener: (params: Protocol.HeapProfiler.HeapStatsUpdateEvent) => void): void;
-        off(event: `heapStatsUpdate.${SessionId}`, listener: (params: Protocol.HeapProfiler.HeapStatsUpdateEvent) => void): void;
-        heapStatsUpdate(sessionId?: SessionId): Promise<Protocol.HeapProfiler.HeapStatsUpdateEvent>;
-
-        /**
-         * If heap objects tracking has been started then backend regularly sends a current value for last
-         * seen object id and corresponding timestamp. If the were changes in the heap since last event
-         * then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event.
-         */
-        on(event: "lastSeenObjectId", listener: (params: Protocol.HeapProfiler.LastSeenObjectIdEvent) => void): void;
-        on(event: `lastSeenObjectId.${SessionId}`, listener: (params: Protocol.HeapProfiler.LastSeenObjectIdEvent) => void): void;
-        once(event: "lastSeenObjectId", listener: (params: Protocol.HeapProfiler.LastSeenObjectIdEvent) => void): void;
-        once(event: `lastSeenObjectId.${SessionId}`, listener: (params: Protocol.HeapProfiler.LastSeenObjectIdEvent) => void): void;
-        off(event: "lastSeenObjectId", listener: (params: Protocol.HeapProfiler.LastSeenObjectIdEvent) => void): void;
-        off(event: `lastSeenObjectId.${SessionId}`, listener: (params: Protocol.HeapProfiler.LastSeenObjectIdEvent) => void): void;
-        lastSeenObjectId(sessionId?: SessionId): Promise<Protocol.HeapProfiler.LastSeenObjectIdEvent>;
-
-        on(event: "reportHeapSnapshotProgress", listener: (params: Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent) => void): void;
-        on(event: `reportHeapSnapshotProgress.${SessionId}`, listener: (params: Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent) => void): void;
-        once(event: "reportHeapSnapshotProgress", listener: (params: Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent) => void): void;
-        once(event: `reportHeapSnapshotProgress.${SessionId}`, listener: (params: Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent) => void): void;
-        off(event: "reportHeapSnapshotProgress", listener: (params: Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent) => void): void;
-        off(event: `reportHeapSnapshotProgress.${SessionId}`, listener: (params: Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent) => void): void;
-        reportHeapSnapshotProgress(sessionId?: SessionId): Promise<Protocol.HeapProfiler.ReportHeapSnapshotProgressEvent>;
-
-        on(event: "resetProfiles", listener: () => void): void;
-        on(event: `resetProfiles.${SessionId}`, listener: () => void): void;
-        once(event: "resetProfiles", listener: () => void): void;
-        once(event: `resetProfiles.${SessionId}`, listener: () => void): void;
-        off(event: "resetProfiles", listener: () => void): void;
-        off(event: `resetProfiles.${SessionId}`, listener: () => void): void;
-        resetProfiles(sessionId?: SessionId): Promise<void>;
-
-    }
-
-    export type ProfilerApi = {
-        disable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        enable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Collect coverage data for the current isolate. The coverage data may be incomplete due to
-         * garbage collection.
-         */
-        getBestEffortCoverage(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Profiler.GetBestEffortCoverageResponse>;
-
-        /**
-         * Changes CPU profiler sampling interval. Must be called before CPU profiles recording started.
-         */
-        setSamplingInterval(params: Protocol.Profiler.SetSamplingIntervalRequest, sessionId?: SessionId): Promise<void>;
-
-        start(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code
-         * coverage may be incomplete. Enabling prevents running optimized code and resets execution
-         * counters.
-         */
-        startPreciseCoverage(params?: Protocol.Profiler.StartPreciseCoverageRequest, sessionId?: SessionId): Promise<Protocol.Profiler.StartPreciseCoverageResponse>;
-
-        /**
-         * Enable type profile.
-         */
-        startTypeProfile(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        stop(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Profiler.StopResponse>;
-
-        /**
-         * Disable precise code coverage. Disabling releases unnecessary execution count records and allows
-         * executing optimized code.
-         */
-        stopPreciseCoverage(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Disable type profile. Disabling releases type profile data collected so far.
-         */
-        stopTypeProfile(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Collect coverage data for the current isolate, and resets execution counters. Precise code
-         * coverage needs to have started.
-         */
-        takePreciseCoverage(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Profiler.TakePreciseCoverageResponse>;
-
-        /**
-         * Collect type profile.
-         */
-        takeTypeProfile(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Profiler.TakeTypeProfileResponse>;
-
-        on(event: "consoleProfileFinished", listener: (params: Protocol.Profiler.ConsoleProfileFinishedEvent) => void): void;
-        on(event: `consoleProfileFinished.${SessionId}`, listener: (params: Protocol.Profiler.ConsoleProfileFinishedEvent) => void): void;
-        once(event: "consoleProfileFinished", listener: (params: Protocol.Profiler.ConsoleProfileFinishedEvent) => void): void;
-        once(event: `consoleProfileFinished.${SessionId}`, listener: (params: Protocol.Profiler.ConsoleProfileFinishedEvent) => void): void;
-        off(event: "consoleProfileFinished", listener: (params: Protocol.Profiler.ConsoleProfileFinishedEvent) => void): void;
-        off(event: `consoleProfileFinished.${SessionId}`, listener: (params: Protocol.Profiler.ConsoleProfileFinishedEvent) => void): void;
-        consoleProfileFinished(sessionId?: SessionId): Promise<Protocol.Profiler.ConsoleProfileFinishedEvent>;
-
-        /**
-         * Sent when new profile recording is started using console.profile() call.
-         */
-        on(event: "consoleProfileStarted", listener: (params: Protocol.Profiler.ConsoleProfileStartedEvent) => void): void;
-        on(event: `consoleProfileStarted.${SessionId}`, listener: (params: Protocol.Profiler.ConsoleProfileStartedEvent) => void): void;
-        once(event: "consoleProfileStarted", listener: (params: Protocol.Profiler.ConsoleProfileStartedEvent) => void): void;
-        once(event: `consoleProfileStarted.${SessionId}`, listener: (params: Protocol.Profiler.ConsoleProfileStartedEvent) => void): void;
-        off(event: "consoleProfileStarted", listener: (params: Protocol.Profiler.ConsoleProfileStartedEvent) => void): void;
-        off(event: `consoleProfileStarted.${SessionId}`, listener: (params: Protocol.Profiler.ConsoleProfileStartedEvent) => void): void;
-        consoleProfileStarted(sessionId?: SessionId): Promise<Protocol.Profiler.ConsoleProfileStartedEvent>;
-
-        /**
-         * Reports coverage delta since the last poll (either from an event like this, or from
-         * `takePreciseCoverage` for the current isolate. May only be sent if precise code
-         * coverage has been started. This event can be trigged by the embedder to, for example,
-         * trigger collection of coverage data immediately at a certain point in time.
-         */
-        on(event: "preciseCoverageDeltaUpdate", listener: (params: Protocol.Profiler.PreciseCoverageDeltaUpdateEvent) => void): void;
-        on(event: `preciseCoverageDeltaUpdate.${SessionId}`, listener: (params: Protocol.Profiler.PreciseCoverageDeltaUpdateEvent) => void): void;
-        once(event: "preciseCoverageDeltaUpdate", listener: (params: Protocol.Profiler.PreciseCoverageDeltaUpdateEvent) => void): void;
-        once(event: `preciseCoverageDeltaUpdate.${SessionId}`, listener: (params: Protocol.Profiler.PreciseCoverageDeltaUpdateEvent) => void): void;
-        off(event: "preciseCoverageDeltaUpdate", listener: (params: Protocol.Profiler.PreciseCoverageDeltaUpdateEvent) => void): void;
-        off(event: `preciseCoverageDeltaUpdate.${SessionId}`, listener: (params: Protocol.Profiler.PreciseCoverageDeltaUpdateEvent) => void): void;
-        preciseCoverageDeltaUpdate(sessionId?: SessionId): Promise<Protocol.Profiler.PreciseCoverageDeltaUpdateEvent>;
-
-    }
-
-    export type RuntimeApi = {
-        /**
-         * Add handler to promise with given promise object id.
-         */
-        awaitPromise(params: Protocol.Runtime.AwaitPromiseRequest, sessionId?: SessionId): Promise<Protocol.Runtime.AwaitPromiseResponse>;
-
-        /**
-         * Calls function with given declaration on the given object. Object group of the result is
-         * inherited from the target object.
-         */
-        callFunctionOn(params: Protocol.Runtime.CallFunctionOnRequest, sessionId?: SessionId): Promise<Protocol.Runtime.CallFunctionOnResponse>;
-
-        /**
-         * Compiles expression.
-         */
-        compileScript(params: Protocol.Runtime.CompileScriptRequest, sessionId?: SessionId): Promise<Protocol.Runtime.CompileScriptResponse>;
-
-        /**
-         * Disables reporting of execution contexts creation.
-         */
-        disable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Discards collected exceptions and console API calls.
-         */
-        discardConsoleEntries(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Enables reporting of execution contexts creation by means of `executionContextCreated` event.
-         * When the reporting gets enabled the event will be sent immediately for each existing execution
-         * context.
-         */
-        enable(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Evaluates expression on global object.
-         */
-        evaluate(params: Protocol.Runtime.EvaluateRequest, sessionId?: SessionId): Promise<Protocol.Runtime.EvaluateResponse>;
-
-        /**
-         * Returns the isolate id.
-         */
-        getIsolateId(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Runtime.GetIsolateIdResponse>;
-
-        /**
-         * Returns the JavaScript heap usage.
-         * It is the total usage of the corresponding isolate not scoped to a particular Runtime.
-         */
-        getHeapUsage(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Runtime.GetHeapUsageResponse>;
-
-        /**
-         * Returns properties of a given object. Object group of the result is inherited from the target
-         * object.
-         */
-        getProperties(params: Protocol.Runtime.GetPropertiesRequest, sessionId?: SessionId): Promise<Protocol.Runtime.GetPropertiesResponse>;
-
-        /**
-         * Returns all let, const and class variables from global scope.
-         */
-        globalLexicalScopeNames(params?: Protocol.Runtime.GlobalLexicalScopeNamesRequest, sessionId?: SessionId): Promise<Protocol.Runtime.GlobalLexicalScopeNamesResponse>;
-
-        queryObjects(params: Protocol.Runtime.QueryObjectsRequest, sessionId?: SessionId): Promise<Protocol.Runtime.QueryObjectsResponse>;
-
-        /**
-         * Releases remote object with given id.
-         */
-        releaseObject(params: Protocol.Runtime.ReleaseObjectRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Releases all remote objects that belong to a given group.
-         */
-        releaseObjectGroup(params: Protocol.Runtime.ReleaseObjectGroupRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Tells inspected instance to run if it was waiting for debugger to attach.
-         */
-        runIfWaitingForDebugger(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Runs script with given id in a given context.
-         */
-        runScript(params: Protocol.Runtime.RunScriptRequest, sessionId?: SessionId): Promise<Protocol.Runtime.RunScriptResponse>;
-
-        /**
-         * Enables or disables async call stacks tracking.
-         */
-        setAsyncCallStackDepth(params: Protocol.Runtime.SetAsyncCallStackDepthRequest, sessionId?: SessionId): Promise<void>;
-
-        setCustomObjectFormatterEnabled(params: Protocol.Runtime.SetCustomObjectFormatterEnabledRequest, sessionId?: SessionId): Promise<void>;
-
-        setMaxCallStackSizeToCapture(params: Protocol.Runtime.SetMaxCallStackSizeToCaptureRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Terminate current or next JavaScript execution.
-         * Will cancel the termination when the outer-most script execution ends.
-         */
-        terminateExecution(params?: Record<never, never>, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * If executionContextId is empty, adds binding with the given name on the
-         * global objects of all inspected contexts, including those created later,
-         * bindings survive reloads.
-         * Binding function takes exactly one argument, this argument should be string,
-         * in case of any other input, function throws an exception.
-         * Each binding function call produces Runtime.bindingCalled notification.
-         */
-        addBinding(params: Protocol.Runtime.AddBindingRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * This method does not remove binding function from global object but
-         * unsubscribes current runtime agent from Runtime.bindingCalled notifications.
-         */
-        removeBinding(params: Protocol.Runtime.RemoveBindingRequest, sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Notification is issued every time when binding is called.
-         */
-        on(event: "bindingCalled", listener: (params: Protocol.Runtime.BindingCalledEvent) => void): void;
-        on(event: `bindingCalled.${SessionId}`, listener: (params: Protocol.Runtime.BindingCalledEvent) => void): void;
-        once(event: "bindingCalled", listener: (params: Protocol.Runtime.BindingCalledEvent) => void): void;
-        once(event: `bindingCalled.${SessionId}`, listener: (params: Protocol.Runtime.BindingCalledEvent) => void): void;
-        off(event: "bindingCalled", listener: (params: Protocol.Runtime.BindingCalledEvent) => void): void;
-        off(event: `bindingCalled.${SessionId}`, listener: (params: Protocol.Runtime.BindingCalledEvent) => void): void;
-        bindingCalled(sessionId?: SessionId): Promise<Protocol.Runtime.BindingCalledEvent>;
-
-        /**
-         * Issued when console API was called.
-         */
-        on(event: "consoleAPICalled", listener: (params: Protocol.Runtime.ConsoleAPICalledEvent) => void): void;
-        on(event: `consoleAPICalled.${SessionId}`, listener: (params: Protocol.Runtime.ConsoleAPICalledEvent) => void): void;
-        once(event: "consoleAPICalled", listener: (params: Protocol.Runtime.ConsoleAPICalledEvent) => void): void;
-        once(event: `consoleAPICalled.${SessionId}`, listener: (params: Protocol.Runtime.ConsoleAPICalledEvent) => void): void;
-        off(event: "consoleAPICalled", listener: (params: Protocol.Runtime.ConsoleAPICalledEvent) => void): void;
-        off(event: `consoleAPICalled.${SessionId}`, listener: (params: Protocol.Runtime.ConsoleAPICalledEvent) => void): void;
-        consoleAPICalled(sessionId?: SessionId): Promise<Protocol.Runtime.ConsoleAPICalledEvent>;
-
-        /**
-         * Issued when unhandled exception was revoked.
-         */
-        on(event: "exceptionRevoked", listener: (params: Protocol.Runtime.ExceptionRevokedEvent) => void): void;
-        on(event: `exceptionRevoked.${SessionId}`, listener: (params: Protocol.Runtime.ExceptionRevokedEvent) => void): void;
-        once(event: "exceptionRevoked", listener: (params: Protocol.Runtime.ExceptionRevokedEvent) => void): void;
-        once(event: `exceptionRevoked.${SessionId}`, listener: (params: Protocol.Runtime.ExceptionRevokedEvent) => void): void;
-        off(event: "exceptionRevoked", listener: (params: Protocol.Runtime.ExceptionRevokedEvent) => void): void;
-        off(event: `exceptionRevoked.${SessionId}`, listener: (params: Protocol.Runtime.ExceptionRevokedEvent) => void): void;
-        exceptionRevoked(sessionId?: SessionId): Promise<Protocol.Runtime.ExceptionRevokedEvent>;
-
-        /**
-         * Issued when exception was thrown and unhandled.
-         */
-        on(event: "exceptionThrown", listener: (params: Protocol.Runtime.ExceptionThrownEvent) => void): void;
-        on(event: `exceptionThrown.${SessionId}`, listener: (params: Protocol.Runtime.ExceptionThrownEvent) => void): void;
-        once(event: "exceptionThrown", listener: (params: Protocol.Runtime.ExceptionThrownEvent) => void): void;
-        once(event: `exceptionThrown.${SessionId}`, listener: (params: Protocol.Runtime.ExceptionThrownEvent) => void): void;
-        off(event: "exceptionThrown", listener: (params: Protocol.Runtime.ExceptionThrownEvent) => void): void;
-        off(event: `exceptionThrown.${SessionId}`, listener: (params: Protocol.Runtime.ExceptionThrownEvent) => void): void;
-        exceptionThrown(sessionId?: SessionId): Promise<Protocol.Runtime.ExceptionThrownEvent>;
-
-        /**
-         * Issued when new execution context is created.
-         */
-        on(event: "executionContextCreated", listener: (params: Protocol.Runtime.ExecutionContextCreatedEvent) => void): void;
-        on(event: `executionContextCreated.${SessionId}`, listener: (params: Protocol.Runtime.ExecutionContextCreatedEvent) => void): void;
-        once(event: "executionContextCreated", listener: (params: Protocol.Runtime.ExecutionContextCreatedEvent) => void): void;
-        once(event: `executionContextCreated.${SessionId}`, listener: (params: Protocol.Runtime.ExecutionContextCreatedEvent) => void): void;
-        off(event: "executionContextCreated", listener: (params: Protocol.Runtime.ExecutionContextCreatedEvent) => void): void;
-        off(event: `executionContextCreated.${SessionId}`, listener: (params: Protocol.Runtime.ExecutionContextCreatedEvent) => void): void;
-        executionContextCreated(sessionId?: SessionId): Promise<Protocol.Runtime.ExecutionContextCreatedEvent>;
-
-        /**
-         * Issued when execution context is destroyed.
-         */
-        on(event: "executionContextDestroyed", listener: (params: Protocol.Runtime.ExecutionContextDestroyedEvent) => void): void;
-        on(event: `executionContextDestroyed.${SessionId}`, listener: (params: Protocol.Runtime.ExecutionContextDestroyedEvent) => void): void;
-        once(event: "executionContextDestroyed", listener: (params: Protocol.Runtime.ExecutionContextDestroyedEvent) => void): void;
-        once(event: `executionContextDestroyed.${SessionId}`, listener: (params: Protocol.Runtime.ExecutionContextDestroyedEvent) => void): void;
-        off(event: "executionContextDestroyed", listener: (params: Protocol.Runtime.ExecutionContextDestroyedEvent) => void): void;
-        off(event: `executionContextDestroyed.${SessionId}`, listener: (params: Protocol.Runtime.ExecutionContextDestroyedEvent) => void): void;
-        executionContextDestroyed(sessionId?: SessionId): Promise<Protocol.Runtime.ExecutionContextDestroyedEvent>;
-
-        /**
-         * Issued when all executionContexts were cleared in browser
-         */
-        on(event: "executionContextsCleared", listener: () => void): void;
-        on(event: `executionContextsCleared.${SessionId}`, listener: () => void): void;
-        once(event: "executionContextsCleared", listener: () => void): void;
-        once(event: `executionContextsCleared.${SessionId}`, listener: () => void): void;
-        off(event: "executionContextsCleared", listener: () => void): void;
-        off(event: `executionContextsCleared.${SessionId}`, listener: () => void): void;
-        executionContextsCleared(sessionId?: SessionId): Promise<void>;
-
-        /**
-         * Issued when object should be inspected (for example, as a result of inspect() command line API
-         * call).
-         */
-        on(event: "inspectRequested", listener: (params: Protocol.Runtime.InspectRequestedEvent) => void): void;
-        on(event: `inspectRequested.${SessionId}`, listener: (params: Protocol.Runtime.InspectRequestedEvent) => void): void;
-        once(event: "inspectRequested", listener: (params: Protocol.Runtime.InspectRequestedEvent) => void): void;
-        once(event: `inspectRequested.${SessionId}`, listener: (params: Protocol.Runtime.InspectRequestedEvent) => void): void;
-        off(event: "inspectRequested", listener: (params: Protocol.Runtime.InspectRequestedEvent) => void): void;
-        off(event: `inspectRequested.${SessionId}`, listener: (params: Protocol.Runtime.InspectRequestedEvent) => void): void;
-        inspectRequested(sessionId?: SessionId): Promise<Protocol.Runtime.InspectRequestedEvent>;
-
-    }
-
-    export type SchemaApi = {
-        /**
-         * Returns supported domains.
-         */
-        getDomains(params?: Record<never, never>, sessionId?: SessionId): Promise<Protocol.Schema.GetDomainsResponse>;
 
     }
 }
