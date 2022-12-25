@@ -1,5 +1,9 @@
 # Changelog
 
+## version 0.4.11
+
+- regen model
+
 ## version 0.4.10
 
 - fix git bad merge.
